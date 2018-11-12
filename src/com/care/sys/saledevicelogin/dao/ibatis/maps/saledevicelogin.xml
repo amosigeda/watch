@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="saleDeviceLogin">
+
+	<insert id="insertSaleDeviceLogin" parameterClass="com.care.sys.saledevicelogin.domain.SaleDeviceLogin">
+		INSERT INTO saledevicelogin
+		(user_name,imei,imsi,phone,phone_model,sys_version,province,belong_project,date_time,ip,app_version,device_type,server_version,bt_times,bt_name,start_time,end_time) 
+		VALUES 
+		(#userName#,#imei#,#imsi#,#phone#,#phoneModel#,#sysVersion#,#province#,#belongProject#,#dateTime#,#ip#,#appVersion#,#deviceType#,#serverVersion#,#btTimes#,#btName#,#startTime#,#endTime#)
+	</insert>
+	
+	<insert id="insertSaleDeviceLoginList" parameterClass="java.util.List">
+		INSERT INTO saledevicelogin
+		(user_name,imei,imsi,phone,phone_model,sys_version,province,belong_project,date_time,ip,app_version,device_type,server_version,bt_times,bt_name,start_time,end_time) 
+		VALUES 
+		<iterate conjunction=",">
+		(#userName#,#imei#,#imsi#,#phone#,#phoneModel#,#sysVersion#,#province#,#belongProject#,#dateTime#,#ip#,#appVersion#,#deviceType#,#serverVersion#,#btTimes#,#btName#,#startTime#,#endTime#)
+		</iterate>
+	</insert>
+	
+	<select id="getSaleDeviceLoginCount" resultClass="java.lang.Integer" parameterClass="com.care.sys.saledevicelogin.domain.SaleDeviceLogin">
+		SELECT COUNT(*) FROM (SELECT s.*,COUNT(d.id) count_num,p.project_name project FROM saledevicelogin d LEFT JOIN projectinfo p ON d.belong_project=p.id GROUP BY SUBSTRING(d.date_time,1,10),d.imei) s
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	
+	<select id="getSaleDeviceLoginS" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.saledevicelogin.domain.SaleDeviceLogin">
+		SELECT *
+    FROM (SELECT d.*,COUNT(d.id) count_num,p.project_name project FROM saledevicelogin d LEFT JOIN projectinfo p ON d.belong_project=p.id GROUP BY SUBSTRING(d.date_time,1,10),d.imei) s
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty prepend="order by" property="orderBy">
+				$orderBy$
+			</isNotEmpty>
+		</dynamic>
+		     limit
+			<isNotEmpty prepend=" " property="from">
+				$from$
+			</isNotEmpty>
+				,
+			<isNotEmpty prepend=" " property="pageSize">
+				$pageSize$
+			</isNotEmpty>
+	</select>
+	
+	<select id="getCountBTDeviceAddDayGroupByTime" resultClass="java.lang.Integer" parameterClass="com.care.sys.saledevicelogin.domain.SaleDeviceLogin">
+		SELECT COUNT(*) FROM v_device_login
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="addTime">
+				$addTime$
+			</isNotEmpty>
+		</dynamic>
+	</select>
+</sqlMap>
