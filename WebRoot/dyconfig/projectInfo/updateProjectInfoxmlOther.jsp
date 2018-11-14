@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html;charset=gb2312"%>
 <%@ page import = "com.godoing.rose.http.common.*" %>
 <%@ page import = "com.godoing.rose.lang.*" %>
+<%@ page import="com.care.common.lang.*"%>
+<%@ page import="com.care.common.config.Config"%>
+<%@ page import="com.care.app.LoginUser"%>
+<%@ taglib uri="/WEB-INF/struts-bean" prefix="bean"%>
+<%@ taglib uri="/WEB-INF/struts-logic" prefix="logic"%>
 
 <jsp:useBean id = "projectInfo" scope = "request" class = "com.godoing.rose.lang.DataMap"/>
 <%@ page autoFlush="true" %>
@@ -46,23 +51,25 @@ function onUpdate(){
 </script>
 <body>
 <span class="title_1"></span>
-<form name="frmGo" method="post" action="doProjectInfo.do?method=updateProjectInfoxmlOther" encType="multipart/form-data" onsubmit="return onUpdate()">
+<form name="frmGo" method="post" action="doProjectInfo.do?method=updateProjectWatchInfo" encType="multipart/form-data" onsubmit="return onUpdate()">
 <input name="id" type="hidden" value="<%=projectInfo.getAt("id")%>" >
 <table width="100%" border="0"cellpadding="0" cellspacing="1"  class="tbl_11">
   <tr>
      <th colspan="3" nowrap="nowrap" align="left">
-                           xml配置
+                           表盘配置
      </th>
    </tr>
-<%--   <tr class="tr_11">
+ <%--  <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;客户名</td>
     <td align="left" >
-      <input type="text" size="50"  name="project_no" id="project_no" value=<%=projectInfo.getAt("project_no")%>>
+      <input type="text" size="50"  name="project_no" id="project_no" value=<%=projectInfo.getAt("project_no")%>
+       >
+
     </td>
     <td></td>
   </tr> --%>
   <tr class="tr_11">
-    <td width="7%" align="left">&nbsp;&nbsp;广告链接</td>
+    <td width="7%" align="left">&nbsp;&nbsp;name id</td>
     <td align="left" >
       <input type="text" size="50" name="project_name" id="project_name" value=<%=projectInfo.getAt("project_name")%>
       >
@@ -71,53 +78,48 @@ function onUpdate(){
   </tr>
  
   <tr class="tr_11">
-    <td width="7%" align="left">&nbsp;&nbsp;语言</td>
-    <td width="20%" align="left">
-<select name="company_id"  id="company_id">     
-  <option value="cn" <%=projectInfo.getAt("company_id").equals("cn")? "selected":"" %>>cn</option>     
-  <option value="en" <%=projectInfo.getAt("company_id").equals("en")? "selected":"" %>>en</option>  
+    <td width="7%" align="left">&nbsp;&nbsp;type id</td>
+     <td width="20%" align="left">
+    	<select name="company_id"  id="company_id">     
+  <option value="R-400" <%=projectInfo.getAt("company_id").equals("R-400")? "selected":"" %>>R-400</option>     
+  <option value="R-360" <%=projectInfo.getAt("company_id").equals("R-360")? "selected":"" %>>R-360</option>  
+  <option value="S-320" <%=projectInfo.getAt("company_id").equals("S-320")? "selected":"" %>>S-320</option>  
  </select>  
  
-    	<%-- <input name="company_id" type="radio" id="company_id" class="txt_1" value="cn" <%=projectInfo.getAt("company_id").equals("cn")? "checked":"" %>>cn
-    	<input name="company_id" type="radio" id="company_id" class="txt_1" value="en" <%=projectInfo.getAt("company_id").equals("en")? "checked":"" %> >en
-     --%></td>
-    <%-- <td align="left" >
-      <input type="text"  size="50" name="company_id" id="company_id" value=<%=projectInfo.getAt("company_id")%>
-       >
-    </td> --%>
     <td></td>
   </tr>
   
-  <tr class="tr_11">
-    <td width="7%" align="left">&nbsp;&nbsp;标题</td>
-    <td align="left" >
-      <input type="text"  size="50" name="adTitle" id="adTitle" value=<%=projectInfo.getAt("adTitle")%>
-       >
-    </td>
-    <td></td>
-  </tr>
+ 
    <tr class="tr_11">
-    <td width="7%" align="left">&nbsp;&nbsp;内容</td>
-    <td align="left" >
-      <input type="text"  size="50" style="vertical-align:bottom"  name="adDetail" id="adDetail" value=<%=projectInfo.getAt("adDetail")%>
-       >
-    </td>
-    <td></td>
-  </tr>
-   <tr class="tr_11">
-    <td width="7%" align="left" >&nbsp;&nbsp;图片 </td>
+    <td width="7%" align="left">&nbsp;&nbsp;文件file </td>
     <td>
-    	 <img src="<%=projectInfo.getAt("channel_id")%>"  style="vertical-align:bottom"  width = "100%" height = "30%"></img> 
+     <a href="<%=projectInfo.getAt("adTitle")%>" title="zip" style="color:#0000FF">【下载】</a>
+<%--     <a herf="<%=projectInfo.getAt("adTitle")%>"   style="color:#0000FF">下载zip</a> --%>
+    	<%--  <img src="<%=projectInfo.getAt("channel_id")%>"  style="vertical-align:bottom"  width = "100%" height = "30%"></img>  --%>
 						</td>
+						
     <td align="left" >
      
     					<input type="file" name="channelId" id="channelId" multiple="multiple" class="imagePath"/>
     					<img alt="" src="" id="image1" class="showImage">
     				</td>
-     <%--  <input type="text"  size="50" name="channel_id" id="channel_id" value=<%=projectInfo.getAt("channel_id")%>
-      > --%>
+ 
    
-    <td></td>
+  </tr>
+    </tr>
+    <tr class="tr_11">
+    <td width="7%" align="left">&nbsp;&nbsp;预览 </td>
+    <td>
+    	 <img src="<%=projectInfo.getAt("adDetail")%>"  style="vertical-align:bottom"  width = "100%" height = "30%"></img> 
+						</td>
+						
+    <td align="left" >
+     
+    					<input type="file" name="adDetail" id="adDetail" multiple="multiple" class="imagePath"/>
+    					<img alt="" src="" id="image2" class="showImage">
+    				</td>
+ 
+   
   </tr>
   <%--  <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;advertisingUrl</td>
@@ -138,7 +140,7 @@ function onUpdate(){
     <td></td>
     <td  align="left">&nbsp;&nbsp;&nbsp;<input type="button" name="ok" accesskey="y" tabindex="y"  value="确 定" class="but_1" onclick="onUpdate()">
 	
-      <input type="button" name="back" accesskey="b" tabindex="b" value="返 回" class="but_1" onclick="location='doProjectInfo.do?method=queryProjectInfoXml'">
+      <input type="button" name="back" accesskey="b" tabindex="b" value="返 回" class="but_1" onclick="location='doProjectInfo.do?method=queryWatchInfo'">
       <input type="reset" name="back" accesskey="b" tabindex="b" value="重置" class="but_1" >
     </td>
   </tr>

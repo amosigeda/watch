@@ -48,4 +48,16 @@ public interface ProjectInfoDao {
 
 	public int deletePorjectInfoxml(ProjectInfo vo)throws DataAccessException;
 
+	public List<DataMap> getWatchInfoListByVo(ProjectInfo vo)throws DataAccessException;
+
+	public int getWatchInfoListCountByVo(ProjectInfo vo)throws DataAccessException;
+
+	public int insertProjectWatchInfo(ProjectInfo vo)throws DataAccessException;
+
+	public List<DataMap> getProjectWatchInfo(ProjectInfo vo)throws DataAccessException;
+
+	public int updatePorjectWatchInfo(ProjectInfo vo)throws DataAccessException;
+
+	public int deletePorjectInfoWatch(ProjectInfo vo)throws DataAccessException;
+
 }

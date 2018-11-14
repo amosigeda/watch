@@ -137,6 +137,7 @@
 		(#projectNo#,#projectName#,#channelId#,#companyId#,#addTime#,#remark#,#status#,#mapTypeC#,#mapTypeO#,#projectType#,#dataSourceO#,#dataSourceC#,#socketWay#,#heartS#,#adTitle#,#adDetail#)
 	</insert>
 	
+	
 	<insert id="insertRelevanceInfo2" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
 		INSERT INTO relevanceinfo(company_id,channel_id) VALUES (#companyId#,#channelId#)
 	</insert>
@@ -240,6 +241,122 @@
 	
 	<delete id="deletePorjectInfoxml" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
 		DELETE FROM projectinfo
+		<dynamic prepend="where">
+		   <!--  <isNotEmpty prepend="and" property="id">
+			  id=#id#
+			</isNotEmpty> -->
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</delete>
+	
+	
+	<select id="getWatchInfoListByVo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		SELECT * FROM watchxml p
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty prepend="order by" property="orderBy">
+				$orderBy$
+			</isNotEmpty> 
+		</dynamic>   
+			 limit
+			<isNotEmpty prepend=" " property="from">
+				$from$
+			</isNotEmpty>
+				,
+			<isNotEmpty prepend=" " property="pageSize">
+				$pageSize$
+			</isNotEmpty>
+	</select>
+	
+	<select id="getWatchInfoListCountByVo" resultClass="java.lang.Integer" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		SELECT COUNT(*) FROM watchxml p
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	<insert id="insertProjectWatchInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		INSERT INTO watchxml (project_no,project_name,channel_id,company_id,add_time,remark,status,map_typec,map_typeo,project_type,data_sourceo,data_sourcec,socket_way,heart_s,adTitle,adDetail) VALUES 
+		(#projectNo#,#projectName#,#channelId#,#companyId#,#addTime#,#remark#,#status#,#mapTypeC#,#mapTypeO#,#projectType#,#dataSourceO#,#dataSourceC#,#socketWay#,#heartS#,#adTitle#,#adDetail#)
+	</insert>
+	
+	<select id="getProjectWatchInfo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		SELECT * FROM watchxml
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	<update id="updatePorjectWatchInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		UPDATE watchxml
+		<dynamic prepend="set">
+			<isNotEmpty prepend="," property="projectName">
+				project_name=#projectName#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="projectNo">
+				project_no=#projectNo#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="channelId">
+				channel_id=#channelId#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="companyId">
+				company_id=#companyId#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="status">
+				status=#status#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="need">
+				need=#need#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="mapTypeC">
+				map_typec=#mapTypeC#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="mapTypeO">
+				map_typeo=#mapTypeO#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="projectType">
+				project_type=#projectType#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="dataSourceC">
+				data_sourcec=#dataSourceC#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="dataSourceO">
+				data_sourceo=#dataSourceO#
+			</isNotEmpty>
+			 <isNotEmpty prepend="," property="heartS">
+				heart_s=#heartS#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="socketWay">
+				socket_way=#socketWay#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="adTitle">
+				adTitle=#adTitle#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="adDetail">
+				adDetail=#adDetail#
+			</isNotEmpty>
+			<!-- 	,remark=#remark# -->
+		</dynamic>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</update>
+	
+	
+		<delete id="deletePorjectInfoWatch" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		DELETE FROM watchxml
 		<dynamic prepend="where">
 		   <!--  <isNotEmpty prepend="and" property="id">
 			  id=#id#

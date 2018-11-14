@@ -26,6 +26,12 @@ function onAdd(){
 	} */
 	frmGo.submit();
 } 
+
+function preViews(){
+    document.getElementById('preView').style.display="none"
+	 document.getElementById('rePicture').style.display="none"
+	 document.getElementById('pictureView').style.display="block"
+}
 /* $(document).ready(function(){ 
 $("#province").change(function(){ 
 $("#province option").each(function(i,o){ 
@@ -41,7 +47,7 @@ $("#province").change();
 </script>
 <body>
 <span class="title_1"></span>
-<form name="frmGo" method="post" action="doProjectInfo.do?method=insertProjectInfoxmlOther" encType="multipart/form-data"  onsubmit="return onAdd()">
+<form name="frmGo" method="post" action="doProjectInfo.do?method=insertProjectInfoWatch" encType="multipart/form-data"  onsubmit="return onAdd()">
 <% LoginUser loginUser = (LoginUser)request.getSession().getAttribute(Config.SystemConfig.LOGINUSER);
 	String loginUserCode = loginUser.getUserCode();
 %>
@@ -49,53 +55,57 @@ $("#province").change();
 <table width="100%" border="0"cellpadding="0" cellspacing="1"  class="tbl_11">
   <tr>
         <th colspan="3" nowrap="nowrap" align="left">
-                                    添加xml
+                                    添加表盘
         </th>
        </tr>
-<!--   <tr class="tr_11">
+ <!--  <tr class="tr_11">
     <td align="left" width="7%">&nbsp;&nbsp;客户名</td>
     <td align="left" width="20%" colspan="2">
       <input name="projectNo" size="50" id="projectNo" type="text" class="txt_1"maxlength="100"/><font color="red">*</font>
     </td>
     </tr> -->
    <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;广告链接</td>
+    <td align="left" width="7%">&nbsp;&nbsp;名字</td>
     <td align="left" width="20%" colspan="2">
       <input name="projectName" size="50" type="text" class="txt_1"maxlength="100"><font color="red">*</font>
     </td>
   </tr>
-  
-       
-  
+    
      <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;语言</td>
+    <td align="left" width="7%">&nbsp;&nbsp;类型</td>
     <td align="left" width="20%" colspan="2">
-<select name="companyId"  value="companyId">     
-  <option value="cn">cn</option>     
-  <option value="en">en</option>  
+    
+    <select name="companyId"  value="companyId">     
+  <option value="R-400">R-400</option>     
+  <option value="R-360">R-360</option>  
+  <option value="S-320">S-320</option>  
  </select>  
+   
     </td>
   </tr>
-   <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;标题</td>
-    <td align="left" width="20%" colspan="2">
-      <input name="adTitle" size="50" type="text" class="txt_1"maxlength="100"><font color="red">*</font>
-    </td>
-  </tr>
-   <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;内容</td>
-    <td align="left" width="20%" colspan="2">
-      <input name="adDetail" size="50" type="text" class="txt_1"maxlength="100"><font color="red">*</font>
-    </td>
-  </tr>
-  
-    <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;图片名</td>
+ 
+  <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;文件zip</td>
     <td width="20%">
     					<input type="file" name="channelId" id="channelId" multiple="multiple" class="imagePath"/>
     					<img alt="" src="" id="image1" class="showImage">
     				</td>
   </tr>
+     <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;图片png</td>
+    <td width="20%">
+    					<input type="file" name="adDetail" id="adDetail" multiple="multiple" class="imagePath"/>
+    					<img alt="" src="" id="image2" class="showImage">
+    				</td>
+  </tr>
+  
+ <!-- <tr>
+    				<td width="10%" align="right">&nbsp;&nbsp;&nbsp;</td>
+    				<td width="20%">
+    					<input type="file" name="downloadpath1" id="downloadpath1" multiple="multiple" class="imagePath"/>
+    					<img alt="" src="" id="image1" class="showImage">
+    				</td>
+    			</tr> -->
     
   <%-- <tr class="tr_11">
     <td align="left" width="7%">&nbsp;&nbsp;客户</td> 
@@ -122,7 +132,7 @@ $("#province").change();
   <tr class="tr_11">
   <td width="7%"></td>
     <td align="left" colspan="2">&nbsp;&nbsp;&nbsp;<input type="button" name="ok"accesskey="y" tabindex="y"  value="确 定" class="but_1" onclick="onAdd()" style="font-size:12;width:40px;height:21px;">
-      <input type="button" name="back"accesskey="b" tabindex="b" value="返 回" class="but_1" onclick="location='doProjectInfo.do?method=queryProjectInfoXml'" style="font-size:12;width:40px;height:21px;">
+      <input type="button" name="back"accesskey="b" tabindex="b" value="返 回" class="but_1" onclick="location='doProjectInfo.do?method=queryWatchInfo'" style="font-size:12;width:40px;height:21px;">
   
     </td>
   </tr>

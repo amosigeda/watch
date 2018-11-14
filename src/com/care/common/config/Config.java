@@ -5,7 +5,7 @@ public class Config {
     public static String ABOUT_PAGE2 = "../../About.htm";
     public static String INDEX_PAGE = "index.jsp";
 
-    /*��Ʒ�����־*/
+    /*��Ʒ1111�����־*/
     public static String LEVEL = "LEVEL";
     public Config() {
     }

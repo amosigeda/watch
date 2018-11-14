@@ -39,6 +39,16 @@ public interface ProjectInfoFacade {
 	public int updatePorjectSwitchInfo(ProjectInfo vo)throws SystemException;
 
 	public int deletePorjectInfoxml(ProjectInfo vo)throws SystemException;
+	
+	public DataList getWatchInfoListByVo(ProjectInfo vo) throws SystemException;
+
+	public int insertProjectWatchInfo(ProjectInfo vo) throws SystemException;
+
+	public List<DataMap> getProjectWatchInfo(ProjectInfo vo)throws SystemException;
+
+	public int updatePorjectWatchInfo(ProjectInfo vo) throws SystemException;
+
+	public int deletePorjectInfoWatch(ProjectInfo vo)throws SystemException;
 
 
 }

@@ -119,6 +119,12 @@
    	 		<forward name="updateProjectSwitchInfo" path="/dyconfig/projectInfo/updateProjectSwitchInfo.jsp"></forward>
    	 		<forward name="projectRoleFuncInfo"  path="/dyconfig/projectInfo/projectRoleFuncPop.jsp"></forward>
    	 		<forward name="querySwitchInfo"  path="/dyconfig/projectInfo/projectSwitch.jsp"></forward>
+   	 		<!--**************************************************************************************************************************************************************************** -->
+   	 		<forward name="queryWatchInfo" path="/dyconfig/projectInfo/watchInfoxml.jsp"></forward>
+   	 		<forward name="addProjectInfoWatch" path="/dyconfig/projectInfo/addProjectInfoWatch.jsp"></forward>
+   	 			<forward name="addProjectInfoWatchOther" path="/dyconfig/projectInfo/addProjectInfoxmlOther.jsp"></forward>
+   	 				<forward name="updateProjectWatchInfo" path="/dyconfig/projectInfo/updateProjectInfoWatch.jsp"></forward>
+   	 		<forward name="updateProjectWatchInfoOther" path="/dyconfig/projectInfo/updateProjectInfoxmlOther.jsp"></forward>
    	 	</action>
    	 	
    	 	<action name="saleInfoForm" path="/dyconfig/saleInfo/doSaleInfo" scope="request" type="com.care.sys.saleinfo.action.SaleInfoAction" parameter="method">

@@ -119,6 +119,36 @@ public class SqlMapProjectInfoDao extends SqlMapClientDaoSupport implements Proj
 		logger.debug("deletePorjectInfoxml(ProjectInfo vo)");
 		return getSqlMapClientTemplate().update("deletePorjectInfoxml", vo);
 	}
+	public List<DataMap> getWatchInfoListByVo(ProjectInfo vo)
+			throws DataAccessException {
+		logger.debug("getWatchInfoListByVo(ProjectInfo vo)");
+		return getSqlMapClientTemplate().queryForList("getWatchInfoListByVo", vo);
+	}
+	public int getWatchInfoListCountByVo(ProjectInfo vo)
+			throws DataAccessException {
+		logger.debug("getWatchInfoListCountByVo(ProjectInfo vo)");
+		return (Integer)getSqlMapClientTemplate().queryForObject("getWatchInfoListCountByVo", vo);
+	}
+	public int insertProjectWatchInfo(ProjectInfo vo)
+			throws DataAccessException {
+		logger.debug("insertProjectWatchInfo(ProjectInfo vo)");
+		return getSqlMapClientTemplate().update("insertProjectWatchInfo", vo);
+	}
+	public List<DataMap> getProjectWatchInfo(ProjectInfo vo)
+			throws DataAccessException {
+		logger.debug("getProjectWatchInfo(ProjectInfo vo)");
+		return getSqlMapClientTemplate().queryForList("getProjectWatchInfo", vo);
+	}
+	public int updatePorjectWatchInfo(ProjectInfo vo)
+			throws DataAccessException {
+		logger.debug("updatePorjectWatchInfo(ProjectInfo vo)");
+		return getSqlMapClientTemplate().update("updatePorjectWatchInfo", vo);
+	}
+	public int deletePorjectInfoWatch(ProjectInfo vo)
+			throws DataAccessException {
+		logger.debug("deletePorjectInfoWatch(ProjectInfo vo)");
+		return getSqlMapClientTemplate().update("deletePorjectInfoWatch", vo);
+	}
 
 	
 

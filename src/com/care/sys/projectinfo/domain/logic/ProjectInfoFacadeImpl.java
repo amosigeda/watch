@@ -187,4 +187,28 @@ public class ProjectInfoFacadeImpl implements ProjectInfoFacade{
 		return projectInfoDao.deletePorjectInfoxml(vo);
 		}
 
+	public DataList getWatchInfoListByVo(ProjectInfo vo) throws SystemException {
+		DataList list = new DataList(projectInfoDao.getWatchInfoListByVo(vo));
+		list.setTotalSize(projectInfoDao.getWatchInfoListCountByVo(vo));
+		return list;
+	}
+
+	public int insertProjectWatchInfo(ProjectInfo vo) throws SystemException {
+		// TODO Auto-generated method stub
+		return projectInfoDao.insertProjectWatchInfo(vo);
+	}
+
+	public List<DataMap> getProjectWatchInfo(ProjectInfo vo)
+			throws SystemException {
+		return projectInfoDao.getProjectWatchInfo(vo);
+	}
+
+	public int updatePorjectWatchInfo(ProjectInfo vo) throws SystemException {
+		return  projectInfoDao.updatePorjectWatchInfo(vo);
+	}
+
+	public int deletePorjectInfoWatch(ProjectInfo vo) throws SystemException {
+		return projectInfoDao.deletePorjectInfoWatch(vo);
+		}
+
 }
