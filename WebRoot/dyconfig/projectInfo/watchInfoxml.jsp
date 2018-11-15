@@ -72,6 +72,10 @@ function update(id){
 	frmGo.action="doProjectInfo.do?method=initUpdateWatch&id="+id;
 	frmGo.submit();
 }
+function updateStatus(id,status){
+	frmGo.action="doProjectInfo.do?method=initUpdateWatchStatus&id="+id+"&s="+status;
+	frmGo.submit();
+}
 function deletee(id){
 	frmGo.action="doProjectInfo.do?method=deletewatch&id="+id;
 	frmGo.submit();
@@ -160,7 +164,7 @@ function ofuncs(projectId){
 					<tr class="tr_5" onmouseover='this.className="tr_4"'
 						onmouseout='this.className="tr_5"'>
 						 <td>
-    	                 <img src="<bean:write name="element" property="adDetail"/>"  style="vertical-align:bottom"  width = "65%" height = "65%"></img> 
+    	                 <img src="<bean:write name="element" property="adDetail"/>"  style="vertical-align:bottom"  width = "150px" height = "150px"></img> 
 						</td>
 						
 						<td>							
@@ -171,7 +175,7 @@ function ofuncs(projectId){
 						</td>
 						
 						<td>							
-							<bean:write name="element" property="id" />
+							<bean:write name="element" property="remark" />
 						</td>
 						<td>
 							<bean:write name="element" property="company_id" />											
@@ -186,6 +190,19 @@ function ofuncs(projectId){
 						</td>
 												 						
 						<td>
+					<%-- 	<a href=# onclick="updateStatus('<bean:write name="element" property="id" />')" style="color:#0000FF" >
+						<logic:equal name="element" property="status" value="0">¡¾Òþ²Ø¡¿</logic:equal>
+						<logic:equal name="element" property="status" value="1">¡¾ÏÔÊ¾¡¿</logic:equal>
+						</a> --%>
+						
+						<logic:equal name="element" property="status" value="0">			
+   							<a href="#" onclick="updateStatus(<bean:write name='element' property='id'/>,1)" style="color:#0000FF">¡¾ÏÔÊ¾¡¿</a>		
+   						</logic:equal>			
+   							
+   						<logic:equal name="element" property="status" value="1">			
+   							<a href="#" style="color:red"  onclick="updateStatus(<bean:write name='element' property='id'/>,0)">¡¾Òþ²Ø¡¿</a>		
+   						</logic:equal>	
+   						
 							<a href=# onclick="update('<bean:write name="element" property="id" />')" style="color:#0000FF" > ¡¾ÐÞ¸Ä¡¿</a>
 							<a href=# onclick="deletee('<bean:write name="element" property="id" />')" style="color:#0000FF" > ¡¾É¾³ý¡¿</a>
 							<%-- <a href="http://appserver.paby.com:8080/wtpet/images/app/msg/<bean:write name="element" property="photo"/>" title="Í¼Æ¬"><img src="http://appserver.paby.com:8080/wtpet/images/app/msg/<bean:write name="element" property="photo"/>" alt="·´À¡Í¼Æ¬" 

@@ -58,10 +58,10 @@ public class ProjectInfoAction extends BaseAction {
 	String photoUrl = "http://www.wiiteer.com:8999/ads/photo/";
 
 	/*************************************************************************************************************/
-	String clockskinName = "Clockskin.xml";
-	//String clockxmlpath = "E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
+	String clockskinName = "clockskin.xml";
+	String clockxmlpath = "E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
 	String clockdownloadUrl = "http://www.wiiteer.com:8999/ads/WIITE/biaopan/";
-	String clockxmlpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
+  //String clockxmlpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
 
 	public ActionForward queryProjectInfoXml(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
@@ -955,6 +955,7 @@ public class ProjectInfoAction extends BaseAction {
 		String name = "";
 		String fileFormat = "";
 		String zipName="";
+		String  fileName=Long.toString(new Date().getTime()) ;
 		try {
 			LoginUser loginUser = (LoginUser) request.getSession()
 					.getAttribute(Config.SystemConfig.LOGINUSER);
@@ -965,6 +966,7 @@ public class ProjectInfoAction extends BaseAction {
 			System.out.println(form.getChannelId());
 			Hashtable<?, ?> files = form.getMultipartRequestHandler()
 					.getFileElements();// 获取所有文件路径的枚举；
+		
 			if (files != null & files.size() > 0) {
 				Enumeration<?> enums = files.keys();
 				String fileKey = null;
@@ -975,7 +977,7 @@ public class ProjectInfoAction extends BaseAction {
 						fileFormat = file.toString().substring(
 								file.toString().lastIndexOf("."),
 								file.toString().length());
-						name = Long.toString(new Date().getTime()) + fileFormat;
+						name = fileName+ fileFormat;
 						System.out.println(name);
 						if(name.contains(".zip")){
 							zipName=name;
@@ -1023,16 +1025,19 @@ public class ProjectInfoAction extends BaseAction {
 			}
 			vo.setCompanyId(companyId);
 			vo.setChannelId(zipName);
+			vo.setRemark(fileName);
 			if ("".equals(name) || name == "" || name == null) {
 				vo.setChannelId("");
 				vo.setAdTitle("");
 				vo.setAdDetail("");
+				vo.setRemark("");
 			}
 			vo.setProjectName(form.getProjectName());
 			vo.setAddTime(new Date());
 
 			vo.setAdTitle(clockdownloadUrl + zipName);
 			vo.setAdDetail(clockdownloadUrl + name);
+			vo.setStatus("1");
 
 			facade.insertProjectWatchInfo(vo);
 
@@ -1055,6 +1060,9 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append("\"/>");
 					sb.append("<customer id=\"");
 					sb.append(getProjectInfo.get(i).get("project_no") + "");
+					if("0".equals(getProjectInfo.get(i).get("status") + "")){
+						sb.append("-hide");
+					}
 					sb.append("\"/>");
 					sb.append("<type id=\"");
 					sb.append(getProjectInfo.get(i).get("company_id") + "");
@@ -1135,6 +1143,7 @@ public class ProjectInfoAction extends BaseAction {
 
 		Result result = new Result();
 		String zipName="";
+		String  fileName=Long.toString(new Date().getTime()) ;
 		try {
 			String id = request.getParameter("id");
 			String project_no = request.getParameter("project_no");
@@ -1143,7 +1152,7 @@ public class ProjectInfoAction extends BaseAction {
 			String company_id = request.getParameter("company_id");
 
 			// ProjectInfoForm form = (ProjectInfoForm) actionForm;
-
+			
 			ProjectInfoForm form = (ProjectInfoForm) actionForm;
 			String name = "";
 			String fileFormat = "";
@@ -1159,7 +1168,7 @@ public class ProjectInfoAction extends BaseAction {
 						fileFormat = file.toString().substring(
 								file.toString().lastIndexOf("."),
 								file.toString().length());
-						name = Long.toString(new Date().getTime()) + fileFormat;
+						name = fileName + fileFormat;
 						if(name.contains(".zip")){
 							zipName=name;
 						}
@@ -1196,11 +1205,12 @@ public class ProjectInfoAction extends BaseAction {
 			vo.setChannelId(zipName);
 			vo.setAdTitle(clockdownloadUrl + zipName);
 			vo.setAdDetail(clockdownloadUrl + name);
-		
+			vo.setRemark(fileName);
 			if ("".equals(name) || name == "" || name == null) {
 				vo.setChannelId("");
 				vo.setAdTitle("");
 				vo.setAdDetail("");
+				vo.setRemark("");
 			}
 			vo.setCompanyId(company_id);
 		
@@ -1228,6 +1238,9 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append("\"/>");
 					sb.append("<customer id=\"");
 					sb.append(getProjectInfo.get(i).get("project_no") + "");
+					if("0".equals(getProjectInfo.get(i).get("status") + "")){
+						sb.append("-hide");
+					}
 					sb.append("\"/>");
 					sb.append("<type id=\"");
 					sb.append(getProjectInfo.get(i).get("company_id") + "");
@@ -1298,6 +1311,9 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append("\"/>");
 					sb.append("<customer id=\"");
 					sb.append(getProjectInfo.get(i).get("project_no") + "");
+					if("0".equals(getProjectInfo.get(i).get("status") + "")){
+						sb.append("-hide");
+					}
 					sb.append("\"/>");
 					sb.append("<type id=\"");
 					sb.append(getProjectInfo.get(i).get("company_id") + "");
@@ -1316,6 +1332,90 @@ public class ProjectInfoAction extends BaseAction {
 			result.setBackPage(HttpTools.httpServletPath(request,
 					"queryWatchInfo"));
 			result.setResultCode("deletes");
+			result.setResultType("success");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug(request.getQueryString() + "  " + e);
+			result.setBackPage(HttpTools.httpServletPath(request,
+					"queryWatchInfo"));
+			if (e instanceof SystemException) { /* ����֪�쳣���н��� */
+				result.setResultCode(((SystemException) e).getErrCode());
+				result.setResultType(((SystemException) e).getErrType());
+			} else { /* ��δ֪�쳣���н�������ȫ�������δ֪�쳣 */
+				result.setResultCode("noKnownException");
+				result.setResultType("sysRunException");
+			}
+		} finally {
+			request.setAttribute("result", result);
+		}
+		return mapping.findForward("result");
+	}
+	
+	
+	public ActionForward initUpdateWatchStatus(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) {
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+		String userName = loginUser.getUserName();
+
+		Result result = new Result();
+	
+		try {
+			String id = request.getParameter("id");
+			String status = request.getParameter("s");
+			
+
+			ProjectInfo vo = new ProjectInfo();
+			vo.setCondition("id='" + id + "'");
+			vo.setStatus(status);
+			
+			ServiceBean.getInstance().getProjectInfoFacade()
+					.updatePorjectWatchInfo(vo);
+			StringBuffer sb = new StringBuffer();
+			ProjectInfo voo = new ProjectInfo();
+			List<DataMap> getProjectInfo = ServiceBean.getInstance()
+					.getProjectInfoFacade().getProjectWatchInfo(voo);
+			if (getProjectInfo.size() > 0) {
+				sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+				sb.append("<clockskins>");
+
+				for (int i = 0; i < getProjectInfo.size(); i++) {
+					sb.append("<clockskin>");
+					sb.append("<name id=\"");
+					sb.append(getProjectInfo.get(i).get("project_name") + "");
+					sb.append("\"/>");
+					sb.append("<skinid id=\"");
+					sb.append(getProjectInfo.get(i).get("id") + "");
+					sb.append("\"/>");
+					sb.append("<file id=\"");
+					sb.append(getProjectInfo.get(i).get("channel_id") + "");
+					sb.append("\"/>");
+					sb.append("<customer id=\"");
+					sb.append(getProjectInfo.get(i).get("project_no") + "");
+					if("0".equals(getProjectInfo.get(i).get("status") + "")){
+						sb.append("-hide");
+					}
+					sb.append("\"/>");
+					sb.append("<type id=\"");
+					sb.append(getProjectInfo.get(i).get("company_id") + "");
+					sb.append("\"/>");
+					sb.append("</clockskin>");
+				}
+
+				sb.append("</clockskins>");
+
+			}
+			Constant.deleteFile(clockxmlpath + clockskinName);
+			Constant.createFileContent(clockxmlpath, clockskinName, sb
+					.toString().getBytes("UTF-8"));
+
+			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
+					"queryWatchInfo"));
+			result.setResultCode("updates");
 			result.setResultType("success");
 		} catch (Exception e) {
 			e.printStackTrace();

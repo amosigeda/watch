@@ -109,7 +109,7 @@ function onUpdate(){
     <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;‘§¿¿ </td>
     <td>
-    	 <img src="<%=projectInfo.getAt("adDetail")%>"  style="vertical-align:bottom"  width = "65%" height = "65%"></img> 
+    	 <img src="<%=projectInfo.getAt("adDetail")%>"  style="vertical-align:bottom"  width = "150px" height = "150px"></img> 
 						</td>
 						
     <td align="left" >
