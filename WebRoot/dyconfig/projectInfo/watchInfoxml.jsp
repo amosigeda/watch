@@ -127,7 +127,9 @@ function ofuncs(projectId){
 				</tr> 
 				<%int i=1; %>
                   <tr class="title_2">
-                 	 
+                 	 <td width="10%">
+						Ô¤ÀÀ
+					</td>
 					<td width="8%">
 						¿Í»§Ãû
 					</td>
@@ -157,6 +159,9 @@ function ofuncs(projectId){
 				<logic:iterate id="element" name="pageList">
 					<tr class="tr_5" onmouseover='this.className="tr_4"'
 						onmouseout='this.className="tr_5"'>
+						 <td>
+    	                 <img src="<bean:write name="element" property="adDetail"/>"  style="vertical-align:bottom"  width = "65%" height = "65%"></img> 
+						</td>
 						
 						<td>							
 							<bean:write name="element" property="project_no" />

@@ -60,13 +60,16 @@ function onUpdate(){
      </th>
    </tr>
   <tr class="tr_11">
-    <td width="7%" align="left">&nbsp;&nbsp;客户名</td>
+   <%--  <td width="7%" align="left">&nbsp;&nbsp;客户名</td>
     <td align="left" >
       <input type="text" size="50"  name="project_no" id="project_no" value=<%=projectInfo.getAt("project_no")%>
-       >
-
+       > --%>
+ <!--      onchange="selectProject(this.value)"> -->
+       <%-- <td align="left" >
+      <input type="text" name="project_name" id="projectName1" value=<%=projectInfo.getAt("project_name")%>
+      style="display:none"> 
     </td>
-    <td></td>
+    <td></td>--%>
   </tr>
   <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;name id</td>

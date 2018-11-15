@@ -124,7 +124,7 @@
    	 		<forward name="addProjectInfoWatch" path="/dyconfig/projectInfo/addProjectInfoWatch.jsp"></forward>
    	 			<forward name="addProjectInfoWatchOther" path="/dyconfig/projectInfo/addProjectInfoxmlOther.jsp"></forward>
    	 				<forward name="updateProjectWatchInfo" path="/dyconfig/projectInfo/updateProjectInfoWatch.jsp"></forward>
-   	 		<forward name="updateProjectWatchInfoOther" path="/dyconfig/projectInfo/updateProjectInfoxmlOther.jsp"></forward>
+   	 		<forward name="updateProjectWatchInfoOther" path="/dyconfig/projectInfo/updateProjectInfoWatchOther.jsp"></forward>
    	 	</action>
    	 	
    	 	<action name="saleInfoForm" path="/dyconfig/saleInfo/doSaleInfo" scope="request" type="com.care.sys.saleinfo.action.SaleInfoAction" parameter="method">

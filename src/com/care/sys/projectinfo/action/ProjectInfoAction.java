@@ -59,8 +59,9 @@ public class ProjectInfoAction extends BaseAction {
 
 	/*************************************************************************************************************/
 	String clockskinName = "Clockskin.xml";
-	String clockxmlpath = "E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
+	//String clockxmlpath = "E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
 	String clockdownloadUrl = "http://www.wiiteer.com:8999/ads/WIITE/biaopan/";
+	String clockxmlpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
 
 	public ActionForward queryProjectInfoXml(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
@@ -1043,16 +1044,19 @@ public class ProjectInfoAction extends BaseAction {
 
 				for (int i = 0; i < getProjectInfo.size(); i++) {
 					sb.append("<clockskin>");
-					sb.append("<name id>=\"");
+					sb.append("<name id=\"");
 					sb.append(getProjectInfo.get(i).get("project_name") + "");
 					sb.append("\"/>");
-					sb.append("<skinid id>=\"");
+					sb.append("<skinid id=\"");
 					sb.append(getProjectInfo.get(i).get("id") + "");
 					sb.append("\"/>");
-					sb.append("<file id>=\"");
+					sb.append("<file id=\"");
 					sb.append(getProjectInfo.get(i).get("channel_id") + "");
 					sb.append("\"/>");
-					sb.append("<type id>=\"");
+					sb.append("<customer id=\"");
+					sb.append(getProjectInfo.get(i).get("project_no") + "");
+					sb.append("\"/>");
+					sb.append("<type id=\"");
 					sb.append(getProjectInfo.get(i).get("company_id") + "");
 					sb.append("\"/>");
 					sb.append("</clockskin>");
@@ -1213,16 +1217,19 @@ public class ProjectInfoAction extends BaseAction {
 
 				for (int i = 0; i < getProjectInfo.size(); i++) {
 					sb.append("<clockskin>");
-					sb.append("<name id>=\"");
+					sb.append("<name id=\"");
 					sb.append(getProjectInfo.get(i).get("project_name") + "");
 					sb.append("\"/>");
-					sb.append("<skinid id>=\"");
+					sb.append("<skinid id=\"");
 					sb.append(getProjectInfo.get(i).get("id") + "");
 					sb.append("\"/>");
-					sb.append("<file id>=\"");
+					sb.append("<file id=\"");
 					sb.append(getProjectInfo.get(i).get("channel_id") + "");
 					sb.append("\"/>");
-					sb.append("<type id>=\"");
+					sb.append("<customer id=\"");
+					sb.append(getProjectInfo.get(i).get("project_no") + "");
+					sb.append("\"/>");
+					sb.append("<type id=\"");
 					sb.append(getProjectInfo.get(i).get("company_id") + "");
 					sb.append("\"/>");
 					sb.append("</clockskin>");
@@ -1280,16 +1287,19 @@ public class ProjectInfoAction extends BaseAction {
 
 				for (int i = 0; i < getProjectInfo.size(); i++) {
 					sb.append("<clockskin>");
-					sb.append("<name id>=\"");
+					sb.append("<name id=\"");
 					sb.append(getProjectInfo.get(i).get("project_name") + "");
 					sb.append("\"/>");
-					sb.append("<skinid id>=\"");
+					sb.append("<skinid id=\"");
 					sb.append(getProjectInfo.get(i).get("id") + "");
 					sb.append("\"/>");
-					sb.append("<file id>=\"");
+					sb.append("<file id=\"");
 					sb.append(getProjectInfo.get(i).get("channel_id") + "");
 					sb.append("\"/>");
-					sb.append("<type id>=\"");
+					sb.append("<customer id=\"");
+					sb.append(getProjectInfo.get(i).get("project_no") + "");
+					sb.append("\"/>");
+					sb.append("<type id=\"");
 					sb.append(getProjectInfo.get(i).get("company_id") + "");
 					sb.append("\"/>");
 					sb.append("</clockskin>");
