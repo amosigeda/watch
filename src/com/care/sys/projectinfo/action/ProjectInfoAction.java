@@ -59,9 +59,9 @@ public class ProjectInfoAction extends BaseAction {
 
 	/*************************************************************************************************************/
 	String clockskinName = "clockskin.xml";
-	String clockxmlpath = "E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
+	//String clockxmlpath = "E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
 	String clockdownloadUrl = "http://www.wiiteer.com:8999/ads/WIITE/biaopan/";
-  //String clockxmlpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
+  String clockxmlpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
 
 	public ActionForward queryProjectInfoXml(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
@@ -813,7 +813,7 @@ public class ProjectInfoAction extends BaseAction {
 		return mapping.findForward("result");
 	}
 
-	/*---------------------------------------------------------------------------------------------------------------------------*/
+	/*-----------------------表盘---------------------------------------------------------------------------------*/
 
 	public ActionForward queryWatchInfo(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
@@ -1053,7 +1053,7 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append(getProjectInfo.get(i).get("project_name") + "");
 					sb.append("\"/>");
 					sb.append("<skinid id=\"");
-					sb.append(getProjectInfo.get(i).get("id") + "");
+					sb.append(getProjectInfo.get(i).get("remark") + "");
 					sb.append("\"/>");
 					sb.append("<file id=\"");
 					sb.append(getProjectInfo.get(i).get("channel_id") + "");
@@ -1231,7 +1231,7 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append(getProjectInfo.get(i).get("project_name") + "");
 					sb.append("\"/>");
 					sb.append("<skinid id=\"");
-					sb.append(getProjectInfo.get(i).get("id") + "");
+					sb.append(getProjectInfo.get(i).get("remark") + "");
 					sb.append("\"/>");
 					sb.append("<file id=\"");
 					sb.append(getProjectInfo.get(i).get("channel_id") + "");
@@ -1304,7 +1304,7 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append(getProjectInfo.get(i).get("project_name") + "");
 					sb.append("\"/>");
 					sb.append("<skinid id=\"");
-					sb.append(getProjectInfo.get(i).get("id") + "");
+					sb.append(getProjectInfo.get(i).get("remark") + "");
 					sb.append("\"/>");
 					sb.append("<file id=\"");
 					sb.append(getProjectInfo.get(i).get("channel_id") + "");
@@ -1389,7 +1389,7 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append(getProjectInfo.get(i).get("project_name") + "");
 					sb.append("\"/>");
 					sb.append("<skinid id=\"");
-					sb.append(getProjectInfo.get(i).get("id") + "");
+					sb.append(getProjectInfo.get(i).get("remark") + "");
 					sb.append("\"/>");
 					sb.append("<file id=\"");
 					sb.append(getProjectInfo.get(i).get("channel_id") + "");

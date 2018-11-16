@@ -166,27 +166,60 @@ function ofuncs(projectId){
 						 <td>
     	                 <img src="<bean:write name="element" property="adDetail"/>"  style="vertical-align:bottom"  width = "150px" height = "150px"></img> 
 						</td>
-						
-						<td>							
-							<bean:write name="element" property="project_no" />
-						</td>
-						<td>							
-							<bean:write name="element" property="project_name" />
-						</td>
-						
-						<td>							
-							<bean:write name="element" property="remark" />
-						</td>
 						<td>
-							<bean:write name="element" property="company_id" />											
+						<logic:equal name="element" property="status" value="0">	
+							<a href="#"  style="color:red"><bean:write name="element" property="project_no" /></a>		
+						</logic:equal>			
+   						<logic:equal name="element" property="status" value="1">	
+   							<a href="#"><bean:write name="element" property="project_no"/></a>		
+   						</logic:equal>						
 						</td>
+						
+						<td>		
+							<logic:equal name="element" property="status" value="0">	
+							<a href="#"  style="color:red"><bean:write name="element" property="project_name" /></a>		
+						</logic:equal>			
+   						<logic:equal name="element" property="status" value="1">	
+   							<a href="#"><bean:write name="element" property="project_name"/>1</a>		
+   						</logic:equal>						
+						</td>
+						
+						<td>		
+							<logic:equal name="element" property="status" value="0">	
+							<a href="#"  style="color:red"><bean:write name="element" property="remark" /></a>		
+						</logic:equal>			
+   						<logic:equal name="element" property="status" value="1">	
+   							<a href="#"><bean:write name="element" property="remark"/></a>		
+   						</logic:equal>						
+						</td>						
+							
+						
 						<td>
-							<bean:write name="element" property="channel_id" />
+						<logic:equal name="element" property="status" value="0">	
+							<a href="#"  style="color:red"><bean:write name="element" property="company_id" /></a>		
+						</logic:equal>			
+   						<logic:equal name="element" property="status" value="1">	
+   							<a href="#"><bean:write name="element" property="company_id"/></a>		
+   						</logic:equal>	
+						</td>
+						
+						<td>
+						<logic:equal name="element" property="status" value="0">	
+							<a href="#"  style="color:red"><bean:write name="element" property="channel_id" /></a>		
+						</logic:equal>			
+   						<logic:equal name="element" property="status" value="1">	
+   							<a href="#"><bean:write name="element" property="channel_id"/></a>		
+   						</logic:equal>	
 						</td>
 					
 						
-						<td>								
-							<bean:write name="element" property="add_time" format="yyyy-MM-dd HH:mm:ss"/>
+						<td>		
+							<logic:equal name="element" property="status" value="0">	
+							<a href="#"  style="color:red"><bean:write name="element" property="add_time" format="yyyy-MM-dd HH:mm:ss" /></a>		
+						</logic:equal>			
+   						<logic:equal name="element" property="status" value="1">	
+   							<a href="#"><bean:write name="element" property="add_time" format="yyyy-MM-dd HH:mm:ss"/></a>		
+   						</logic:equal>							
 						</td>
 												 						
 						<td>
@@ -196,11 +229,11 @@ function ofuncs(projectId){
 						</a> --%>
 						
 						<logic:equal name="element" property="status" value="0">			
-   							<a href="#" onclick="updateStatus(<bean:write name='element' property='id'/>,1)" style="color:#0000FF">¡¾ÏÔÊ¾¡¿</a>		
+   							<a href="#" onclick="updateStatus(<bean:write name='element' property='id'/>,1)" style="color:red">¡¾ÏÔÊ¾¡¿</a>		
    						</logic:equal>			
    							
    						<logic:equal name="element" property="status" value="1">			
-   							<a href="#" style="color:red"  onclick="updateStatus(<bean:write name='element' property='id'/>,0)">¡¾Òþ²Ø¡¿</a>		
+   							<a href="#" style="color:#0000FF"  onclick="updateStatus(<bean:write name='element' property='id'/>,0)">¡¾Òþ²Ø¡¿</a>		
    						</logic:equal>	
    						
 							<a href=# onclick="update('<bean:write name="element" property="id" />')" style="color:#0000FF" > ¡¾ÐÞ¸Ä¡¿</a>
