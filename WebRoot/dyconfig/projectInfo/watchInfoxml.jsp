@@ -26,12 +26,12 @@
 	</head>
 	<script language="javascript">
 function finds(){
-    var st = new Date(frmGo.startTime.value.replace(/-/g,'/'));
+  /*   var st = new Date(frmGo.startTime.value.replace(/-/g,'/'));
 	var et = new Date(frmGo.endTime.value.replace(/-/g,'/'));
 	if(Date.parse(st) - Date.parse(et)>0){
 		alert("开始时间不能大于结束时间!");
 		return false;
-	}
+	} */
 	   frmGo.submit();
 }
 function add(){
@@ -39,10 +39,11 @@ function add(){
 	frmGo.submit();
 }
 function c(){
-    document.all.startTime.value="";
-    document.all.endTime.value="";
-    document.all.userId.options[0].selected=true;
-    document.all.projectId.options[0].selected=true;
+    document.all.project_no.value="";
+    document.all.remark.value="";
+    document.all.remark2.value="";
+  /*   document.all.userId.options[0].selected=true;
+    document.all.projectId.options[0].selected=true; */
 } 
 
 function changeCompany(obj){
@@ -98,24 +99,23 @@ function ofuncs(projectId){
                 </th>
                 </tr>
                  <tr class="title_3">
-                  <%--      <td colspan="13">
-					  创建时间
+                        <td colspan="13">
+				<%-- 	  创建时间
                      <input name="startTime" type="text" class="txt_1"  id="startTime" style="cursor:text"
 								value="<%CommUtils.printReqByAtt(request,response,"fNow_date");%>" onclick="WdatePicker()"
 								size="9" readonly> -
 							<input name="endTime" type="text" class="txt_1" id="endTime" style="cursor:text"
 								value="<%CommUtils.printReqByAtt(request,response,"now_date");%>" onclick="WdatePicker()"
-								size="9" readonly>						
-						客户
-							<%String userId = (String)request.getAttribute("userId"); %>
-							<select id="userId" name="userId" onchange="changeCompany(this.value)">
-								<option value="">全部</option>
-								<logic:iterate id="com" name="company">
-									<bean:define id="company" name="com" property="id" type="java.lang.Integer" />																	
-									<option value='<%=company %>' <%=String.valueOf(company).equals(userId)? "selected" : "" %>><bean:write name="com" property="company_name"/></option>
-								</logic:iterate>
-							</select>
-						项目名		
+								size="9" readonly>		 --%>				
+							客户
+						    <input id="project_no" name="project_no" type="text" class="txt_1" 
+						    value="<%CommUtils.printReqByAtt(request,response,"project_no");%>" size="20">
+						    skin id
+						    <input id="remark" name="remark" type="text" class="txt_1" 
+						    value="<%CommUtils.printReqByAtt(request,response,"remark");%>" size="20"> -
+						    <input id="remark2" name="remark2" type="text" class="txt_1" 
+						    value="<%CommUtils.printReqByAtt(request,response,"remark2");%>" size="20">
+					<%-- 	项目名		
 						<%String projectId = (String)request.getAttribute("projectId"); %>			
 							<select id="projectId" name="projectId" >
 								<option value="">全部</option>
@@ -123,11 +123,11 @@ function ofuncs(projectId){
 									<bean:define id="project" name="pro" property="id" type="java.lang.Integer" />																	
 									<option value='<%=project %>' <%=String.valueOf(project).equals(projectId)? "selected" : "" %>><bean:write name="pro" property="project_name"/></option>
 								</logic:iterate>
-							</select>							
+							</select>	 --%>						
 						<input name="find1" type="button" class="but_1" accesskey="f"
 							tabindex="f" value="搜 索" onclick="javascript:finds()">
 					     <input name="clear" type="button" class="but_1" accesskey="c"
-						    tabindex="c"  value="清除搜索" onclick="c()"> --%>
+						    tabindex="c"  value="清除搜索" onclick="c()"> 
 				</tr> 
 				<%int i=1; %>
                   <tr class="title_2">

@@ -846,11 +846,26 @@ public class ProjectInfoAction extends BaseAction {
 			String companyId = request.getParameter("companyId");
 			String userId = request.getParameter("userId");
 			String projectId = request.getParameter("projectId");
+			
+			String projectNo = request.getParameter("project_no");
+			String remark = request.getParameter("remark");
+			String remark2 = request.getParameter("remark2");
 
 			/* ���û������ֶ� */
 			form.setOrderBy("p.add_time");
 			form.setSort("1");
 			sb.append("1=1");
+			
+			if (projectNo != null && !"".equals(projectNo)) {
+				sb.append(" and p.project_no='" + projectNo + "'");
+			}
+			if (remark != null && !"".equals(remark)) {
+				sb.append(" and p.remark>='" + remark + "'");
+			}
+			if (remark2 != null && !"".equals(remark2)) {
+				sb.append(" and p.remark<='" + remark2 + "'");
+			}
+			
 
 			if (!projectInfoId.equals("0")) {
 				sb.append(" and p.id in(" + projectInfoId + ")");
@@ -885,6 +900,10 @@ public class ProjectInfoAction extends BaseAction {
 			List<DataMap> coms = ServiceBean.getInstance()
 					.getCompanyInfoFacade().getCompanyInfo(ci);
 			request.setAttribute("company", coms);
+			
+			request.setAttribute("project_no", projectNo);
+			request.setAttribute("remark", remark);
+			request.setAttribute("remark2", remark2);
 
 			request.setAttribute("fNow_date", startTime);
 			request.setAttribute("now_date", endTime);
