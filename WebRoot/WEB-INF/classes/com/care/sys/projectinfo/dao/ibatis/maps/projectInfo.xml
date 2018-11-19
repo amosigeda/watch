@@ -12,6 +12,15 @@
 		</dynamic>
 	</select>
 	
+	<select id="getProjectUserInfo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		SELECT * FROM project_userinfo
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
 	<select id="getRoleProjectFuncInfo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
 		SELECT * FROM roleprojectfuncinfo
 		<dynamic prepend="where">

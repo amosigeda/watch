@@ -50,5 +50,7 @@ public interface ProjectInfoFacade {
 
 	public int deletePorjectInfoWatch(ProjectInfo vo)throws SystemException;
 
+	public List<DataMap> getProjectUserInfo(ProjectInfo vo)throws SystemException;
+
 
 }

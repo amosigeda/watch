@@ -88,7 +88,7 @@ $("#province").change();
     <td align="left" width="7%">&nbsp;&nbsp;ÎÄ¼þzip</td>
     <td width="20%">
     					<input type="file" name="channelId" id="channelId" multiple="multiple" class="imagePath"/>
-    					<img alt="" src="" id="image1" class="showImage">
+    					<img alt="" src="" id="image1" class="showImage"> 
     				</td>
   </tr>
      <tr class="tr_11">

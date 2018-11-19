@@ -60,4 +60,6 @@ public interface ProjectInfoDao {
 
 	public int deletePorjectInfoWatch(ProjectInfo vo)throws DataAccessException;
 
+	public List<DataMap> getProjectUserInfo(ProjectInfo vo)throws DataAccessException;
+
 }

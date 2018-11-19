@@ -120,7 +120,8 @@
    	 		<forward name="projectRoleFuncInfo"  path="/dyconfig/projectInfo/projectRoleFuncPop.jsp"></forward>
    	 		<forward name="querySwitchInfo"  path="/dyconfig/projectInfo/projectSwitch.jsp"></forward>
    	 		<!--**************************************************************************************************************************************************************************** -->
-   	 		<forward name="queryWatchInfo" path="/dyconfig/projectInfo/watchInfoxml.jsp"></forward>
+   	 		<forward name="queryWatchInfoAdmin" path="/dyconfig/projectInfo/watchInfoxmlAdmin.jsp"></forward>
+   	 			<forward name="queryWatchInfo" path="/dyconfig/projectInfo/watchInfoxml.jsp"></forward>
    	 		<forward name="addProjectInfoWatch" path="/dyconfig/projectInfo/addProjectInfoWatch.jsp"></forward>
    	 			<forward name="addProjectInfoWatchOther" path="/dyconfig/projectInfo/addProjectInfoxmlOther.jsp"></forward>
    	 				<forward name="updateProjectWatchInfo" path="/dyconfig/projectInfo/updateProjectInfoWatch.jsp"></forward>

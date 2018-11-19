@@ -149,6 +149,11 @@ public class SqlMapProjectInfoDao extends SqlMapClientDaoSupport implements Proj
 		logger.debug("deletePorjectInfoWatch(ProjectInfo vo)");
 		return getSqlMapClientTemplate().update("deletePorjectInfoWatch", vo);
 	}
+	public List<DataMap> getProjectUserInfo(ProjectInfo vo)
+			throws DataAccessException {
+		logger.debug("getProjectUserInfo(ProjectInfo vo)");
+		return getSqlMapClientTemplate().queryForList("getProjectUserInfo", vo);
+	}
 
 	
 

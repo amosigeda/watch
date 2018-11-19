@@ -211,4 +211,9 @@ public class ProjectInfoFacadeImpl implements ProjectInfoFacade{
 		return projectInfoDao.deletePorjectInfoWatch(vo);
 		}
 
+	public List<DataMap> getProjectUserInfo(ProjectInfo vo)
+			throws SystemException {
+		return projectInfoDao.getProjectUserInfo(vo);
+	}
+
 }

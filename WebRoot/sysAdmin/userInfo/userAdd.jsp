@@ -161,11 +161,14 @@
     <td></td>
   </tr> -->
   <tr class="tr_11" id="tr_role">
-    <td align="left" width="12%">&nbsp;&nbsp;角色</td>   
-    <!-- <td align="left" width="20%" colspan="2" id="td_role"> -->
-  <td align="left" width="12%">&nbsp;&nbsp;客户</td>   
-		<%-- <%=request.getAttribute("roleList") %><font color="red">*</font> --%>
-    </td>
+  
+  <td align="left" width="12%"></td>   
+ <td>
+
+<%-- <%=request.getAttribute("userList") %> --%>
+
+ </td>
+     <td><font color="red">（字数不能超过30字）</font></td>
     <td></td>
   </tr>
 <!--   <tr class="tr_11" id="tr_role">

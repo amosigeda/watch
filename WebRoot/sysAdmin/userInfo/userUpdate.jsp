@@ -89,7 +89,7 @@ window.location="doUserInfo.do?method=initAdverPower&id="+id+"&userCode="+userCo
 <table width="100%" border="0"cellpadding="0" cellspacing="1"  class="tbl_11">
   <tr>
      <th colspan="4" nowrap="nowrap" align="left">
-                           配置<%-- -<font color="#FFFF00"><%=userInfo.getAt("userCode") %></font> --%>
+                           配置<font color="#FFFF00"><%=userInfo.getAt("userCode") %></font>
      </th>
    </tr>
    <!-- <tr class="tr_11">
@@ -125,14 +125,24 @@ window.location="doUserInfo.do?method=initAdverPower&id="+id+"&userCode="+userCo
 		  <%} %>
     <td></td>
   </tr> --%>
- <%--  <tr class="tr_11" id="tr_role">
-    <td align="left" width="12%">&nbsp;&nbsp;客户</td>   
-    <td align="left" width="20%" colspan="2">项目</td>
-    <td></td>
+  <tr class="tr_11"">
+    <td align="left" width="12%">&nbsp;&nbsp;可查看表盘用户</td>   
+      <td align="left" width="20%" colspan="2"> <%=request.getAttribute("userList") %> 
+      </td>
+        <td></td>
   </tr>
-  <input type="hidden" id="checkCompanyId" value="<%=userInfo.getAt("company_id") %>" />
+  
+ <!--  <tr class="tr_11">
+    <td align="left" width="12%">&nbsp;&nbsp;登录账号</td>
+    <td align="left" width="20%" colspan="2">
+      <input name="userCode" id="userCode" type="text" class="txt_1"maxlength="20"/><font color="red">*（字母开头，5~15位字母、数字或下滑线组合）</font>
+    </td>
+    <td></td>
+    </tr> -->
+
+<%--   <input type="hidden" id="checkCompanyId" value="<%=userInfo.getAt("company_id") %>" />
   <input type="hidden" id="checkProjectId" value="<%=userInfo.getAt("project_id") %>" />
-  <%=request.getAttribute("companyList") %> --%>
+  <%=request.getAttribute("companyList") %> --%> <%-- --%>
   <!-- 
   <tr class="tr_11">
     <td width="7%" align="right">渠道查看权限&nbsp;</td>

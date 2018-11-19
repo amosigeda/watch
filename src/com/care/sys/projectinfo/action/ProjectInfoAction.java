@@ -37,6 +37,7 @@ import com.care.sys.companyinfo.domain.CompanyInfo;
 import com.care.sys.projectinfo.domain.ProjectInfo;
 import com.care.sys.projectinfo.domain.logic.ProjectInfoFacade;
 import com.care.sys.projectinfo.form.ProjectInfoForm;
+import com.care.sys.userinfo.domain.UserInfo;
 import com.godoing.rose.http.common.HttpTools;
 import com.godoing.rose.http.common.PagePys;
 import com.godoing.rose.http.common.Result;
@@ -827,15 +828,16 @@ public class ProjectInfoAction extends BaseAction {
 		ProjectInfoFacade info = ServiceBean.getInstance()
 				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
 		ProjectInfo pro = new ProjectInfo();
+		LoginUser loginUser = (LoginUser) request.getSession()
+				.getAttribute(Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+
+		String userName = loginUser.getUserName();
 
 		try {
-			LoginUser loginUser = (LoginUser) request.getSession()
-					.getAttribute(Config.SystemConfig.LOGINUSER);
-			if (loginUser == null) {
-				return null;
-			}
-
-			String userName = loginUser.getUserName();
+		
 
 			String companyInfoId = loginUser.getCompanyId();
 			String projectInfoId = loginUser.getProjectId();
@@ -849,22 +851,29 @@ public class ProjectInfoAction extends BaseAction {
 			
 			String projectNo = request.getParameter("project_no");
 			String remark = request.getParameter("remark");
-			String remark2 = request.getParameter("remark2");
+		
 
 			/* ���û������ֶ� */
 			form.setOrderBy("p.add_time");
 			form.setSort("1");
-			sb.append("1=1");
+			//sb.append("1=1");
+			
 			
 			if (projectNo != null && !"".equals(projectNo)) {
-				sb.append(" and p.project_no='" + projectNo + "'");
+				if(sb.length()<=0){
+					sb.append(" p.project_no='" + projectNo + "'");
+				}else{
+					sb.append(" and p.project_no='" + projectNo + "'");
+				}
 			}
 			if (remark != null && !"".equals(remark)) {
-				sb.append(" and p.remark>='" + remark + "'");
+				if(sb.length()<=0){
+					sb.append("p.remark='" + remark + "'");
+				}else{
+					sb.append(" and p.remark='" + remark + "'");
+				}
 			}
-			if (remark2 != null && !"".equals(remark2)) {
-				sb.append(" and p.remark<='" + remark2 + "'");
-			}
+		
 			
 
 			if (!projectInfoId.equals("0")) {
@@ -903,7 +912,6 @@ public class ProjectInfoAction extends BaseAction {
 			
 			request.setAttribute("project_no", projectNo);
 			request.setAttribute("remark", remark);
-			request.setAttribute("remark2", remark2);
 
 			request.setAttribute("fNow_date", startTime);
 			request.setAttribute("now_date", endTime);
@@ -911,13 +919,39 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("userId", userId);
 			request.setAttribute("projectId", projectId);
 			if (!"admin".equals(userName)) {
-				if (sb.toString().length() > 0) {
+				UserInfo voa = new UserInfo();
+				voa.setCondition("userCode ='"+userName+"'");
+				List<DataMap> listt = ServiceBean.getInstance().getUserInfoFacade()
+						.getUserInfo(voa); 
+				if(listt.size()>0){
+					String companys=listt.get(0).getAt("company_id")+"";
+					if(!"0".equals(companys)){
+					 String[] strArray =  companys.split(",");  
+					for(int i=0;i<strArray.length;i++){
+						if(strArray[i] != projectNo){
+							if(strArray[i] != null && !"".equals(strArray[i])){
+								if(sb.length()>0){
+									sb.append(" or ");
+								}
+								sb.append("   p.project_no='" + strArray[i] + "'");
+							}
+						}
+					}
+				}else{
+					if(sb.length()>0){
+						sb.append(" or ");
+					}
+					sb.append("   p.project_no='" + userName + "'");
+				}
+				}
+				
+				/*if (sb.toString().length() > 0) {
 					sb.append(" and p.heart_s ='" + userName
 							+ "' AND p.project_no='" + userName + "'");
 				} else {
 					sb.append("p.heart_s ='" + userName
 							+ "' AND p.project_no='" + userName + "'");
-				}
+				}*/
 			}
 			vo.setCondition(sb.toString());
 
@@ -943,6 +977,9 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("PagePys", pys);
 		}
 		CommUtils.getIntervalTime(start, new Date(), href);
+		if("admin".equals(userName)){
+			return mapping.findForward("queryWatchInfoAdmin");
+		}
 		return mapping.findForward("queryWatchInfo");
 	}
 

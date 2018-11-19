@@ -119,9 +119,14 @@ public class UserInfoAction extends BaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		
-	/*	String groupCode = request.getParameter("groupCode");
+		/*  String groupCode = request.getParameter("groupCode");
+	  if("".equals(groupCode)||groupCode==null){
+		  groupCode="2";
+	  }
+	    //String groupCode = request.getParameter("groupCode");
+	    System.out.println("groupCode="+groupCode);
 		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(Config.SystemConfig.LOGINUSER);
-		String roleName = loginUser.getGroupCode();
+		//String roleName = loginUser.getGroupCode();
 	
 		RoleInfo roleinfo = new RoleInfo();
 		if("2".equals(roleName)){
@@ -129,13 +134,15 @@ public class UserInfoAction extends BaseAction {
 		}else if("1".equals(roleName)){
 			roleinfo.setCondition("roleDesc !='admin'");
 		}
-	
-		List<DataMap> rlist = ServiceBean.getInstance().getRoleInfoFacade().getRoleInfo(roleinfo);
 		
-		String s = this.getCompanyAndProject();		
-		request.setAttribute("companyList", s);
-		request.setAttribute("roleList", CommUtils.getPrintSelect(rlist,"groupCode", "roleName", "id", groupCode, 1));
-		*/return mapping.findForward("insertUserInfo");
+		roleinfo.setCondition("roleDesc !='admin'");
+	*/
+	//	List<DataMap> rlist = ServiceBean.getInstance().getRoleInfoFacade().getRoleInfo(roleinfo);
+		
+		//String s = this.getCompanyAndProjectCopy();		
+		//request.setAttribute("userList", s);
+		//request.setAttribute("roleList", CommUtils.getPrintSelect(rlist,"groupCode", "roleName", "id", groupCode, 1));
+		return mapping.findForward("insertUserInfo");
 	}
 
 	public void validateInsert(UserInfoForm form) throws SystemException {
@@ -161,6 +168,7 @@ public class UserInfoAction extends BaseAction {
 			UserInfo vo = new UserInfo();
 			BeanUtils.copyProperties(vo, form); 
 			String[] companyIds = request.getParameterValues("companyId");			
+			
 			
 			if(companyIds != null){
 				String companyId = "";
@@ -249,6 +257,8 @@ public class UserInfoAction extends BaseAction {
 			result.setResultType("success");
 			return mapping.findForward("result");
 		}
+		String s = this.getCompanyAndProjectCopy(code,list.get(0).getAt("company_id")+"");		
+		request.setAttribute("userList", s);
 		request.setAttribute("userInfo", list.get(0)); 
 
 		/*String groupCode = request.getParameter("groupCode");
@@ -294,7 +304,21 @@ public class UserInfoAction extends BaseAction {
 			vo.setCondition("id ='"+form.getId()+"'");
 			BeanUtils.copyProperties(vo, form); 
 			
-			String[] companyIds = request.getParameterValues("companyId");			
+			String[] companyIds = request.getParameterValues("companyId");	
+			String[] userCodes = request.getParameterValues("userCode");	
+			
+			String userCode = "";
+			if(userCodes != null){
+				int l_com = userCodes.length;
+				for(int i=0; i<l_com; i++){
+					userCode += userCodes[i];
+					if(i != l_com-1){
+						userCode += ",";
+					}
+				}
+				//vo.setCompanyId(companyId);
+			}
+			System.out.println("userCode="+userCode);
 			
 			if(companyIds != null){
 				String companyId = "";
@@ -325,6 +349,7 @@ public class UserInfoAction extends BaseAction {
 				vo.setProjectId("0");
 			}
 			roleInfo.setCondition("id ="+form.getGroupCode());
+			
 			List<DataMap> list = ServiceBean.getInstance().getRoleInfoFacade().getRoleInfo(roleInfo);
 			if(!list.isEmpty()){
 				roleDesc = list.get(0).getAt("roleDesc").toString();
@@ -344,6 +369,7 @@ public class UserInfoAction extends BaseAction {
 			vo.setPassWrd1(vo.getPassWrd());
 			vo.setPassWrd(MD5.MD5(vo.getPassWrd()));
 			vo.setCode(roleDesc);
+			vo.setCompanyId(userCode);
 			ServiceBean.getInstance().getUserInfoFacade()
 					.updateUserInfo(vo);
 			result.setBackPage(HttpTools.httpServletPath(request,
@@ -533,6 +559,41 @@ public class UserInfoAction extends BaseAction {
 					}
 				}
 			}
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return sb.toString();
+	}
+	
+	private String getCompanyAndProjectCopy(String code,String companyId){
+		StringBuffer sb = new StringBuffer();
+		try {
+			System.out.println(code);
+			System.out.println(companyId);
+			UserInfoFacade info = ServiceBean.getInstance().getUserInfoFacade();
+			UserInfo vo=new UserInfo();
+				List<DataMap> companyList = info.getUserInfo(vo);
+				
+					if(companyList.size()>0){
+						for(int i=0;i<companyList.size();i++){
+							String userCode = companyList.get(i).getAt("userCode")+"";
+							if(!"admin".equals(userCode)){
+								if(!code.equals(userCode)){
+									if(companyId.contains(userCode)){
+										sb.append("<input type=\"checkbox\"   checked=\"checked\"  name=\"userCode\" value=\""+ userCode + "\" />" + userCode );
+									}else{
+										sb.append("<input type=\"checkbox\"    name=\"userCode\" value=\""+ userCode + "\" />" + userCode );
+									}
+								}
+							//
+							}
+						}
+					}
+					
+				System.out.println(sb.toString());
+			
 		} catch (SystemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -94,8 +94,8 @@ function ofuncs(projectId){
                <tr>
                 <th colspan="12" nowrap="nowrap" align="left">
                                                表盘信息
-                    <!--  <input type="button" class="but_1" accesskey="a"
-							tabindex="a" value="添 加" onclick="add()"> -->
+                     <input type="button" class="but_1" accesskey="a"
+							tabindex="a" value="添 加" onclick="add()">
                 </th>
                 </tr>
                  <tr class="title_3">
@@ -152,10 +152,10 @@ function ofuncs(projectId){
 					<td width="10%">
 						创建时间
 					</td>
-				<!-- 
+				
 					<td width="10%">
 						操作
-					</td> -->
+					</td>
 				</tr>
  
 				<logic:iterate id="element" name="pageList">
@@ -220,7 +220,12 @@ function ofuncs(projectId){
    						</logic:equal>							
 						</td>
 												 						
-					<%-- 	<td>
+						<td>
+					<%-- 	<a href=# onclick="updateStatus('<bean:write name="element" property="id" />')" style="color:#0000FF" >
+						<logic:equal name="element" property="status" value="0">【隐藏】</logic:equal>
+						<logic:equal name="element" property="status" value="1">【显示】</logic:equal>
+						</a> --%>
+						
 						<logic:equal name="element" property="status" value="0">			
    							<a href="#" onclick="updateStatus(<bean:write name='element' property='id'/>,1)" style="color:red">【显示】</a>		
    						</logic:equal>			
@@ -228,10 +233,15 @@ function ofuncs(projectId){
    						<logic:equal name="element" property="status" value="1">			
    							<a href="#" style="color:#0000FF"  onclick="updateStatus(<bean:write name='element' property='id'/>,0)">【隐藏】</a>		
    						</logic:equal>	
+   						
 							<a href=# onclick="update('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【修改】</a>
 							<a href=# onclick="deletee('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【删除】</a>
+							<%-- <a href="http://appserver.paby.com:8080/wtpet/images/app/msg/<bean:write name="element" property="photo"/>" title="图片"><img src="http://appserver.paby.com:8080/wtpet/images/app/msg/<bean:write name="element" property="photo"/>" alt="反馈图片" 
+							 style="width:400px;height:200px;"/></a> --%>
 							 <a href="<bean:write name="element" property="adTitle"/>" title="zip" style="color:#0000FF">【下载zip】</a>
-						</td> --%>
+							<%-- <a href="#"
+								onclick="ofuncs('<bean:write name="element" property="id" />')"  class="tbl_A" >【权限设置】</a> --%>
+						</td>
 					</tr>
 				</logic:iterate>
 
