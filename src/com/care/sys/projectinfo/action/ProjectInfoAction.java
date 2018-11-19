@@ -857,6 +857,43 @@ public class ProjectInfoAction extends BaseAction {
 			form.setOrderBy("p.add_time");
 			form.setSort("1");
 			//sb.append("1=1");
+			if (!"admin".equals(userName)) {
+				UserInfo voa = new UserInfo();
+				voa.setCondition("userCode ='"+userName+"'");
+				List<DataMap> listt = ServiceBean.getInstance().getUserInfoFacade()
+						.getUserInfo(voa); 
+				if(listt.size()>0){
+					String companys=listt.get(0).getAt("company_id")+"";
+					if(!"0".equals(companys)){
+					 String[] strArray =  companys.split(",");  
+					 if(strArray.length>0){
+							sb.append("(");
+					for(int i=0;i<strArray.length;i++){
+						if(strArray[i] != projectNo){
+							if(strArray[i] != null && !"".equals(strArray[i])){
+								if(sb.length()>1){
+									sb.append(" or ");
+								}
+								sb.append("   p.project_no='" + strArray[i] + "'");
+							}
+						}
+					}
+					sb.append(" ) ");
+				}else{
+					if(sb.length()>0){
+						sb.append(" or ");
+					}
+					sb.append("   p.project_no='" + userName + "'");
+				}
+				}else{
+					if(sb.length()>0){
+						sb.append(" and ");
+					}
+					sb.append("   p.project_no='" + userName + "'");
+				}
+				}
+			
+			}
 			
 			
 			if (projectNo != null && !"".equals(projectNo)) {
@@ -873,6 +910,9 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append(" and p.remark='" + remark + "'");
 				}
 			}
+			
+			
+			
 		
 			
 
@@ -918,41 +958,16 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("companyId", companyId);
 			request.setAttribute("userId", userId);
 			request.setAttribute("projectId", projectId);
+			
+			
 			if (!"admin".equals(userName)) {
-				UserInfo voa = new UserInfo();
-				voa.setCondition("userCode ='"+userName+"'");
-				List<DataMap> listt = ServiceBean.getInstance().getUserInfoFacade()
-						.getUserInfo(voa); 
-				if(listt.size()>0){
-					String companys=listt.get(0).getAt("company_id")+"";
-					if(!"0".equals(companys)){
-					 String[] strArray =  companys.split(",");  
-					for(int i=0;i<strArray.length;i++){
-						if(strArray[i] != projectNo){
-							if(strArray[i] != null && !"".equals(strArray[i])){
-								if(sb.length()>0){
-									sb.append(" or ");
-								}
-								sb.append("   p.project_no='" + strArray[i] + "'");
-							}
-						}
-					}
+				if(sb.length()<=0){
+					sb.append("p.status='" + 1 + "'");
 				}else{
-					if(sb.length()>0){
-						sb.append(" or ");
-					}
-					sb.append("   p.project_no='" + userName + "'");
+					sb.append(" and p.status='" + 1 + "'");
 				}
-				}
-				
-				/*if (sb.toString().length() > 0) {
-					sb.append(" and p.heart_s ='" + userName
-							+ "' AND p.project_no='" + userName + "'");
-				} else {
-					sb.append("p.heart_s ='" + userName
-							+ "' AND p.project_no='" + userName + "'");
-				}*/
 			}
+			
 			vo.setCondition(sb.toString());
 
 			BeanUtils.copyProperties(vo, form);

@@ -178,7 +178,7 @@ function ofuncs(projectId){
 							<a href="#"  style="color:red"><bean:write name="element" property="project_name" /></a>		
 						</logic:equal>			
    						<logic:equal name="element" property="status" value="1">	
-   							<a href="#"><bean:write name="element" property="project_name"/>1</a>		
+   							<a href="#"><bean:write name="element" property="project_name"/></a>		
    						</logic:equal>						
 						</td>
 						

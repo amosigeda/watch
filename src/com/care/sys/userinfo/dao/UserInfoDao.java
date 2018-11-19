@@ -35,4 +35,6 @@ public interface UserInfoDao{
 	public int deleteUserInfo(UserInfo vo)throws DataAccessException;
 	
 	public List<DataMap> getUsersInfoClient(UserInfoForm uf) throws DataAccessException;
+
+	public List<DataMap> getUserInfoWatchXml(UserInfo vo)throws DataAccessException;
 }

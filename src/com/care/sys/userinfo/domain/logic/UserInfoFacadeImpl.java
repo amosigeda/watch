@@ -80,4 +80,9 @@ public class UserInfoFacadeImpl
 		return userInfoDao.getUsersInfoClient(uf);
 	}
 
+	public List<DataMap> getUserInfoWatchXml(UserInfo vo)
+			throws SystemException {
+		  return userInfoDao.getUserInfoWatchXml(vo);
+	}
+
 }

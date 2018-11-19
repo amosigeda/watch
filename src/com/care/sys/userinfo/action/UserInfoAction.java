@@ -308,12 +308,16 @@ public class UserInfoAction extends BaseAction {
 			String[] userCodes = request.getParameterValues("userCode");	
 			
 			String userCode = "";
+			System.out.println(userCode);
 			if(userCodes != null){
 				int l_com = userCodes.length;
 				for(int i=0; i<l_com; i++){
+					if(i!=0){
 					userCode += userCodes[i];
+					System.out.println(userCode);
 					if(i != l_com-1){
 						userCode += ",";
+					}
 					}
 				}
 				//vo.setCompanyId(companyId);
@@ -574,21 +578,21 @@ public class UserInfoAction extends BaseAction {
 			System.out.println(companyId);
 			UserInfoFacade info = ServiceBean.getInstance().getUserInfoFacade();
 			UserInfo vo=new UserInfo();
-				List<DataMap> companyList = info.getUserInfo(vo);
+				List<DataMap> companyList = info.getUserInfoWatchXml(vo);
 				
 					if(companyList.size()>0){
 						for(int i=0;i<companyList.size();i++){
-							String userCode = companyList.get(i).getAt("userCode")+"";
-							if(!"admin".equals(userCode)){
-								if(!code.equals(userCode)){
+							String userCode = companyList.get(i).getAt("project_no")+"";
+							//if(!"admin".equals(userCode)){
+								//if(!code.equals(userCode)){
 									if(companyId.contains(userCode)){
-										sb.append("<input type=\"checkbox\"   checked=\"checked\"  name=\"userCode\" value=\""+ userCode + "\" />" + userCode );
+										sb.append("<input type=\"checkbox\"   checked=\"checked\"  name=\"userCode\" value=\""+ userCode + "\" />" + userCode +"<br/>");
 									}else{
-										sb.append("<input type=\"checkbox\"    name=\"userCode\" value=\""+ userCode + "\" />" + userCode );
+										sb.append("<input type=\"checkbox\"    name=\"userCode\" value=\""+ userCode + "\" />" + userCode +"<br/>");
 									}
-								}
+								//}
 							//
-							}
+							//}
 						}
 					}
 					

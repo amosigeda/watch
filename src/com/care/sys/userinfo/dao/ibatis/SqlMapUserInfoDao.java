@@ -74,4 +74,10 @@ Log logger = LogFactory.getLog(SqlMapUserInfoDao.class);
 		logger.debug("getUsersInfoClient(UserInfoForm uf)");
 		return getSqlMapClientTemplate().queryForList("getUsersInfoClient", uf);
 	}
+
+	public List<DataMap> getUserInfoWatchXml(UserInfo vo)
+			throws DataAccessException {
+		logger.debug("getUserInfoWatchXml(DataParamMap dmap)");
+		return getSqlMapClientTemplate().queryForList("getUserInfoWatchXml", vo);
+	}
 }

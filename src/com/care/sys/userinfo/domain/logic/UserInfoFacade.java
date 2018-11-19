@@ -35,4 +35,6 @@ public interface UserInfoFacade {
 	public int deleteUserInfo(UserInfo vo) throws SystemException;
 
     public boolean checkUser(UserInfo vo) throws SystemException;
+
+	public List<DataMap> getUserInfoWatchXml(UserInfo vo)throws SystemException;
 }
