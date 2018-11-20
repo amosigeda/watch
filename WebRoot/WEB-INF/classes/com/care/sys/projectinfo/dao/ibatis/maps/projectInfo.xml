@@ -304,6 +304,7 @@
 				$condition$
 			</isNotEmpty>
 		</dynamic>
+		order by id desc
 	</select>
 	
 	<update id="updatePorjectWatchInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">

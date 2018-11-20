@@ -1221,6 +1221,7 @@ public class ProjectInfoAction extends BaseAction {
 			String project_name = request.getParameter("project_name");
 			// String channel_id = request.getParameter("channel_id");
 			String company_id = request.getParameter("company_id");
+		   fileName = request.getParameter("remark");
 
 			// ProjectInfoForm form = (ProjectInfoForm) actionForm;
 			

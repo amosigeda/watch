@@ -53,6 +53,7 @@ function onUpdate(){
 <span class="title_1"></span>
 <form name="frmGo" method="post" action="doProjectInfo.do?method=updateProjectWatchInfo" encType="multipart/form-data" onsubmit="return onUpdate()">
 <input name="id" type="hidden" value="<%=projectInfo.getAt("id")%>" >
+<input name="remark" type="hidden" value="<%=projectInfo.getAt("remark")%>" >
 <table width="100%" border="0"cellpadding="0" cellspacing="1"  class="tbl_11">
   <tr>
      <th colspan="3" nowrap="nowrap" align="left">
