@@ -83,7 +83,14 @@ $("#province").change();
    
     </td>
   </tr>
- 
+   <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;ͼƬpng</td>
+    <td width="20%">
+    					<input type="file" name="adDetail" id="adDetail" multiple="multiple" class="imagePath"/>
+    					<img alt="" src="" id="image2" class="showImage">
+    				</td>
+  </tr>
+  
    <tr class="tr_11">
     <td align="left" width="7%">&nbsp;&nbsp;�ļ�zip</td>
     <td width="20%">
@@ -91,13 +98,7 @@ $("#province").change();
     					<img alt="" src="" id="image1" class="showImage"> 
     				</td>
   </tr>
-     <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;ͼƬpng</td>
-    <td width="20%">
-    					<input type="file" name="adDetail" id="adDetail" multiple="multiple" class="imagePath"/>
-    					<img alt="" src="" id="image2" class="showImage">
-    				</td>
-  </tr>
+   
   
  <!-- <tr>
     				<td width="10%" align="right">&nbsp;&nbsp;&nbsp;</td>

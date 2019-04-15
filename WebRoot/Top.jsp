@@ -103,7 +103,7 @@ function exit(){
           </span>     
   </div>
 	<div class="manage_title">
-	     广告管理系统
+	     话费管理系统
     </div>
 <ul class="view_menu">
 		   <%
