@@ -14,6 +14,7 @@ public interface ProjectInfoFacade {
 	
 	public DataList getProjectInfoListByVo(ProjectInfo vo) throws SystemException;
 	
+	
 	public int getProjectInfoListCountByVo(ProjectInfo vo) throws SystemException;
 	
 	public int getProjectInfoMaxId(ProjectInfo vo) throws SystemException;
@@ -51,6 +52,10 @@ public interface ProjectInfoFacade {
 	public int deletePorjectInfoWatch(ProjectInfo vo)throws SystemException;
 
 	public List<DataMap> getProjectUserInfo(ProjectInfo vo)throws SystemException;
+
+	public DataList getAddBlanceErrorInfoListByVo(ProjectInfo vo);
+
+	public DataList getAddBlanceSuccessInfoListByVo(ProjectInfo vo);
 
 
 }

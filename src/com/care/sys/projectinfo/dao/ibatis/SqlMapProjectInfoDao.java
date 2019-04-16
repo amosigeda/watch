@@ -154,6 +154,22 @@ public class SqlMapProjectInfoDao extends SqlMapClientDaoSupport implements Proj
 		logger.debug("getProjectUserInfo(ProjectInfo vo)");
 		return getSqlMapClientTemplate().queryForList("getProjectUserInfo", vo);
 	}
+	public List<DataMap> getAddErrorInfoListByVo(ProjectInfo vo) {
+		logger.debug("getAddErrorInfoListByVo(ProjectInfo vo)");
+		return getSqlMapClientTemplate().queryForList("getAddErrorInfoListByVo", vo);
+	}
+	public int getAddErrorInfoListCountByVo(ProjectInfo vo) {
+		logger.debug("getAddErrorInfoListCountByVo(ProjectInfo vo)");
+		return (Integer)getSqlMapClientTemplate().queryForObject("getAddErrorInfoListCountByVo", vo);
+	}
+	public List<DataMap> getAddSuccessInfoListByVo(ProjectInfo vo) {
+		logger.debug("getAddSuccessInfoListByVo(ProjectInfo vo)");
+		return getSqlMapClientTemplate().queryForList("getAddSuccessInfoListByVo", vo);
+	}
+	public int getAddSuccessInfoListCountByVo(ProjectInfo vo) {
+		logger.debug("getAddSuccessInfoListCountByVo(ProjectInfo vo)");
+		return (Integer)getSqlMapClientTemplate().queryForObject("getAddSuccessInfoListCountByVo", vo);
+	}
 
 	
 

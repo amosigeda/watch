@@ -35,7 +35,7 @@ function finds(){
 	   frmGo.submit();
 }
 function add(){
-	frmGo.action = "doProjectInfo.do?method=initInsertBu";
+	frmGo.action = "doProjectInfo.do?method=initInsertxml";
 	frmGo.submit();
 }
 function c(){
@@ -69,7 +69,7 @@ function changeCompany(obj){
 	});
 }
 function update(id){
-	frmGo.action="doProjectInfo.do?method=initUpdateBu&id="+id;
+	frmGo.action="doProjectInfo.do?method=initUpdatexml&id="+id;
 	frmGo.submit();
 }
 function deletee(id){
@@ -88,7 +88,7 @@ function ofuncs(projectId){
 			<table width="100%" class="table" border=0 cellpadding="0" cellspacing="1">
                <tr>
                 <th colspan="12" nowrap="nowrap" align="left">
-                                               商户信息
+                                               xml信息
                      <input type="button" class="but_1" accesskey="a"
 							tabindex="a" value="添 加" onclick="add()">
                 </th>
@@ -129,23 +129,35 @@ function ofuncs(projectId){
                   <tr class="title_2">
                  	 
 					<td width="8%">
-						商户名
+						客户名
 					</td>
-						<td width="6%">
-						昵称
+					<td width="8%">
+						广告链接
 					</td>
-							
 					<td width="6%">
-						余额
-					</td>
-				
+						图片
+					</td>					
 					<td width="6%">
-						备注
+						语言
 					</td>
-					 <td width="8%">
-						是否有效
-					</td> 
-				
+					<td width="6%">
+						标题
+					</td>
+					<td width="6%">
+						内容
+					</td>
+					<!-- <td width="6%">
+						客户
+					</td> -->
+				<!-- 	<td width="6%">
+						设备数量
+					</td> -->
+					<!-- <td width="10%">
+						渠道名称
+					</td> -->					
+					<!-- <td width="6%">
+						状态
+					</td> -->
 					<td width="10%">
 						创建时间
 					</td>
@@ -162,23 +174,27 @@ function ofuncs(projectId){
 						onmouseout='this.className="tr_5"'>
 						
 						<td>							
-							<bean:write name="element" property="username" />
+							<bean:write name="element" property="project_no" />
+						</td>
+						<td>							
+							<bean:write name="element" property="project_name" />
+						</td>
+						
+						<td>
+						 <%-- <logic:empty name="element" property="channel_id">无</logic:empty>
+						<logic:notEmpty name="element" property="channel_id">
+								<a href="<bean:write name="element" property="channel_id" />" style="color:#0000FF"><bean:write name="element" property="channel_id" /></a>
+							</logic:notEmpty>	 --%> 
+							<bean:write name="element" property="channel_id" />
 						</td>
 						<td>
-							<bean:write name="element" property="nickname" />											
+							<bean:write name="element" property="company_id" />											
 						</td>
 						<td>
-							<bean:write name="element" property="balance" />											
+							<bean:write name="element" property="adTitle" />											
 						</td>
 						<td>
-							<bean:write name="element" property="avatar" />											
-						</td>
-							<td>
-							<logic:equal name="element" property="use_status" value="0"><font style="color:red;">暂停</font></logic:equal>							
-							<logic:equal name="element" property="use_status" value="1"><font style="color:green;">正常</font></logic:equal>
-						</td>
-						<td>								
-							<bean:write name="element" property="createtime" format="yyyy-MM-dd HH:mm:ss"/>
+							<bean:write name="element" property="adDetail" />											
 						</td>
 						<%-- <td>
 							<bean:write name="element" property="heart_s" />											
@@ -199,7 +215,9 @@ function ofuncs(projectId){
 							<logic:equal name="element" property="status" value="0"><font style="color:red;">暂停</font></logic:equal>							
 							<logic:equal name="element" property="status" value="1"><font style="color:green;">正常</font></logic:equal>
 						</td> --%>
-						
+						<td>								
+							<bean:write name="element" property="add_time" format="yyyy-MM-dd HH:mm:ss"/>
+						</td>
 						<%-- <td>	
 							<logic:empty name="element" property="remark">无</logic:empty>
 							<logic:notEmpty name="element" property="remark">			
@@ -208,7 +226,7 @@ function ofuncs(projectId){
 						</td>	 --%>									 						
 						<td>
 							<a href=# onclick="update('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【修改】</a>
-							<a href=# onclick="deletee('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【充值】</a> 
+							<a href=# onclick="deletee('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【删除】</a>
 							<%-- <a href="#"
 								onclick="ofuncs('<bean:write name="element" property="id" />')"  class="tbl_A" >【权限设置】</a> --%>
 						</td>

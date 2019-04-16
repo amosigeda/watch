@@ -4,7 +4,7 @@
 <sqlMap namespace="projectInfo">
 
 	<select id="getProjectInfo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		SELECT * FROM projectinfo
+		SELECT * FROM business_user_info
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="condition">
 				$condition$
@@ -91,11 +91,8 @@
 	</select>
 	
 	<select id="getProjectInfoListByVo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		SELECT * FROM projectinfo p LEFT JOIN 
-		(SELECT COUNT(id) count_user,belong_project FROM appuserinfo GROUP BY belong_project) 
-		a ON p.id=a.belong_project LEFT JOIN 
-		(SELECT COUNT(id) count_device,belong_project FROM device_active_info GROUP BY belong_project) 
-		b ON p.id=b.belong_project LEFT JOIN companyinfo c ON p.company_id=c.id
+		SELECT * FROM business_user_info
+		
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="condition">
 				$condition$
@@ -117,7 +114,7 @@
 	</select>
 	
 	<select id="getProjectInfoListCountByVo" resultClass="java.lang.Integer" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		SELECT COUNT(*) FROM projectinfo p LEFT JOIN companyinfo c ON p.company_id=c.id
+		SELECT COUNT(*) FROM business_user_info 
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="condition">
 				$condition$
@@ -142,8 +139,8 @@
 		SELECT COUNT(id) FROM projectinfo
 	</select>	
 	<insert id="insertProjectInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		INSERT INTO projectinfo (project_no,project_name,channel_id,company_id,add_time,remark,status,map_typec,map_typeo,project_type,data_sourceo,data_sourcec,socket_way,heart_s,adTitle,adDetail) VALUES 
-		(#projectNo#,#projectName#,#channelId#,#companyId#,#addTime#,#remark#,#status#,#mapTypeC#,#mapTypeO#,#projectType#,#dataSourceO#,#dataSourceC#,#socketWay#,#heartS#,#adTitle#,#adDetail#)
+		INSERT INTO business_user_info (username,createtime,avatar,nickname,use_status,balance) VALUES 
+		(#projectNo#,#createtime#,#channelId#,#companyId#,#projectName#,#dataSourceC#)
 	</insert>
 	
 	
@@ -152,22 +149,22 @@
 	</insert>
 	
 	<update id="updatePorjectInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		UPDATE projectinfo
+		UPDATE business_user_info
 		<dynamic prepend="set">
 			<isNotEmpty prepend="," property="projectName">
-				project_name=#projectName#
+				username=#projectName#
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="projectNo">
-				project_no=#projectNo#
+				nickname=#projectNo#
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="channelId">
-				channel_id=#channelId#
+				avatar=#channelId#
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="companyId">
 				company_id=#companyId#
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="status">
-				status=#status#
+				use_status=#status#
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="need">
 				need=#need#
@@ -262,7 +259,7 @@
 	
 	
 	<select id="getWatchInfoListByVo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		SELECT * FROM watchxml p
+		SELECT * FROM buy_card_info 
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="condition">
 				$condition$
@@ -284,7 +281,7 @@
 	</select>
 	
 	<select id="getWatchInfoListCountByVo" resultClass="java.lang.Integer" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		SELECT COUNT(*) FROM watchxml p
+		SELECT COUNT(*) FROM buy_card_info 
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="condition">
 				$condition$
@@ -376,4 +373,69 @@
 			</isNotEmpty>
 		</dynamic>
 	</delete>
+	
+	
+		<select id="getAddErrorInfoListByVo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		SELECT * FROM business_error_cx_info 
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty prepend="order by" property="orderBy">
+				$orderBy$
+			</isNotEmpty> 
+		</dynamic>   
+			 limit
+			<isNotEmpty prepend=" " property="from">
+				$from$
+			</isNotEmpty>
+				,
+			<isNotEmpty prepend=" " property="pageSize">
+				$pageSize$
+			</isNotEmpty>
+	</select>
+	
+	<select id="getAddErrorInfoListCountByVo" resultClass="java.lang.Integer" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		SELECT COUNT(*) FROM business_error_cx_info 
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	
+	
+	<select id="getAddSuccessInfoListByVo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		SELECT * FROM business_recharge_cx_info 
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+		<dynamic prepend="order by">
+			<isNotEmpty prepend="order by" property="orderBy">
+				$orderBy$
+			</isNotEmpty> 
+		</dynamic>   
+			 limit
+			<isNotEmpty prepend=" " property="from">
+				$from$
+			</isNotEmpty>
+				,
+			<isNotEmpty prepend=" " property="pageSize">
+				$pageSize$
+			</isNotEmpty>
+	</select>
+	
+	<select id="getAddSuccessInfoListCountByVo" resultClass="java.lang.Integer" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		SELECT COUNT(*) FROM business_recharge_cx_info 
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</select>
 </sqlMap>

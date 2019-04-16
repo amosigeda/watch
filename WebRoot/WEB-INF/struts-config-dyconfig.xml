@@ -110,22 +110,29 @@
    	 	<action name="projectInfoForm" path="/dyconfig/projectInfo/doProjectInfo" scope="request" type="com.care.sys.projectinfo.action.ProjectInfoAction" parameter="method">
    	 		<forward name="queryProjectInfo" path="/dyconfig/projectInfo/projectInfoMain.jsp"></forward>
    	 		<forward name="queryProjectInfoxml" path="/dyconfig/projectInfo/projectInfoxml.jsp"></forward>
+   	 			<forward name="queryProjectInfoxml20190415" path="/dyconfig/projectInfo/projectInfoxml20190415.jsp"></forward>
    	 		<forward name="addProjectInfo" path="/dyconfig/projectInfo/addProjectInfo.jsp"></forward>
    	 			<forward name="addProjectInfoxml" path="/dyconfig/projectInfo/addProjectInfoxml.jsp"></forward>
+   	 			<forward name="addProjectInfoBu" path="/dyconfig/projectInfo/addProjectInfoBu.jsp"></forward>
    	 			<forward name="addProjectInfoxmlOther" path="/dyconfig/projectInfo/addProjectInfoxmlOther.jsp"></forward>
    	 		<forward name="updateProjectInfo" path="/dyconfig/projectInfo/updateProjectInfo.jsp"></forward>
    	 		<forward name="updateProjectInfoxml" path="/dyconfig/projectInfo/updateProjectInfoxml.jsp"></forward>
+   	 			<forward name="updateProjectInfoBu" path="/dyconfig/projectInfo/updateProjectInfoBu.jsp"></forward>
    	 		<forward name="updateProjectInfoxmlOther" path="/dyconfig/projectInfo/updateProjectInfoxmlOther.jsp"></forward>
    	 		<forward name="updateProjectSwitchInfo" path="/dyconfig/projectInfo/updateProjectSwitchInfo.jsp"></forward>
    	 		<forward name="projectRoleFuncInfo"  path="/dyconfig/projectInfo/projectRoleFuncPop.jsp"></forward>
    	 		<forward name="querySwitchInfo"  path="/dyconfig/projectInfo/projectSwitch.jsp"></forward>
    	 		<!--**************************************************************************************************************************************************************************** -->
    	 		<forward name="queryWatchInfoAdmin" path="/dyconfig/projectInfo/watchInfoxmlAdmin.jsp"></forward>
+   	 			<forward name="queryBuyCardInfo" path="/dyconfig/projectInfo/BuyCardInfo.jsp"></forward>
    	 			<forward name="queryWatchInfo" path="/dyconfig/projectInfo/watchInfoxml.jsp"></forward>
    	 		<forward name="addProjectInfoWatch" path="/dyconfig/projectInfo/addProjectInfoWatch.jsp"></forward>
    	 			<forward name="addProjectInfoWatchOther" path="/dyconfig/projectInfo/addProjectInfoxmlOther.jsp"></forward>
    	 				<forward name="updateProjectWatchInfo" path="/dyconfig/projectInfo/updateProjectInfoWatch.jsp"></forward>
    	 		<forward name="updateProjectWatchInfoOther" path="/dyconfig/projectInfo/updateProjectInfoWatchOther.jsp"></forward>
+   	 		
+   	 		<forward name="queryAddBalanceErrorInfo" path="/dyconfig/projectInfo/queryAddBalanceErrorInfo.jsp"></forward>
+   	 		<forward name="queryAddBalanceSuccessInfo" path="/dyconfig/projectInfo/queryAddBalanceSuccessInfo.jsp"></forward>
    	 	</action>
    	 	
    	 	<action name="saleInfoForm" path="/dyconfig/saleInfo/doSaleInfo" scope="request" type="com.care.sys.saleinfo.action.SaleInfoAction" parameter="method">

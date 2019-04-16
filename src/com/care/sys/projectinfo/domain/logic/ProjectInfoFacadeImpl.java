@@ -216,4 +216,16 @@ public class ProjectInfoFacadeImpl implements ProjectInfoFacade{
 		return projectInfoDao.getProjectUserInfo(vo);
 	}
 
+	public DataList getAddBlanceErrorInfoListByVo(ProjectInfo vo) {
+		DataList list = new DataList(projectInfoDao.getAddErrorInfoListByVo(vo));
+		list.setTotalSize(projectInfoDao.getAddErrorInfoListCountByVo(vo));
+		return list;
+	}
+
+	public DataList getAddBlanceSuccessInfoListByVo(ProjectInfo vo) {
+		DataList list = new DataList(projectInfoDao.getAddSuccessInfoListByVo(vo));
+		list.setTotalSize(projectInfoDao.getAddSuccessInfoListCountByVo(vo));
+		return list;
+	}
+
 }

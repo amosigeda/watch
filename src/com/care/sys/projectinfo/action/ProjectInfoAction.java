@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -97,7 +98,7 @@ public class ProjectInfoAction extends BaseAction {
 			String projectId = request.getParameter("projectId");
 
 			/* ���û������ֶ� */
-			form.setOrderBy("p.add_time");
+			form.setOrderBy("id");
 			form.setSort("1");
 			sb.append("1=1");
 
@@ -192,6 +193,25 @@ public class ProjectInfoAction extends BaseAction {
 		String userName = loginUser.getUserName();
 		if ("admin".equals(userName)) {
 			return mapping.findForward("addProjectInfoxml");
+		} else {
+			return mapping.findForward("addProjectInfoxmlOther");
+		}
+	}
+	
+	
+	public ActionForward initInsertBu(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+
+		String userName = loginUser.getUserName();
+		if ("admin".equals(userName)) {
+			return mapping.findForward("addProjectInfoBu");
 		} else {
 			return mapping.findForward("addProjectInfoxmlOther");
 		}
@@ -309,6 +329,61 @@ public class ProjectInfoAction extends BaseAction {
 			Constant.deleteFile(xmlpath + xmlfileName);
 			Constant.createFileContent(xmlpath, xmlfileName, sb.toString()
 					.getBytes("UTF-8"));
+
+			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
+					"queryProjectInfoXml"));
+			result.setResultCode("inserts"); // ���ò���Code
+			result.setResultType("success"); // ���ò���ɹ�
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug(request.getQueryString() + "  " + e);
+			result.setBackPage(HttpTools.httpServletPath(request,
+					"initInsertxml"));
+			if (e instanceof SystemException) { /* ����֪�쳣���н��� */
+				result.setResultCode(((SystemException) e).getErrCode());
+				result.setResultType(((SystemException) e).getErrType());
+			} else { /* ��δ֪�쳣���н�������ȫ�������δ֪�쳣 */
+				result.setResultCode("noKnownException");
+				result.setResultType("sysRunException");
+			}
+		} finally {
+			request.setAttribute("result", result);
+		}
+		return mapping.findForward("result");
+	}
+	
+	public ActionForward insertProjectInfoxmlBu(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		String companyId = request.getParameter("companyId");
+		// String channelId = request.getParameter("channelId");
+		Result result = new Result();
+		
+		try {
+			LoginUser loginUser = (LoginUser) request.getSession()
+					.getAttribute(Config.SystemConfig.LOGINUSER);
+			if (loginUser == null) {
+				return null;
+			}
+			ProjectInfoForm form = (ProjectInfoForm) actionForm;
+			
+		
+			ProjectInfoFacade facade = ServiceBean.getInstance()
+					.getProjectInfoFacade();
+			ProjectInfo vo = new ProjectInfo();
+			
+			BeanUtils.copyProperties(vo, form);
+			
+			vo.setProjectNo(form.getUsername());
+			vo.setCompanyId(form.getNickname());
+			vo.setChannelId(form.getAvatar());
+			vo.setProjectName(form.getUse_status()+"");
+		    vo.setCreatetime(new Timestamp(System.currentTimeMillis()));
+		    vo.setDataSourceC(0);
+			facade.insertProjectInfo(vo);
+
+			
 
 			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
 					"queryProjectInfoXml"));
@@ -493,6 +568,38 @@ public class ProjectInfoAction extends BaseAction {
 			return mapping.findForward("updateProjectInfoxmlOther");
 		}
 	}
+	
+	public ActionForward initUpdateBu(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+
+		String userName = loginUser.getUserName();
+
+		String id = request.getParameter("id");
+		ProjectInfo vo = new ProjectInfo();
+		vo.setCondition("id='" + id + "'");
+		List<DataMap> list = ServiceBean.getInstance().getProjectInfoFacade()
+				.getProjectInfo(vo);
+		if (list == null || list.size() == 0) {
+			Result result = new Result();
+			result.setBackPage(HttpTools.httpServletPath(request,
+					"queryProjectInfoXml"));
+			result.setResultCode("rowDel");
+			result.setResultType("success");
+			return mapping.findForward("result");
+		}
+		request.setAttribute("projectInfo", list.get(0));
+		if ("admin".equals(userName)) {
+			return mapping.findForward("updateProjectInfoBu");
+		} else {
+			return mapping.findForward("updateProjectInfoBu");
+		}
+	}
 
 	public ActionForward updateProjectInfoxml(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
@@ -596,6 +703,55 @@ public class ProjectInfoAction extends BaseAction {
 			Constant.deleteFile(xmlpath + xmlfileName);
 			Constant.createFileContent(xmlpath, xmlfileName, sb.toString()
 					.getBytes("UTF-8"));
+
+			result.setBackPage(HttpTools.httpServletPath(request,
+					"queryProjectInfoXml"));
+			result.setResultCode("updates");
+			result.setResultType("success");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug(request.getQueryString() + "  " + e);
+			result.setBackPage(HttpTools.httpServletPath(request,
+					"queryProjectInfoXml"));
+			if (e instanceof SystemException) { /* ����֪�쳣���н��� */
+				result.setResultCode(((SystemException) e).getErrCode());
+				result.setResultType(((SystemException) e).getErrType());
+			} else { /* ��δ֪�쳣���н�������ȫ�������δ֪�쳣 */
+				result.setResultCode("noKnownException");
+				result.setResultType("sysRunException");
+			}
+		} finally {
+			request.setAttribute("result", result);
+		}
+		return mapping.findForward("result");
+	}
+	
+	
+	
+	public ActionForward updateProjectInfoBu(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		Result result = new Result();
+		try {
+			String id = request.getParameter("id");
+			String userName = request.getParameter("username");
+			String nickName = request.getParameter("nickname");
+			String useStatus = request.getParameter("use_status");
+			String avatar = request.getParameter("avatar");
+			
+
+			ProjectInfo vo = new ProjectInfo();
+			vo.setCondition("id='" + id + "'");
+			vo.setProjectName(userName);
+			vo.setProjectNo(nickName);
+			vo.setChannelId(avatar);
+			vo.setStatus(useStatus);
+		
+			// BeanUtils.copyProperties(vo, form);
+			ServiceBean.getInstance().getProjectInfoFacade()
+					.updatePorjectInfo(vo);
+			
 
 			result.setBackPage(HttpTools.httpServletPath(request,
 					"queryProjectInfoXml"));
@@ -1505,6 +1661,448 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("result", result);
 		}
 		return mapping.findForward("result");
+	}
+	
+	
+	
+	public ActionForward queryBuyCardInfo(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String href = request.getServletPath();
+		Date start = new Date();
+		Result result = new Result();// ���
+		PagePys pys = new PagePys();// ҳ������
+		DataList list = null; // ����ҳ��List ��logic itrate��ȡ��
+		StringBuffer sb = new StringBuffer();// �����ַ�����
+		ProjectInfoFacade info = ServiceBean.getInstance()
+				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
+		ProjectInfo pro = new ProjectInfo();
+		LoginUser loginUser = (LoginUser) request.getSession()
+				.getAttribute(Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+
+		String userName = loginUser.getUserName();
+
+		try {
+		
+
+			String companyInfoId = loginUser.getCompanyId();
+			String projectInfoId = loginUser.getProjectId();
+			ProjectInfoForm form = (ProjectInfoForm) actionForm;
+			ProjectInfo vo = new ProjectInfo();
+			String startTime = request.getParameter("startTime");
+			String endTime = request.getParameter("endTime");
+			String companyId = request.getParameter("companyId");
+			String userId = request.getParameter("userId");
+			String projectId = request.getParameter("projectId");
+			
+			String projectNo = request.getParameter("project_no");
+			String remark = request.getParameter("remark");
+		
+
+			/* ���û������ֶ� */
+			form.setOrderBy("id");
+			form.setSort("1");
+			//sb.append("1=1");
+			
+			
+			
+			if (projectNo != null && !"".equals(projectNo)) {
+				if(sb.length()<=0){
+					sb.append(" username='" + projectNo + "'");
+				}else{
+					sb.append(" and username='" + projectNo + "'");
+				}
+			}
+			if (remark != null && !"".equals(remark)) {
+				if(sb.length()<=0){
+					sb.append("p.remark='" + remark + "'");
+				}else{
+					sb.append(" and p.remark='" + remark + "'");
+				}
+			}
+			
+			
+			
+		
+			
+
+			if (!projectInfoId.equals("0")) {
+				sb.append(" and p.id in(" + projectInfoId + ")");
+			} else {
+				if (!"0".equals(companyId) && companyId != null) {
+					sb.append(" and p.company_id in(" + companyInfoId + ")");
+				}
+			}
+			if (startTime != null && !"".equals(startTime)) {
+				sb.append(" and substring(p.add_time,1,10) >= '" + startTime
+						+ "'");
+			}
+			if (endTime != null && !"".equals(endTime)) {
+				sb.append(" and substring(p.add_time,1,10) <= '" + endTime
+						+ "'");
+			}
+			if (companyId != null && !"".equals(companyId)) {
+				sb.append(" and p.company_id='" + companyId + "'");
+			}
+			if (projectId != null && !"".equals(projectId)) {
+				sb.append(" and p.id ='" + projectId + "'");
+			}
+			if (userId != null && !"".equals(userId)) {
+				sb.append(" and p.company_id='" + userId + "'");
+				pro.setCondition("company_id = '" + userId + "'");
+			}
+			List<DataMap> pros = ServiceBean.getInstance()
+					.getProjectInfoFacade().getProjectInfo(pro);
+			request.setAttribute("project", pros);
+
+			CompanyInfo ci = new CompanyInfo();
+			List<DataMap> coms = ServiceBean.getInstance()
+					.getCompanyInfoFacade().getCompanyInfo(ci);
+			request.setAttribute("company", coms);
+			
+			request.setAttribute("project_no", projectNo);
+			request.setAttribute("remark", remark);
+
+			request.setAttribute("fNow_date", startTime);
+			request.setAttribute("now_date", endTime);
+			request.setAttribute("companyId", companyId);
+			request.setAttribute("userId", userId);
+			request.setAttribute("projectId", projectId);
+			
+			
+			if (!"admin".equals(userName)) {
+				if(sb.length()<=0){
+					sb.append("p.status='" + 1 + "'");
+				}else{
+					sb.append(" and p.status='" + 1 + "'");
+				}
+			}
+			
+			vo.setCondition(sb.toString());
+
+			BeanUtils.copyProperties(vo, form);
+			list = info.getWatchInfoListByVo(vo);
+			BeanUtils.copyProperties(pys, form);
+			pys.setCounts(list.getTotalSize());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(request.getQueryString() + "  " + e);
+			result.setBackPage(Config.ABOUT_PAGE);
+			if (e instanceof SystemException) {
+				result.setResultCode(((SystemException) e).getErrCode());
+				result.setResultType(((SystemException) e).getErrType());
+			} else {
+				result.setResultCode("noKnownException");
+				result.setResultType("sysRunException");
+			}
+		} finally {
+			request.setAttribute("result", result);
+			request.setAttribute("pageList", list);
+			request.setAttribute("PagePys", pys);
+		}
+		CommUtils.getIntervalTime(start, new Date(), href);
+		if("admin".equals(userName)){
+			return mapping.findForward("queryBuyCardInfo");
+		}
+		return mapping.findForward("queryWatchInfo");
+	}
+	
+	
+	public ActionForward addBalanceErrorInfo(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String href = request.getServletPath();
+		Date start = new Date();
+		Result result = new Result();// ���
+		PagePys pys = new PagePys();// ҳ������
+		DataList list = null; // ����ҳ��List ��logic itrate��ȡ��
+		StringBuffer sb = new StringBuffer();// �����ַ�����
+		ProjectInfoFacade info = ServiceBean.getInstance()
+				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
+		ProjectInfo pro = new ProjectInfo();
+		LoginUser loginUser = (LoginUser) request.getSession()
+				.getAttribute(Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+
+		String userName = loginUser.getUserName();
+
+		try {
+		
+
+			String companyInfoId = loginUser.getCompanyId();
+			String projectInfoId = loginUser.getProjectId();
+			ProjectInfoForm form = (ProjectInfoForm) actionForm;
+			ProjectInfo vo = new ProjectInfo();
+			String startTime = request.getParameter("startTime");
+			String endTime = request.getParameter("endTime");
+			String companyId = request.getParameter("companyId");
+			String userId = request.getParameter("userId");
+			String projectId = request.getParameter("projectId");
+			
+			String projectNo = request.getParameter("project_no");
+			String remark = request.getParameter("remark");
+		
+
+			/* ���û������ֶ� */
+			form.setOrderBy("id");
+			form.setSort("1");
+			//sb.append("1=1");
+			
+			
+			
+			if (projectNo != null && !"".equals(projectNo)) {
+				if(sb.length()<=0){
+					sb.append(" username='" + projectNo + "'");
+				}else{
+					sb.append(" and username='" + projectNo + "'");
+				}
+			}
+			if (remark != null && !"".equals(remark)) {
+				if(sb.length()<=0){
+					sb.append("p.remark='" + remark + "'");
+				}else{
+					sb.append(" and p.remark='" + remark + "'");
+				}
+			}
+			
+			
+			
+		
+			
+
+			if (!projectInfoId.equals("0")) {
+				sb.append(" and p.id in(" + projectInfoId + ")");
+			} else {
+				if (!"0".equals(companyId) && companyId != null) {
+					sb.append(" and p.company_id in(" + companyInfoId + ")");
+				}
+			}
+			if (startTime != null && !"".equals(startTime)) {
+				sb.append(" and substring(p.add_time,1,10) >= '" + startTime
+						+ "'");
+			}
+			if (endTime != null && !"".equals(endTime)) {
+				sb.append(" and substring(p.add_time,1,10) <= '" + endTime
+						+ "'");
+			}
+			if (companyId != null && !"".equals(companyId)) {
+				sb.append(" and p.company_id='" + companyId + "'");
+			}
+			if (projectId != null && !"".equals(projectId)) {
+				sb.append(" and p.id ='" + projectId + "'");
+			}
+			if (userId != null && !"".equals(userId)) {
+				sb.append(" and p.company_id='" + userId + "'");
+				pro.setCondition("company_id = '" + userId + "'");
+			}
+			List<DataMap> pros = ServiceBean.getInstance()
+					.getProjectInfoFacade().getProjectInfo(pro);
+			request.setAttribute("project", pros);
+
+			CompanyInfo ci = new CompanyInfo();
+			List<DataMap> coms = ServiceBean.getInstance()
+					.getCompanyInfoFacade().getCompanyInfo(ci);
+			request.setAttribute("company", coms);
+			
+			request.setAttribute("project_no", projectNo);
+			request.setAttribute("remark", remark);
+
+			request.setAttribute("fNow_date", startTime);
+			request.setAttribute("now_date", endTime);
+			request.setAttribute("companyId", companyId);
+			request.setAttribute("userId", userId);
+			request.setAttribute("projectId", projectId);
+			
+			
+			if (!"admin".equals(userName)) {
+				if(sb.length()<=0){
+					sb.append("p.status='" + 1 + "'");
+				}else{
+					sb.append(" and p.status='" + 1 + "'");
+				}
+			}
+			
+			vo.setCondition(sb.toString());
+
+			BeanUtils.copyProperties(vo, form);
+			list = info.getAddBlanceErrorInfoListByVo(vo);
+			BeanUtils.copyProperties(pys, form);
+			pys.setCounts(list.getTotalSize());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(request.getQueryString() + "  " + e);
+			result.setBackPage(Config.ABOUT_PAGE);
+			if (e instanceof SystemException) {
+				result.setResultCode(((SystemException) e).getErrCode());
+				result.setResultType(((SystemException) e).getErrType());
+			} else {
+				result.setResultCode("noKnownException");
+				result.setResultType("sysRunException");
+			}
+		} finally {
+			request.setAttribute("result", result);
+			request.setAttribute("pageList", list);
+			request.setAttribute("PagePys", pys);
+		}
+		CommUtils.getIntervalTime(start, new Date(), href);
+		if("admin".equals(userName)){
+			return mapping.findForward("queryAddBalanceErrorInfo");
+		}
+		return mapping.findForward("queryAddBalanceErrorInfo");
+	}
+	
+	
+	public ActionForward addBalanceSuccessInfo(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String href = request.getServletPath();
+		Date start = new Date();
+		Result result = new Result();// ���
+		PagePys pys = new PagePys();// ҳ������
+		DataList list = null; // ����ҳ��List ��logic itrate��ȡ��
+		StringBuffer sb = new StringBuffer();// �����ַ�����
+		ProjectInfoFacade info = ServiceBean.getInstance()
+				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
+		ProjectInfo pro = new ProjectInfo();
+		LoginUser loginUser = (LoginUser) request.getSession()
+				.getAttribute(Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+
+		String userName = loginUser.getUserName();
+
+		try {
+		
+
+			String companyInfoId = loginUser.getCompanyId();
+			String projectInfoId = loginUser.getProjectId();
+			ProjectInfoForm form = (ProjectInfoForm) actionForm;
+			ProjectInfo vo = new ProjectInfo();
+			String startTime = request.getParameter("startTime");
+			String endTime = request.getParameter("endTime");
+			String companyId = request.getParameter("companyId");
+			String userId = request.getParameter("userId");
+			String projectId = request.getParameter("projectId");
+			
+			String projectNo = request.getParameter("project_no");
+			String remark = request.getParameter("remark");
+		
+
+			/* ���û������ֶ� */
+			form.setOrderBy("id");
+			form.setSort("1");
+			//sb.append("1=1");
+			
+			
+			
+			if (projectNo != null && !"".equals(projectNo)) {
+				if(sb.length()<=0){
+					sb.append(" username='" + projectNo + "'");
+				}else{
+					sb.append(" and username='" + projectNo + "'");
+				}
+			}
+			if (remark != null && !"".equals(remark)) {
+				if(sb.length()<=0){
+					sb.append("p.remark='" + remark + "'");
+				}else{
+					sb.append(" and p.remark='" + remark + "'");
+				}
+			}
+			
+			
+			
+		
+			
+
+			if (!projectInfoId.equals("0")) {
+				sb.append(" and p.id in(" + projectInfoId + ")");
+			} else {
+				if (!"0".equals(companyId) && companyId != null) {
+					sb.append(" and p.company_id in(" + companyInfoId + ")");
+				}
+			}
+			if (startTime != null && !"".equals(startTime)) {
+				sb.append(" and substring(p.add_time,1,10) >= '" + startTime
+						+ "'");
+			}
+			if (endTime != null && !"".equals(endTime)) {
+				sb.append(" and substring(p.add_time,1,10) <= '" + endTime
+						+ "'");
+			}
+			if (companyId != null && !"".equals(companyId)) {
+				sb.append(" and p.company_id='" + companyId + "'");
+			}
+			if (projectId != null && !"".equals(projectId)) {
+				sb.append(" and p.id ='" + projectId + "'");
+			}
+			if (userId != null && !"".equals(userId)) {
+				sb.append(" and p.company_id='" + userId + "'");
+				pro.setCondition("company_id = '" + userId + "'");
+			}
+			List<DataMap> pros = ServiceBean.getInstance()
+					.getProjectInfoFacade().getProjectInfo(pro);
+			request.setAttribute("project", pros);
+
+			CompanyInfo ci = new CompanyInfo();
+			List<DataMap> coms = ServiceBean.getInstance()
+					.getCompanyInfoFacade().getCompanyInfo(ci);
+			request.setAttribute("company", coms);
+			
+			request.setAttribute("project_no", projectNo);
+			request.setAttribute("remark", remark);
+
+			request.setAttribute("fNow_date", startTime);
+			request.setAttribute("now_date", endTime);
+			request.setAttribute("companyId", companyId);
+			request.setAttribute("userId", userId);
+			request.setAttribute("projectId", projectId);
+			
+			
+			if (!"admin".equals(userName)) {
+				if(sb.length()<=0){
+					sb.append("p.status='" + 1 + "'");
+				}else{
+					sb.append(" and p.status='" + 1 + "'");
+				}
+			}
+			
+			vo.setCondition(sb.toString());
+
+			BeanUtils.copyProperties(vo, form);
+			list = info.getAddBlanceSuccessInfoListByVo(vo);
+			BeanUtils.copyProperties(pys, form);
+			pys.setCounts(list.getTotalSize());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(request.getQueryString() + "  " + e);
+			result.setBackPage(Config.ABOUT_PAGE);
+			if (e instanceof SystemException) {
+				result.setResultCode(((SystemException) e).getErrCode());
+				result.setResultType(((SystemException) e).getErrType());
+			} else {
+				result.setResultCode("noKnownException");
+				result.setResultType("sysRunException");
+			}
+		} finally {
+			request.setAttribute("result", result);
+			request.setAttribute("pageList", list);
+			request.setAttribute("PagePys", pys);
+		}
+		CommUtils.getIntervalTime(start, new Date(), href);
+		if("admin".equals(userName)){
+			return mapping.findForward("queryAddBalanceSuccessInfo");
+		}
+		return mapping.findForward("queryAddBalanceSuccessInfo");
 	}
 
 }

@@ -26,7 +26,36 @@ public class ProjectInfoForm extends PublicFormBean implements Serializable{
 	private String projectCode;
 	private String adTitle;
 	private String adDetail;
+	private String username;
+	private String nickname;
+	private String avatar;
+	private Integer use_status;
 	
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+	public Integer getUse_status() {
+		return use_status;
+	}
+	public void setUse_status(Integer use_status) {
+		this.use_status = use_status;
+	}
 	public Date getAddTime() {
 		return addTime;
 	}

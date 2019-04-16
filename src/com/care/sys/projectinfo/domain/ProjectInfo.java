@@ -1,6 +1,7 @@
 package com.care.sys.projectinfo.domain;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import com.godoing.rose.http.PublicVoBean;
@@ -39,6 +40,45 @@ public class ProjectInfo extends PublicVoBean implements Serializable{
 	private String adTitle;
 	private String adDetail;
 	
+	
+	private String username;
+	private String nickname;
+	private String avatar;
+	private Integer use_status;
+	private Timestamp createtime;
+	
+	
+	
+	public Timestamp getCreatetime() {
+		return createtime;
+	}
+	public void setCreatetime(Timestamp createtime) {
+		this.createtime = createtime;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+	public Integer getUse_status() {
+		return use_status;
+	}
+	public void setUse_status(Integer use_status) {
+		this.use_status = use_status;
+	}
 	public String getAdTitle() {
 		return adTitle;
 	}
