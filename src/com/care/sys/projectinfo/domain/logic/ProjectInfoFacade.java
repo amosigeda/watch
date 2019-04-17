@@ -53,9 +53,11 @@ public interface ProjectInfoFacade {
 
 	public List<DataMap> getProjectUserInfo(ProjectInfo vo)throws SystemException;
 
-	public DataList getAddBlanceErrorInfoListByVo(ProjectInfo vo);
+	public DataList getAddBlanceErrorInfoListByVo(ProjectInfo vo)throws SystemException;
 
-	public DataList getAddBlanceSuccessInfoListByVo(ProjectInfo vo);
+	public DataList getAddBlanceSuccessInfoListByVo(ProjectInfo vo)throws SystemException;
+
+	public int insertBuyCardInfo(ProjectInfo vo)throws SystemException;
 
 
 }

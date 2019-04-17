@@ -62,12 +62,14 @@ public interface ProjectInfoDao {
 
 	public List<DataMap> getProjectUserInfo(ProjectInfo vo)throws DataAccessException;
 
-	public List<DataMap> getAddErrorInfoListByVo(ProjectInfo vo);
+	public List<DataMap> getAddErrorInfoListByVo(ProjectInfo vo)throws DataAccessException;
 
-	public int getAddErrorInfoListCountByVo(ProjectInfo vo);
+	public int getAddErrorInfoListCountByVo(ProjectInfo vo)throws DataAccessException;
 
-	public List<DataMap> getAddSuccessInfoListByVo(ProjectInfo vo);
+	public List<DataMap> getAddSuccessInfoListByVo(ProjectInfo vo)throws DataAccessException;
 
-	public int getAddSuccessInfoListCountByVo(ProjectInfo vo);
+	public int getAddSuccessInfoListCountByVo(ProjectInfo vo)throws DataAccessException;
+
+	public int insertBuyCardInfo(ProjectInfo vo)throws DataAccessException;
 
 }

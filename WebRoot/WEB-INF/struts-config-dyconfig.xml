@@ -133,6 +133,7 @@
    	 		
    	 		<forward name="queryAddBalanceErrorInfo" path="/dyconfig/projectInfo/queryAddBalanceErrorInfo.jsp"></forward>
    	 		<forward name="queryAddBalanceSuccessInfo" path="/dyconfig/projectInfo/queryAddBalanceSuccessInfo.jsp"></forward>
+   	 			<forward name="initAddBalanceById" path="/dyconfig/projectInfo/addBlanceByid.jsp"></forward>
    	 	</action>
    	 	
    	 	<action name="saleInfoForm" path="/dyconfig/saleInfo/doSaleInfo" scope="request" type="com.care.sys.saleinfo.action.SaleInfoAction" parameter="method">

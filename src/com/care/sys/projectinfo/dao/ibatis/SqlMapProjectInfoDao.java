@@ -170,6 +170,11 @@ public class SqlMapProjectInfoDao extends SqlMapClientDaoSupport implements Proj
 		logger.debug("getAddSuccessInfoListCountByVo(ProjectInfo vo)");
 		return (Integer)getSqlMapClientTemplate().queryForObject("getAddSuccessInfoListCountByVo", vo);
 	}
+	public int insertBuyCardInfo(ProjectInfo vo) throws DataAccessException {
+		// TODO Auto-generated method stub
+		logger.debug("insertBuyCardInfo(ProjectInfo vo)");
+		return getSqlMapClientTemplate().update("insertBuyCardInfo", vo);
+	}
 
 	
 

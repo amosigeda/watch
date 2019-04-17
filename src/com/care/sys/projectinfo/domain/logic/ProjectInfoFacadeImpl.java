@@ -228,4 +228,9 @@ public class ProjectInfoFacadeImpl implements ProjectInfoFacade{
 		return list;
 	}
 
+	public int insertBuyCardInfo(ProjectInfo vo) throws SystemException {
+		// TODO Auto-generated method stub
+		return projectInfoDao.insertBuyCardInfo(vo);
+	}
+
 }

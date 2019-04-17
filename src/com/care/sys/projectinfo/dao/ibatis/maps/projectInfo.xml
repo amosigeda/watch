@@ -182,7 +182,7 @@
 				data_sourcec=#dataSourceC#
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="dataSourceO">
-				data_sourceo=#dataSourceO#
+				balance=#dataSourceO#
 			</isNotEmpty>
 			<!-- <isNotEmpty prepend="," property="heartS">
 				heart_s=#heartS#
@@ -292,6 +292,11 @@
 	<insert id="insertProjectWatchInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
 		INSERT INTO watchxml (project_no,project_name,channel_id,company_id,add_time,remark,status,map_typec,map_typeo,project_type,data_sourceo,data_sourcec,socket_way,heart_s,adTitle,adDetail) VALUES 
 		(#projectNo#,#projectName#,#channelId#,#companyId#,#addTime#,#remark#,#status#,#mapTypeC#,#mapTypeO#,#projectType#,#dataSourceO#,#dataSourceC#,#socketWay#,#heartS#,#adTitle#,#adDetail#)
+	</insert>
+	
+	<insert id="insertBuyCardInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		INSERT INTO buy_card_info (username,beizhu,add_blance,createtime,url) VALUES 
+		(#username#,#remark#,#shiqu#,#createtime#,#adTitle#)
 	</insert>
 	
 	<select id="getProjectWatchInfo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">

@@ -133,19 +133,18 @@ function ofuncs(projectId){
 						商户名
 					</td>
 					<td width="8%">
-						备注
-					</td>
-					<td width="8%">
 						充值金额
 					</td>
 					<td width="6%">
 						充值时间
 					</td>					
-					
 					<td width="6%">
 						凭证
 					</td>
-					
+
+                    <td width="8%">  
+						备注
+					</td>					
 				</tr>
  
 				<logic:iterate id="element" name="pageList">
@@ -155,17 +154,21 @@ function ofuncs(projectId){
 						<td>							
 							<bean:write name="element" property="username" />
 						</td>
-						<td>							
-							<bean:write name="element" property="beizhu" />
-						</td>
+						
 						<td>							
 							<bean:write name="element" property="add_blance" />
 						</td>
 					<td>								
 							<bean:write name="element" property="createtime" format="yyyy-MM-dd HH:mm:ss"/>
 						</td>
+						<td>	
+						 
+    	                 <img src="<bean:write name="element" property="url"/>"  style="vertical-align:bottom"  width = "150px" height = "150px"></img> 
+											
+						<%-- 	<bean:write name="element" property="url" /> --%>
+						</td>
 						<td>							
-							<bean:write name="element" property="url" />
+							<bean:write name="element" property="beizhu" />
 						</td>
 						
 						<%--  <td>

@@ -64,6 +64,12 @@ public class ProjectInfoAction extends BaseAction {
 	//String clockxmlpath = "E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
 	String clockdownloadUrl = "http://www.wiiteer.com:8999/ads/WIITE/biaopan/";
   String clockxmlpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
+  
+ // String pingzhengpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/pingzheng/";
+ // String pingZhengUrl = "http://www.wiiteer.com:8999/ads/photo/";
+  
+     String pingzhengpath="E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/pingzheng/";
+	 String pingZhengUrl="http://localhost:8080/ads/WIITE/pingzheng/";
 
 	public ActionForward queryProjectInfoXml(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
@@ -598,6 +604,39 @@ public class ProjectInfoAction extends BaseAction {
 			return mapping.findForward("updateProjectInfoBu");
 		} else {
 			return mapping.findForward("updateProjectInfoBu");
+		}
+	}
+	
+	
+	public ActionForward initAddBalanceById(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+
+		String userName = loginUser.getUserName();
+
+		String id = request.getParameter("id");
+		ProjectInfo vo = new ProjectInfo();
+		vo.setCondition("id='" + id + "'");
+		List<DataMap> list = ServiceBean.getInstance().getProjectInfoFacade()
+				.getProjectInfo(vo);
+		if (list == null || list.size() == 0) {
+			Result result = new Result();
+			result.setBackPage(HttpTools.httpServletPath(request,
+					"queryProjectInfoXml"));
+			result.setResultCode("rowDel");
+			result.setResultType("success");
+			return mapping.findForward("result");
+		}
+		request.setAttribute("projectInfo", list.get(0));
+		if ("admin".equals(userName)) {
+			return mapping.findForward("initAddBalanceById");
+		} else {
+			return mapping.findForward("initAddBalanceById");
 		}
 	}
 
@@ -2103,6 +2142,122 @@ public class ProjectInfoAction extends BaseAction {
 			return mapping.findForward("queryAddBalanceSuccessInfo");
 		}
 		return mapping.findForward("queryAddBalanceSuccessInfo");
+	}
+	
+	
+	public ActionForward insertBalanceInfo(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) {
+
+	
+		String id = request.getParameter("id");
+		Integer balance = Integer.valueOf(request.getParameter("balance"));
+		String remark = request.getParameter("remark");
+		String username = request.getParameter("username");
+		Result result = new Result();
+		String name = "";
+		String fileFormat = "";
+		String  fileName=Long.toString(new Date().getTime()) ;
+		try {
+			LoginUser loginUser = (LoginUser) request.getSession()
+					.getAttribute(Config.SystemConfig.LOGINUSER);
+			if (loginUser == null) {
+				return null;
+			}
+			ProjectInfoForm form = (ProjectInfoForm) actionForm;
+			System.out.println(form.getChannelId());
+			Hashtable<?, ?> files = form.getMultipartRequestHandler()
+					.getFileElements();// 获取所有文件路径的枚举；
+		
+			if (files != null & files.size() > 0) {
+				Enumeration<?> enums = files.keys();
+				String fileKey = null;
+				while (enums.hasMoreElements()) {
+					fileKey = (String) (enums.nextElement());
+					FormFile file = (FormFile) files.get(fileKey);
+					if (!file.getFileName().isEmpty()) {
+						fileFormat = file.toString().substring(
+								file.toString().lastIndexOf("."),
+								file.toString().length());
+						name = fileName+ fileFormat;
+						System.out.println(name);
+						
+						// CommUtils.createDateFile(dir); //创建当前文件夹，存在则返回文件名；
+						InputStream in = file.getInputStream();
+						// photoPath = photoPath + name; //输出文件路径
+						System.out.println(pingzhengpath + name);
+						File f = new File(pingzhengpath + name);
+						if (f.exists()) {
+							f.delete();
+						}
+
+						OutputStream out = new FileOutputStream(pingzhengpath
+								+ name);
+						out.write(file.getFileData(), 0, file.getFileSize());
+
+						out.close();
+						out = null;
+						in.close();
+					}
+				}
+			}
+
+		
+			//String userName = loginUser.getUserName();
+			// ProjectInfoForm form = (ProjectInfoForm) actionForm;
+			ProjectInfoFacade facade = ServiceBean.getInstance()
+					.getProjectInfoFacade();
+			ProjectInfo vo = new ProjectInfo();
+			/*int num = ServiceBean.getInstance().getProjectInfoFacade()
+					.getProjectInfoCount(vo) + 1;
+			BeanUtils.copyProperties(vo, form);*/
+		    vo.setUsername(username);
+		    vo.setRemark(remark);
+		    vo.setShiqu(balance);
+		    vo.setCreatetime(new Timestamp(System.currentTimeMillis()));
+		    vo.setAdTitle(pingZhengUrl+name);
+			facade.insertBuyCardInfo(vo);
+			
+			
+			ProjectInfo voo = new ProjectInfo();
+			voo.setCondition("id='" + id + "'");
+			List<DataMap> listt = ServiceBean.getInstance().getProjectInfoFacade()
+					.getProjectInfo(voo);
+			
+			
+			
+			ProjectInfo voBlance = new ProjectInfo();
+			voBlance.setCondition("id='" + id + "'");
+			voBlance.setDataSourceO(Integer.valueOf(listt.get(0).getAt("balance")+"")+balance);
+		
+			// BeanUtils.copyProperties(vo, form);
+			ServiceBean.getInstance().getProjectInfoFacade()
+					.updatePorjectInfo(voBlance);
+			
+			
+
+		
+
+			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
+					"queryProjectInfoXml"));
+			result.setResultCode("inserts"); // ���ò���Code
+			result.setResultType("success"); // ���ò���ɹ�
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug(request.getQueryString() + "  " + e);
+			result.setBackPage(HttpTools.httpServletPath(request,
+					"initAddBalanceById"));
+			if (e instanceof SystemException) { /* ����֪�쳣���н��� */
+				result.setResultCode(((SystemException) e).getErrCode());
+				result.setResultType(((SystemException) e).getErrType());
+			} else { /* ��δ֪�쳣���н�������ȫ�������δ֪�쳣 */
+				result.setResultCode("noKnownException");
+				result.setResultType("sysRunException");
+			}
+		} finally {
+			request.setAttribute("result", result);
+		}
+		return mapping.findForward("result");
 	}
 
 }

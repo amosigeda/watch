@@ -76,6 +76,10 @@ function deletee(id){
 	frmGo.action="doProjectInfo.do?method=deletexml&id="+id;
 	frmGo.submit();
 }
+function addBlanceByid(id){
+	frmGo.action="doProjectInfo.do?method=initAddBalanceById&id="+id;
+	frmGo.submit();
+}
 function ofuncs(projectId){
 	window.open("projectRoleFuncFrame.jsp?projectId=" + i);
 	//window.showModalDialog("roleFuncFrame.jsp?roleCode=" + rcode,		"","help:0;resizable:0;status=0;scrollbars=0;dialogWidth=25;dialogHeight=35;center=true");;
@@ -208,7 +212,7 @@ function ofuncs(projectId){
 						</td>	 --%>									 						
 						<td>
 							<a href=# onclick="update('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【修改】</a>
-							<a href=# onclick="deletee('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【充值】</a> 
+							<a href=# onclick="addBlanceByid('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【充值】</a> 
 							<%-- <a href="#"
 								onclick="ofuncs('<bean:write name="element" property="id" />')"  class="tbl_A" >【权限设置】</a> --%>
 						</td>
