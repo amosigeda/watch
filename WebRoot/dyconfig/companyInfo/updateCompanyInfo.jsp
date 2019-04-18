@@ -13,7 +13,7 @@
 </head>
 <script language="javascript">
 function onUpdate(){
-	if(frmGo.companyName.value.trim() == ''){
+/* 	if(frmGo.companyName.value.trim() == ''){
 		alert("公司名称不能为空");
 		frmGo.ProjectName.focus();
 		return false;
@@ -27,7 +27,7 @@ function onUpdate(){
 		alert("字数不能超过30字");
 		frmGo.remark.focus();
 		return false;
-	}
+	} */
 	frmGo.submit();
 }
 
@@ -40,16 +40,56 @@ function onUpdate(){
 <table width="100%" border="0"cellpadding="0" cellspacing="1"  class="tbl_11"> 
   <tr>
      <th colspan="13" nowrap="nowrap" align="left">
-                          客户配置
+                         上游配置
      </th>
    </tr>
   <tr class="tr_11">
+    <td width="7%" align="left">&nbsp;&nbsp;公司账号</td>
+    <td width="20%" align="left">
+    	<input name="user_name" id="user_name" type="text" class="txt_1" maxlength="20" value="<%=companyInfo.getAt("user_name")==null?" ":companyInfo.getAt("user_name")%>"><font color="red">*</font>
+    </td>
+    <td align="left"><font></font></td>
+  </tr>
+    <tr class="tr_11">
+    <td width="7%" align="left">&nbsp;&nbsp;秘钥</td>
+    <td width="20%" align="left">
+    	<input name="secret_key" id="secret_key" type="text" class="txt_1" maxlength="20" value="<%=companyInfo.getAt("secret_key")==null?" ":companyInfo.getAt("secret_key")%>"><font color="red">*</font>
+    </td>
+    <td align="left"><font></font></td>
+  </tr>
+      <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;公司名称</td>
     <td width="20%" align="left">
-    	<input name="companyName" id="companyName" type="text" class="txt_1" maxlength="20" value="<%=companyInfo.getAt("company_name")==null?" ":companyInfo.getAt("company_name")%>"><font color="red">*</font>
+    	<input name="company_name" id="company_name" type="text" class="txt_1" maxlength="20" value="<%=companyInfo.getAt("company_name")==null?" ":companyInfo.getAt("company_name")%>"><font color="red">*</font>
     </td>
-    <td align="left"><font>(字数不能超过10字)</font></td>
+    <td align="left"><font></font></td>
   </tr>
+  
+      <tr class="tr_11">
+    <td width="7%" align="left">&nbsp;&nbsp;运营商类型</td>
+    <td width="20%" align="left">
+    	<input name="contain_type" style="border:none;" readonly= "true" id="contain_type" type="text" class="txt_1" maxlength="20" value="<%=companyInfo.getAt("contain_type")==null?" ":companyInfo.getAt("contain_type")%>"><font color="red">*</font>
+    </td>
+    <td align="left"><font></font></td>
+  </tr>
+  
+    <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;运营商修改为</td>
+     <td align="left" width="10%">&nbsp; 
+					<input type="checkbox" name="type" value="1" />移动  <input type="checkbox" name="type" value="2" />联通<input type="checkbox" name="type" value="3" />电信 
+					</td>
+					 <td align="left"><font color="red">不选表示不修改</font></td>
+  </tr>
+  
+  
+      <tr class="tr_11">
+    <td width="7%" align="left">&nbsp;&nbsp;回调地址</td>
+    <td width="20%" align="left">
+    	<input name="returl" id="returl" type="text" class="txt_1" maxlength="20" value="<%=companyInfo.getAt("returl")==null?" ":companyInfo.getAt("returl")%>"><font color="red">*</font>
+    </td>
+    <td align="left"><font></font></td>
+  </tr>
+  
   <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;运营状态</td>
     <td width="20%" align="left">
@@ -63,7 +103,7 @@ function onUpdate(){
     <td width="20%" align="left">
       <textarea name="remark" id="remark" rows="5" cols="30" class="txt_1" maxlength="30"><%=companyInfo.getAt("remark")==null?" ":companyInfo.getAt("remark")%></textarea>
     </td>
-    <td align="left">(字数不能超过30字)</font></td>
+    <td align="left"><font color="red">(字数不能超过30字)</font></td>
   </tr>
   <tr  class="tr_11"> 
     <td></td>

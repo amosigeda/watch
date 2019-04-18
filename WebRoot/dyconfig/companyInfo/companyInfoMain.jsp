@@ -25,12 +25,12 @@
 	</head>
 	<script language="javascript">
 function finds(){
-    var st = new Date(frmGo.startTime.value.replace(/-/g,'/'));
+   /*  var st = new Date(frmGo.startTime.value.replace(/-/g,'/'));
 	var et = new Date(frmGo.endTime.value.replace(/-/g,'/'));
 	if(Date.parse(st) - Date.parse(et)>0){
 		alert("开始时间不能大于结束时间!");
 		return false;
-	}
+	} */
 	   frmGo.submit();
 }
 function add(){
@@ -38,10 +38,11 @@ function add(){
 	frmGo.submit();
 }
 function c(){
-    document.all.startTime.value="";
+	 document.all.user_name.value="";
+   /*  document.all.startTime.value="";
     document.all.endTime.value="";
     document.all.companyName.value="";
-    document.getElementById("com_status").options[0].selected = true;
+    document.getElementById("com_status").options[0].selected = true; */
 } 
 function update(id){
 	frmGo.action="doCompanyInfo.do?method=initCompanyUpdate&id="+id;
@@ -81,14 +82,17 @@ function changeCompany(obj){
 			<table width="100%" class="table" border=0 cellpadding="0" cellspacing="1">
                <tr>
                 <th colspan="12" nowrap="nowrap" align="left">
-                                               客户信息
+                                             上游信息
                      <input name="addCompany" type="button" class="but_1" accesskey="a"
 							tabindex="a" value="添 加" onclick="add()">
                 </th>
                 </tr>
                  <tr class="title_3">
                        <td colspan="13">
-					  创建时间
+                                                                                        公司账号
+						    <input id="user_name" name="user_name" type="text" class="txt_1" 
+						    value="<%CommUtils.printReqByAtt(request,response,"user_name");%>" size="20">
+				<%-- 	  创建时间
                      <input name="startTime" type="text" class="txt_1"  id="startTime" style="cursor:text"
 								value="<%CommUtils.printReqByAtt(request,response,"fNow_date");%>" onclick="WdatePicker()"
 								size="9" readonly> -
@@ -118,27 +122,31 @@ function changeCompany(obj){
 							<option value="1">正常</option>	
 					   </select>
 					   <%}%>	
-							
+							--%>
 						<input name="find1" type="button" class="but_1" accesskey="f"
 							tabindex="f" value="搜 索" onclick="javascript:finds()">
 					     <input name="clear" type="button" class="but_1" accesskey="c"
 						    tabindex="c"  value="清除搜索" onclick="c()">
-				</tr> 
+				</tr>  
 				<%int i=1; %>
                   <tr class="title_2">
                   	
 					<td width="10%">
-						公司编号
+						公司账号
+					</td>
+					<td width="10%">
+						秘钥
 					</td>
 					<td width="10%">
 						公司名称
 					</td>
-					<!-- <td width="10%">
-						推广渠道
-					</td> -->
-					<td width="6%">
-						项目数
+					<td width="10%">
+						类型
 					</td>
+					<td width="10%">
+						回调地址
+					</td>
+					
 					<td width="6%">
 						运营状态
 					</td>
@@ -162,18 +170,38 @@ function changeCompany(obj){
 						onmouseout='this.className="tr_5"'>
 						
 						<td>							
-							<bean:write name="element" property="company_no" />
+							<bean:write name="element" property="user_name" />
+						</td>
+							<td>							
+							<bean:write name="element" property="secret_key" />
 						</td>
 						<td>							
 							<bean:write name="element" property="company_name" />
 						</td>
+						<%-- 	<td>							
+							<bean:write name="element" property="type"   contain_type/>
+						</td> --%>
 						<td>
+						<bean:write name="element" property="contain_type" />
+						  <%--  <logic:empty name="element" property="type">无</logic:empty>							
+							<logic:equal name="element" property="type" value="1"><font color="black">移动</font></logic:equal>							
+							<logic:equal name="element" property="type" value="2"><font color="black">联通</font></logic:equal>
+							<logic:equal name="element" property="type" value="3"><font color="black">电信</font></logic:equal> --%>
+						</td>
+						
+						<td>							
+							<bean:write name="element" property="returl" />
+						</td>
+						<%-- <td>							
+							<bean:write name="element" property="company_name" />
+						</td> --%>
+						<%-- <td>
 							<logic:empty name="element" property="count_id">0</logic:empty>
 							<a style="color: #0000FF" href="../projectInfo/doProjectInfo.do?method=queryProjectInfo&companyId=
 								<bean:write name="element" property="id"/>">
 								<bean:write name="element" property="count_id"/>
 							</a>							
-						</td>
+						</td> --%>
 						
 						<td>
 						   <logic:empty name="element" property="status">无</logic:empty>							

@@ -103,7 +103,7 @@ function exit(){
           </span>     
   </div>
 	<div class="manage_title">
-	     话费管理系统
+	   新创海虚拟产品商城
     </div>
 <ul class="view_menu">
 		   <%

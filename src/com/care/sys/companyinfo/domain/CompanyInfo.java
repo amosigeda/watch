@@ -19,11 +19,27 @@ public class CompanyInfo extends PublicVoBean implements Serializable{
 	private String status;
 	private String userName;
 	private Date updateTime;
+	private String secretKey;
+	private String returl;
 	
 	private Integer relevanceId;
 	private Integer companyId;//�м��Ŀͻ�ID
 	private Integer channelId;//�м�������ID
 	
+	
+	
+	public String getSecretKey() {
+		return secretKey;
+	}
+	public void setSecretKey(String secretKey) {
+		this.secretKey = secretKey;
+	}
+	public String getReturl() {
+		return returl;
+	}
+	public void setReturl(String returl) {
+		this.returl = returl;
+	}
 	public Integer getRelevanceId() {
 		return relevanceId;
 	}

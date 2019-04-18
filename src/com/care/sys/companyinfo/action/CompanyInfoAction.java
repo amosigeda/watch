@@ -62,8 +62,8 @@ public class CompanyInfoAction extends BaseAction{
 			CompanyInfo vo = new CompanyInfo(); 
 			String startTime = request.getParameter("startTime");
 			String endTime   = request.getParameter("endTime");
-			String companyId = request.getParameter("companyId");
-			String company_id = request.getParameter("company_id");
+			
+			String user_name = request.getParameter("user_name");
 			String companyName = request.getParameter("companyName");
 			String com_status = request.getParameter("com_status");
 			
@@ -81,8 +81,8 @@ public class CompanyInfoAction extends BaseAction{
 				sb.append(" and substring(add_time,1,10) <= '"+endTime+"'");
 			}
 			
-			if(company_id != null && !"".equals(company_id)){				
-				sb.append(" and id='"+company_id+"'");
+			if(user_name != null && !"".equals(user_name)){				
+				sb.append(" and user_name='"+user_name+"'");
 			}
 			
 			if(com_status!=null && !"".equals(com_status)){
@@ -93,9 +93,9 @@ public class CompanyInfoAction extends BaseAction{
 			
 			request.setAttribute("fNow_date", startTime);
 		    request.setAttribute("now_date", endTime);
-		    request.setAttribute("companyId", companyId);
+		    request.setAttribute("user_name", user_name);
 		    request.setAttribute("companyName", companyName);
-		    request.setAttribute("company_id",company_id);
+		  //  request.setAttribute("company_id",company_id);
 		    
 		    /*查询出所有的公司信息*/
 		
@@ -146,36 +146,44 @@ public class CompanyInfoAction extends BaseAction{
 	public ActionForward insertCompanyInfo(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
-		String[] channelIds = HttpTools.requestArray(request, "channel");
+		String[] typeIds = HttpTools.requestArray(request, "type");
+		StringBuffer sb =new StringBuffer();
+		for(int i =0;i<typeIds.length;i++){
+			if(sb.length()>0){
+				sb.append(",");
+			}
+			if("1".equals(typeIds[i])){
+				sb.append("移动");
+			}
+			if("2".equals(typeIds[i])){
+				sb.append("联通");
+			}
+			if("3".equals(typeIds[i])){
+				sb.append("电信");
+			}
+			
+		}
+		String userName =request.getParameter("user_name");
+		String secretKey =request.getParameter("secret_key");
+		String companyName =request.getParameter("company_name");
+		String returl =request.getParameter("returl");
+		String remark =request.getParameter("remark");
 		Result result = new Result();
 		try {
-			CompanyInfoForm form = (CompanyInfoForm) actionForm;  //把提交的表单封装到用户的form中
+			//CompanyInfoForm form = (CompanyInfoForm) actionForm;  //把提交的表单封装到用户的form中
 			CompanyInfoFacade facade = ServiceBean.getInstance().getCompanyInfoFacade();
 			CompanyInfo vo = new CompanyInfo();
-			Integer maxId = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfoMaxId(vo);
-			int num ;
-			if(maxId == null){
-				num = 1;
-			}else{
-				num = maxId + 1;
-			}
-			BeanUtils.copyProperties(vo, form);    //把表单信息复制到用户信息中
-			vo.setId(num);
-			vo.setCompanyNo(form.getCompanyNo() + num);									
-			vo.setAddTime(new Date());
+		     vo.setUserName(userName);
+		     vo.setSecretKey(secretKey);
+		     vo.setCompanyName(companyName);
+		     vo.setReturl(returl);
+		     vo.setRemark(remark);
+   			vo.setAddTime(new Date());
 			vo.setUpdateTime(new Date());
-			vo.setStatus("");
-			//vo.setUserName(Integer.parseInt(request.getParameter("user_name")));
-			vo.setUserName(request.getParameter("user_name"));
-			facade.insertCompanyInfo(vo);        //设置修改后，重新把用户信息重新映射到数据库中
+			vo.setStatus("1");
+			vo.setCompanyNo(sb.toString());
+			facade.insertCompanyInfo(vo);  
 			
-			CompanyInfo vo2 = new CompanyInfo();
-			vo2.setCompanyId(num);
-			for(int i=0;i<channelIds.length; i++){
-				String channelId = channelIds[i];
-				vo2.setChannelId(Integer.parseInt(channelId));
-				facade.insertRelevanceInfo(vo2);
-			}
 			result.setBackPage(HttpTools.httpServletPath(request,  //插入成功后，跳转到原先页面
 					"queryCompanyInfo"));
 			result.setResultCode("inserts");    //设置插入Code
@@ -226,18 +234,48 @@ public ActionForward updateCompanyInfo(ActionMapping mapping,
 		Result result = new Result();
 		Date updateTime = new Date();
 		try {
+			String[] typeIds = HttpTools.requestArray(request, "type");
+			StringBuffer sb =new StringBuffer();
+			for(int i =0;i<typeIds.length;i++){
+				if(sb.length()>0){
+					sb.append(",");
+				}
+				if("1".equals(typeIds[i])){
+					sb.append("移动");
+				}
+				if("2".equals(typeIds[i])){
+					sb.append("联通");
+				}
+				if("3".equals(typeIds[i])){
+					sb.append("电信");
+				}
+				
+			}
+			
+			String userName =request.getParameter("user_name");
+			String secretKey =request.getParameter("secret_key");
+			String companyName =request.getParameter("company_name");
+			String returl =request.getParameter("returl");
+			String remark =request.getParameter("remark");
+			String status =request.getParameter("status");
+			
 			CompanyInfoForm form = (CompanyInfoForm) actionForm;			
 			CompanyInfo vo = new CompanyInfo();
 			vo.setCondition("id='" + form.getId() + "'");
 			vo.setUpdateTime(updateTime);
-			BeanUtils.copyProperties(vo, form);
+			
+			   vo.setUserName(userName);
+			     vo.setSecretKey(secretKey);
+			     vo.setCompanyName(companyName);
+			     vo.setReturl(returl);
+			     vo.setRemark(remark);
+				vo.setStatus(status);
+				if(sb.toString().length()>0){
+					vo.setCompanyNo(sb.toString());
+				}
+			
 			ServiceBean.getInstance().getCompanyInfoFacade().updateCompanyInfo(vo);
-			if(form.getStatus().equals("0")){
-				ProjectInfo pro = new ProjectInfo();
-				pro.setCondition("company_id='" + form.getId() + "'");
-				pro.setStatus("0");
-				ServiceBean.getInstance().getProjectInfoFacade().updatePorjectInfo(pro);
-			}
+			
 			result.setBackPage(HttpTools.httpServletPath(request,
 					"queryCompanyInfo"));
 			result.setResultCode("updates");

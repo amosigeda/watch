@@ -13,7 +13,7 @@
 </head>
 <script language="javascript">
 function onAdd(){
-	if(frmGo.companyNo.value.trim() == ""){
+/* 	if(frmGo.companyNo.value.trim() == ""){
 		alert("公司编号不能为空，请重新输入");
 		frmGo.companyNo.focus();
 		return false;
@@ -22,7 +22,7 @@ function onAdd(){
 		alert("公司名称不能为空，请重新输入");
 		frmGo.companyName.focus();
 		return false;
-	}
+	} */
 	frmGo.submit();
 }
 
@@ -37,44 +37,47 @@ function onAdd(){
 <table width="100%" border="0"cellpadding="0" cellspacing="1"  class="tbl_11">
   <tr>
         <th colspan="3" nowrap="nowrap" align="left">
-                                    添加客户
+                                    添加上游
         </th>
        </tr>
   <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;编号</td>
+    <td align="left" width="7%">&nbsp;&nbsp;公司账号</td>
     <td align="left" width="20%" colspan="2">
-      <input name="companyNo" id="companyNo" type="text" class="txt_1"maxlength="20"/><font color="red">*（公司英文字母缩写）</font>
+      <input name="user_name" id="user_name" type="text" class="txt_1"maxlength="20"/><font color="red">*</font>
     </td>
     </tr>
-      <!--  <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;账户</td> 
+      <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;秘钥</td>
     <td align="left" width="20%" colspan="2">
-		<%=request.getAttribute("usersList")%><font color="red">*</font>
+      <input name="secret_key" id="secret_key" type="text" class="txt_1"maxlength="20"/><font color="red">*</font>
     </td>
-  </tr> -->
+    </tr>
+   
    <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;公司名</td>
+    <td align="left" width="7%">&nbsp;&nbsp;公司名称</td>
     <td align="left" width="20%" colspan="2">
-      <input name="companyName" type="text" class="txt_1"maxlength="20"><font color="red">*</font>
+      <input name="company_name" type="text" class="txt_1"maxlength="20"><font color="red">*</font>
+    </td>
+  </tr>
+  
+     <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;回调地址</td>
+    <td align="left" width="20%" colspan="2">
+      <input name="returl" type="text" class="txt_1"maxlength="20"><font color="red">*</font>
     </td>
   </tr>
     
-  <!-- <tr class="tr_11">
-    <td align="left" width="7%">&nbsp;&nbsp;推广渠道</td>  
-    <td>
-    <%int i=0; %>
-    <logic:iterate id="element" name="list">
-    	<%i++; 
-    	if(i%5==1 && i!=1){%>
-    	<br/>
-    	<%} %>
-    	<input type="checkbox" id='channel'<bean:write name="element" property="id"/> name='channel' value=<bean:write name="element" property="id"/> />
-    	<bean:write name="element" property="channel_name" />
-    	
-    </logic:iterate>
-    </td>
+   
+					
+					  <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;类型</td>
+     <td align="left" width="10%">&nbsp; 
+					<input type="checkbox" name="type" value="1" />移动  <input type="checkbox" name="type" value="2" />联通<input type="checkbox" name="type" value="3" />电信 
+					</td>
+  </tr>
     
-  </tr> -->
+
+  </tr> 
   <tr class="tr_11">
     <td align="left" width="7%">&nbsp;&nbsp;备注</td>
     <td align="left" width="20%">

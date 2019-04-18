@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>欢迎使用话费管理系统</title>
+<title>新创海虚拟产品商城</title>
 <SCRIPT language="javascript">
 top.moveTo(0,0);
 top.resizeTo(screen.availWidth ,screen.availHeight);

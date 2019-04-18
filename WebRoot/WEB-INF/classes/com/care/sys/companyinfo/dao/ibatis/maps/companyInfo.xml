@@ -13,7 +13,7 @@
 	</select>
 	
 	<select id="getCompanyInfoListByVo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.companyinfo.domain.CompanyInfo">
-		SELECT * FROM companyinfo c LEFT JOIN (SELECT company_id,COUNT(id) count_id FROM projectinfo GROUP BY company_id) p ON c.id=p.company_id
+		SELECT * FROM companyinfo c 
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="condition">
 				$condition$
@@ -53,9 +53,9 @@
 	
 	<insert id="insertCompanyInfo" parameterClass="com.care.sys.companyinfo.domain.CompanyInfo">
 		INSERT INTO companyinfo
-		(id,company_no,company_name,add_time,update_time,remark,status,user_name)
+		(user_name,secret_key,company_name,contain_type,returl,add_time,update_time,remark,status)
 		 VALUES 
-		(#id#,#companyNo#,#companyName#,#addTime#,#updateTime#,#remark#,#status#,#userName#)
+		(#userName#,#secretKey#,#companyName#,#companyNo#,#returl#,#addTime#,#updateTime#,#remark#,#status#)
 	</insert>
 	
 	<insert id="insertRelevanceInfo" parameterClass="com.care.sys.companyinfo.domain.CompanyInfo">
@@ -74,17 +74,33 @@
 	<update id="updateCompanyInfo" parameterClass="com.care.sys.companyinfo.domain.CompanyInfo">
 		UPDATE companyinfo
 		<dynamic prepend="set">
+			<isNotEmpty prepend="," property="userName">
+				user_name=#userName#
+			</isNotEmpty>	
+			<isNotEmpty prepend="," property="secretKey">
+				secret_key=#secretKey#
+			</isNotEmpty>	
 			<isNotEmpty prepend="," property="companyName">
 				company_name=#companyName#
+			</isNotEmpty>	
+			<isNotEmpty prepend="," property="returl">
+				returl=#returl#
+			</isNotEmpty>	
+				<isNotEmpty prepend="," property="remark">
+				remark=#remark#
+			</isNotEmpty>	
+				<isNotEmpty prepend="," property="remark">
+				remark=#remark#
 			</isNotEmpty>			
-				,remark=#remark#			
 			<isNotEmpty prepend="," property="status">
 				status=#status#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="companyNo">
+				contain_type=#companyNo#
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="updateTime">
 				update_time=#updateTime#
 			</isNotEmpty>
-			
 		</dynamic>
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="condition">
