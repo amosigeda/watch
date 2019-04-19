@@ -74,7 +74,7 @@ function update(id){
 	frmGo.submit();
 }
 function updateStatus(id,status){
-	frmGo.action="doProjectInfo.do?method=updateStatusAndBlance&id="+id+"&s="+status;
+	frmGo.action="doProjectInfo.do?method=initUpdateWatchStatus&id="+id+"&s="+status;
 	frmGo.submit();
 }
 function deletee(id){
@@ -148,10 +148,6 @@ function ofuncs(projectId){
                     <td width="8%">  
 						备注
 					</td>	
-					
-                    <td width="8%">  
-						操作
-					</td>				
 				</tr>
  
 				<logic:iterate id="element" name="pageList">
@@ -181,12 +177,7 @@ function ofuncs(projectId){
 						<td>							
 							<bean:write name="element" property="beizhu" />
 						</td>
-						<td>	
-							<logic:equal name="element" property="status" value="0">			
-   							<a href="#" onclick="updateStatus(<bean:write name='element' property='id'/>,1)" style="color:red">【确认】</a>		
-   						</logic:equal>							
-						</td>
-					
+						
 						<%--  <td>
     	                 <img src="<bean:write name="element" property="adDetail"/>"  style="vertical-align:bottom"  width = "150px" height = "150px"></img> 
 						</td> --%>

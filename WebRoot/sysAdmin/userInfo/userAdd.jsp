@@ -132,7 +132,7 @@
 <table width="100%" border="0"cellpadding="0" cellspacing="1"  class="tbl_11" id="tb1">
   <tr>
         <th colspan="4" nowrap="nowrap" align="left">
-                                    添加用户
+                                    添加客户账号
         </th>
        </tr>
   <tr class="tr_11">

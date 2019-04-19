@@ -47,8 +47,26 @@ public class ProjectInfo extends PublicVoBean implements Serializable{
 	private Integer use_status;
 	private Timestamp createtime;
 	
+	private Integer shangyou_type;
+	private String  shangyou_content;
 	
 	
+	
+	
+	
+	
+	public Integer getShangyou_type() {
+		return shangyou_type;
+	}
+	public void setShangyou_type(Integer shangyou_type) {
+		this.shangyou_type = shangyou_type;
+	}
+	public String getShangyou_content() {
+		return shangyou_content;
+	}
+	public void setShangyou_content(String shangyou_content) {
+		this.shangyou_content = shangyou_content;
+	}
 	public Timestamp getCreatetime() {
 		return createtime;
 	}

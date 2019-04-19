@@ -110,6 +110,7 @@
    	 	<action name="projectInfoForm" path="/dyconfig/projectInfo/doProjectInfo" scope="request" type="com.care.sys.projectinfo.action.ProjectInfoAction" parameter="method">
    	 		<forward name="queryProjectInfo" path="/dyconfig/projectInfo/projectInfoMain.jsp"></forward>
    	 		<forward name="queryProjectInfoxml" path="/dyconfig/projectInfo/projectInfoxml.jsp"></forward>
+   	 		<forward name="queryProjectInfoxmlshangHu" path="/dyconfig/projectInfo/projectInfoxmlshanghu.jsp"></forward>
    	 			<forward name="queryProjectInfoxml20190415" path="/dyconfig/projectInfo/projectInfoxml20190415.jsp"></forward>
    	 		<forward name="addProjectInfo" path="/dyconfig/projectInfo/addProjectInfo.jsp"></forward>
    	 			<forward name="addProjectInfoxml" path="/dyconfig/projectInfo/addProjectInfoxml.jsp"></forward>
@@ -125,6 +126,7 @@
    	 		<!--**************************************************************************************************************************************************************************** -->
    	 		<forward name="queryWatchInfoAdmin" path="/dyconfig/projectInfo/watchInfoxmlAdmin.jsp"></forward>
    	 			<forward name="queryBuyCardInfo" path="/dyconfig/projectInfo/BuyCardInfo.jsp"></forward>
+   	 			<forward name="queryBuyCardInfoShangHu" path="/dyconfig/projectInfo/BuyCardShangHuInfo.jsp"></forward>
    	 			<forward name="queryWatchInfo" path="/dyconfig/projectInfo/watchInfoxml.jsp"></forward>
    	 		<forward name="addProjectInfoWatch" path="/dyconfig/projectInfo/addProjectInfoWatch.jsp"></forward>
    	 			<forward name="addProjectInfoWatchOther" path="/dyconfig/projectInfo/addProjectInfoxmlOther.jsp"></forward>
@@ -132,7 +134,9 @@
    	 		<forward name="updateProjectWatchInfoOther" path="/dyconfig/projectInfo/updateProjectInfoWatchOther.jsp"></forward>
    	 		
    	 		<forward name="queryAddBalanceErrorInfo" path="/dyconfig/projectInfo/queryAddBalanceErrorInfo.jsp"></forward>
+   	 		<forward name="queryAddBalanceErrorInfoShangHu" path="/dyconfig/projectInfo/queryAddBalanceErrorInfoShangHu.jsp"></forward>
    	 		<forward name="queryAddBalanceSuccessInfo" path="/dyconfig/projectInfo/queryAddBalanceSuccessInfo.jsp"></forward>
+   	 		<forward name="queryAddBalanceSuccessInfoShangHu" path="/dyconfig/projectInfo/queryAddBalanceSuccessInfoShangHu.jsp"></forward>
    	 			<forward name="initAddBalanceById" path="/dyconfig/projectInfo/addBlanceByid.jsp"></forward>
    	 	</action>
    	 	

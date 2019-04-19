@@ -149,6 +149,9 @@ function ofuncs(projectId){
 					 <td width="8%">
 						是否有效
 					</td> 
+					 <td width="8%">
+						上游配置
+					</td> 
 				
 					<td width="10%">
 						创建时间
@@ -180,6 +183,9 @@ function ofuncs(projectId){
 							<td>
 							<logic:equal name="element" property="use_status" value="0"><font style="color:red;">暂停</font></logic:equal>							
 							<logic:equal name="element" property="use_status" value="1"><font style="color:green;">正常</font></logic:equal>
+						</td>
+						<td>								
+							<bean:write name="element" property="shangyou_content" />					
 						</td>
 						<td>								
 							<bean:write name="element" property="createtime" format="yyyy-MM-dd HH:mm:ss"/>

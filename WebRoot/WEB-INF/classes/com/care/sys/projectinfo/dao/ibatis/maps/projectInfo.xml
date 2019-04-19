@@ -12,6 +12,16 @@
 		</dynamic>
 	</select>
 	
+	
+	<select id="getBlanceInfo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		SELECT * FROM buy_card_info
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
 	<select id="getProjectUserInfo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
 		SELECT * FROM project_userinfo
 		<dynamic prepend="where">
@@ -139,8 +149,8 @@
 		SELECT COUNT(id) FROM projectinfo
 	</select>	
 	<insert id="insertProjectInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		INSERT INTO business_user_info (username,createtime,avatar,nickname,use_status,balance) VALUES 
-		(#projectNo#,#createtime#,#channelId#,#companyId#,#projectName#,#dataSourceC#)
+		INSERT INTO business_user_info (username,createtime,avatar,nickname,use_status,balance,shangyou_type,shangyou_content) VALUES 
+		(#projectNo#,#createtime#,#channelId#,#companyId#,#projectName#,#dataSourceC#,#shangyou_type#,#shangyou_content#)
 	</insert>
 	
 	
@@ -184,6 +194,12 @@
 			<isNotEmpty prepend="," property="dataSourceO">
 				balance=#dataSourceO#
 			</isNotEmpty>
+			<isNotEmpty prepend="," property="shangyou_type">
+				shangyou_type=#shangyou_type#
+			</isNotEmpty>
+				<isNotEmpty prepend="," property="shangyou_content">
+				shangyou_content=#shangyou_content#
+			</isNotEmpty>
 			<!-- <isNotEmpty prepend="," property="heartS">
 				heart_s=#heartS#
 			</isNotEmpty> -->
@@ -216,6 +232,21 @@
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="beifen">
 				beifen=#beifen#
+			</isNotEmpty>
+				
+		</dynamic>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="condition">
+				$condition$
+			</isNotEmpty>
+		</dynamic>
+	</update>
+	
+		<update id="updateBuyCardInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
+		UPDATE buy_card_info
+		<dynamic prepend="set">
+			<isNotEmpty prepend="," property="socketWay">
+				status=#socketWay#
 			</isNotEmpty>
 				
 		</dynamic>
@@ -295,8 +326,8 @@
 	</insert>
 	
 	<insert id="insertBuyCardInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		INSERT INTO buy_card_info (username,beizhu,add_blance,createtime,url) VALUES 
-		(#username#,#remark#,#shiqu#,#createtime#,#adTitle#)
+		INSERT INTO buy_card_info (username,beizhu,add_blance,createtime,url,status) VALUES 
+		(#username#,#remark#,#shiqu#,#createtime#,#adTitle#,0)
 	</insert>
 	
 	<select id="getProjectWatchInfo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">

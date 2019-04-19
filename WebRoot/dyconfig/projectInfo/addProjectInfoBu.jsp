@@ -6,10 +6,11 @@
 <%@ taglib uri="/WEB-INF/struts-logic" prefix="logic"%>
 <html>
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link href="<%=request.getContextPath()%>/css/tbls.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<%=request.getContextPath()%>/public/public.js"></script>
-<script src="<%=request.getContextPath()%>/js/jquery-1.8.2.js" type="text/javascript"></script> 
+<%-- <script src="<%=request.getContextPath()%>/js/jquery-1.8.2.js" type="text/javascript"></script>  --%>
 <title>无标题文档</title>
 </head>
 <script type="text/javascript">
@@ -60,10 +61,13 @@ $("#province").change();
        </tr>
   <tr class="tr_11">
     <td align="left" width="7%">&nbsp;&nbsp;客户名</td>
-    <td align="left" width="20%" colspan="2">
+    <td align="left" width="20%" colspan="1">
       <input name="username" size="50" id="username" type="text" class="txt_1" maxlength="100"/><font color="red">*</font>
     </td>
     </tr>
+    
+    
+    
    <tr class="tr_11">
     <td align="left" width="7%">&nbsp;&nbsp;昵称</td>
     <td align="left" width="20%" colspan="2">
@@ -83,6 +87,13 @@ $("#province").change();
     <td align="left" width="20%" colspan="2">
      <input type="radio" name="use_status" value="1" checked="checked"/>是
     		<input type="radio" name="use_status" value="0" />否
+    </td>
+  </tr>
+  
+    <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;上游配置</td> 
+    <td align="left" width="20%" colspan="2">
+		<%=request.getAttribute("companyList")%><font color="red">*</font>
     </td>
   </tr>
     

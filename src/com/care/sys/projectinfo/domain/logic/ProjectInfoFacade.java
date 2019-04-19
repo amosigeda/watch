@@ -59,5 +59,9 @@ public interface ProjectInfoFacade {
 
 	public int insertBuyCardInfo(ProjectInfo vo)throws SystemException;
 
+	public List<DataMap> getBlanceInfo(ProjectInfo vo)throws SystemException;
+
+	public int updateBuyCardInfo(ProjectInfo vo)throws SystemException;
+
 
 }

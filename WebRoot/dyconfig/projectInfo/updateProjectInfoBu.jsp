@@ -74,8 +74,7 @@ function onUpdate(){
   <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;昵称</td>
     <td align="left" >
-      <input type="text" size="50" name="nickname" id="nickname" value=<%=projectInfo.getAt("nickname")%>
-      >
+      <input type="text" size="50" name="nickname" id="nickname" value=<%=projectInfo.getAt("nickname")%>>
     </td>
     <td></td>
   </tr>
@@ -86,8 +85,14 @@ function onUpdate(){
     	<input name="use_status" type="radio" class="radio_1" value="1" <%if("1".equals("" + projectInfo.getAt("use_status"))){%>checked<%}%>>正常
 	    <input name="use_status" type="radio" class="radio_1" value="0" <%if("0".equals("" + projectInfo.getAt("use_status"))){%>checked<%}%>>禁用
     </td>   
- 
     <td></td>
+  </tr>
+  
+    <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;上游配置</td> 
+    <td align="left" width="20%" colspan="2">
+		<%=request.getAttribute("companyList")%><font color="red">*</font>
+    </td>
   </tr>
   
   <tr class="tr_11">

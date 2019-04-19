@@ -229,7 +229,7 @@ public class CommUtils {
 		while (it.hasNext()) {
 			DataMap map = it.next();
 			String value = "" + map.getAt(tvalue);
-			String name = "" + map.getAt(tname);
+			String name =  map.getAt(names)+"(" + map.getAt(tname)+")";
 			
 			String selected = "";
 			if (value.equals(svalue)) {
@@ -239,6 +239,7 @@ public class CommUtils {
 					+ name + "</option>\n");
 		}
 		sf.append("\t\t\t</select>");
+		System.out.println(sf.toString());
 		return sf.toString();
 	}
 	

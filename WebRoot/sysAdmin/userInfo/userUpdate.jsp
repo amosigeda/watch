@@ -89,7 +89,7 @@ window.location="doUserInfo.do?method=initAdverPower&id="+id+"&userCode="+userCo
 <table width="100%" border="0"cellpadding="0" cellspacing="1"  class="tbl_11">
   <tr>
      <th colspan="4" nowrap="nowrap" align="left">
-                           配置<font color="#FFFF00"><%=userInfo.getAt("userCode") %></font>
+                         修改<font color="#FFFF00"><%=userInfo.getAt("userCode") %></font>密码
      </th>
    </tr>
    <!-- <tr class="tr_11">
@@ -125,12 +125,12 @@ window.location="doUserInfo.do?method=initAdverPower&id="+id+"&userCode="+userCo
 		  <%} %>
     <td></td>
   </tr> --%>
-  <tr class="tr_11"">
+<%--   <tr class="tr_11"">
     <td align="left" width="12%">&nbsp;&nbsp;可查看表盘用户</td>   
       <td align="left" width="20%" colspan="2"> <%=request.getAttribute("userList") %> 
       </td>
         <td></td>
-  </tr>
+  </tr> --%>
   
  <!--  <tr class="tr_11">
     <td align="left" width="12%">&nbsp;&nbsp;登录账号</td>

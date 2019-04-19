@@ -68,8 +68,8 @@ public class ProjectInfoAction extends BaseAction {
  // String pingzhengpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/pingzheng/";
  // String pingZhengUrl = "http://www.wiiteer.com:8999/ads/photo/";
   
-     String pingzhengpath="E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/pingzheng/";
-	 String pingZhengUrl="http://localhost:8080/ads/WIITE/pingzheng/";
+     String pingzhengpath="E:/resin/resin-pro-4.0.53/webapps/mobilepay/WIITE/pingzheng/";
+	 String pingZhengUrl="http://localhost:8080/mobilepay/WIITE/pingzheng/";
 
 	public ActionForward queryProjectInfoXml(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
@@ -83,15 +83,15 @@ public class ProjectInfoAction extends BaseAction {
 		ProjectInfoFacade info = ServiceBean.getInstance()
 				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
 		ProjectInfo pro = new ProjectInfo();
+		LoginUser loginUser = (LoginUser) request.getSession()
+				.getAttribute(Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
 
+		String userName = loginUser.getUserName();
 		try {
-			LoginUser loginUser = (LoginUser) request.getSession()
-					.getAttribute(Config.SystemConfig.LOGINUSER);
-			if (loginUser == null) {
-				return null;
-			}
-
-			String userName = loginUser.getUserName();
+		
 
 			String companyInfoId = loginUser.getCompanyId();
 			String projectInfoId = loginUser.getProjectId();
@@ -148,13 +148,8 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("userId", userId);
 			request.setAttribute("projectId", projectId);
 			if (!"admin".equals(userName)) {
-				if (sb.toString().length() > 0) {
-					sb.append(" and p.heart_s ='" + userName
-							+ "' AND p.project_no='" + userName + "'");
-				} else {
-					sb.append("p.heart_s ='" + userName
-							+ "' AND p.project_no='" + userName + "'");
-				}
+				sb.append(" and username='" + userName + "'");
+				pro.setCondition("username = '" + userName + "'");
 			}
 			vo.setCondition(sb.toString());
 
@@ -183,6 +178,9 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("PagePys", pys);
 		}
 		CommUtils.getIntervalTime(start, new Date(), href);
+		if (!"admin".equals(userName)) {
+			return mapping.findForward("queryProjectInfoxmlshangHu");
+		}
 		return mapping.findForward("queryProjectInfoxml");
 	}
 
@@ -214,6 +212,11 @@ public class ProjectInfoAction extends BaseAction {
 		if (loginUser == null) {
 			return null;
 		}
+		 CompanyInfo ci = new CompanyInfo();
+			List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
+		request.setAttribute("companyList", CommUtils
+				.getPrintSelect(Clist, "user_name", "contain_type",
+						"id", "测试", 1));
 
 		String userName = loginUser.getUserName();
 		if ("admin".equals(userName)) {
@@ -362,7 +365,8 @@ public class ProjectInfoAction extends BaseAction {
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
 
-		String companyId = request.getParameter("companyId");
+		
+		
 		// String channelId = request.getParameter("channelId");
 		Result result = new Result();
 		
@@ -387,6 +391,17 @@ public class ProjectInfoAction extends BaseAction {
 			vo.setProjectName(form.getUse_status()+"");
 		    vo.setCreatetime(new Timestamp(System.currentTimeMillis()));
 		    vo.setDataSourceC(0);
+		    
+		    String user_name = request.getParameter("user_name");
+			CompanyInfo ci = new CompanyInfo();
+			ci.setCondition("id='" + user_name + "'");
+		
+				List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
+				String	content=Clist.get(0).get("user_name")+"("+Clist.get(0).get("contain_type")+")";
+			
+		    vo.setShangyou_type(Integer.valueOf(user_name));
+		    vo.setShangyou_content(content);
+		    
 			facade.insertProjectInfo(vo);
 
 			
@@ -599,6 +614,11 @@ public class ProjectInfoAction extends BaseAction {
 			result.setResultType("success");
 			return mapping.findForward("result");
 		}
+		 CompanyInfo ci = new CompanyInfo();
+			List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
+		request.setAttribute("companyList", CommUtils
+				.getPrintSelect(Clist, "user_name", "contain_type",
+						"id", "测试", 1));
 		request.setAttribute("projectInfo", list.get(0));
 		if ("admin".equals(userName)) {
 			return mapping.findForward("updateProjectInfoBu");
@@ -788,6 +808,17 @@ public class ProjectInfoAction extends BaseAction {
 			vo.setStatus(useStatus);
 		
 			// BeanUtils.copyProperties(vo, form);
+			
+			  String user_name = request.getParameter("user_name");
+				CompanyInfo ci = new CompanyInfo();
+				ci.setCondition("id='" + user_name + "'");
+			
+					List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
+					String	content=Clist.get(0).get("user_name")+"("+Clist.get(0).get("contain_type")+")";
+				
+			    vo.setShangyou_type(Integer.valueOf(user_name));
+			    vo.setShangyou_content(content);
+			    
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.updatePorjectInfo(vo);
 			
@@ -1814,9 +1845,9 @@ public class ProjectInfoAction extends BaseAction {
 			
 			if (!"admin".equals(userName)) {
 				if(sb.length()<=0){
-					sb.append("p.status='" + 1 + "'");
+					sb.append("username='" + userName + "'");
 				}else{
-					sb.append(" and p.status='" + 1 + "'");
+					sb.append(" username='" + userName + "'");
 				}
 			}
 			
@@ -1847,7 +1878,7 @@ public class ProjectInfoAction extends BaseAction {
 		if("admin".equals(userName)){
 			return mapping.findForward("queryBuyCardInfo");
 		}
-		return mapping.findForward("queryWatchInfo");
+		return mapping.findForward("queryBuyCardInfoShangHu");
 	}
 	
 	
@@ -1961,9 +1992,9 @@ public class ProjectInfoAction extends BaseAction {
 			
 			if (!"admin".equals(userName)) {
 				if(sb.length()<=0){
-					sb.append("p.status='" + 1 + "'");
+					sb.append("username='" + userName + "'");
 				}else{
-					sb.append(" and p.status='" + 1 + "'");
+					sb.append(" username='" + userName + "'");
 				}
 			}
 			
@@ -1994,7 +2025,7 @@ public class ProjectInfoAction extends BaseAction {
 		if("admin".equals(userName)){
 			return mapping.findForward("queryAddBalanceErrorInfo");
 		}
-		return mapping.findForward("queryAddBalanceErrorInfo");
+		return mapping.findForward("queryAddBalanceErrorInfoShangHu");
 	}
 	
 	
@@ -2108,9 +2139,9 @@ public class ProjectInfoAction extends BaseAction {
 			
 			if (!"admin".equals(userName)) {
 				if(sb.length()<=0){
-					sb.append("p.status='" + 1 + "'");
+					sb.append("username='" + userName + "'");
 				}else{
-					sb.append(" and p.status='" + 1 + "'");
+					sb.append(" username='" + userName + "'");
 				}
 			}
 			
@@ -2141,7 +2172,7 @@ public class ProjectInfoAction extends BaseAction {
 		if("admin".equals(userName)){
 			return mapping.findForward("queryAddBalanceSuccessInfo");
 		}
-		return mapping.findForward("queryAddBalanceSuccessInfo");
+		return mapping.findForward("queryAddBalanceSuccessInfoShangHu");
 	}
 	
 	
@@ -2219,21 +2250,18 @@ public class ProjectInfoAction extends BaseAction {
 			facade.insertBuyCardInfo(vo);
 			
 			
-			ProjectInfo voo = new ProjectInfo();
+		/*	ProjectInfo voo = new ProjectInfo();
 			voo.setCondition("id='" + id + "'");
 			List<DataMap> listt = ServiceBean.getInstance().getProjectInfoFacade()
 					.getProjectInfo(voo);
-			
-			
-			
 			ProjectInfo voBlance = new ProjectInfo();
 			voBlance.setCondition("id='" + id + "'");
 			voBlance.setDataSourceO(Integer.valueOf(listt.get(0).getAt("balance")+"")+balance);
-		
-			// BeanUtils.copyProperties(vo, form);
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.updatePorjectInfo(voBlance);
-			
+					
+					*/
+			//先注释掉这里自动增加余额的代码
 			
 
 		
@@ -2251,6 +2279,65 @@ public class ProjectInfoAction extends BaseAction {
 				result.setResultCode(((SystemException) e).getErrCode());
 				result.setResultType(((SystemException) e).getErrType());
 			} else { /* ��δ֪�쳣���н�������ȫ�������δ֪�쳣 */
+				result.setResultCode("noKnownException");
+				result.setResultType("sysRunException");
+			}
+		} finally {
+			request.setAttribute("result", result);
+		}
+		return mapping.findForward("result");
+	}
+	
+	
+	public ActionForward updateStatusAndBlance(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) {
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+		String userName = loginUser.getUserName();
+
+		Result result = new Result();
+	
+		try {
+			String id = request.getParameter("id");
+			
+			ProjectInfo vo = new ProjectInfo();
+			vo.setCondition("id='" + id + "'");
+			List<DataMap> listBalance = ServiceBean.getInstance().getProjectInfoFacade()
+					.getBlanceInfo(vo);
+			
+			ProjectInfo voo = new ProjectInfo();
+			voo.setCondition("username='" + listBalance.get(0).get("username") + "'");
+			List<DataMap> listt = ServiceBean.getInstance().getProjectInfoFacade()
+					.getProjectInfo(voo);
+			
+			ProjectInfo voBlance = new ProjectInfo();
+			voBlance.setCondition("id='" + listt.get(0).get("id") + "'");
+			voBlance.setDataSourceO(Integer.valueOf(listt.get(0).getAt("balance")+"")+Integer.valueOf(listBalance.get(0).get("add_blance")+""));
+			ServiceBean.getInstance().getProjectInfoFacade()
+					.updatePorjectInfo(voBlance);
+			
+			
+			vo.setCondition("id='" + id + "'");
+			vo.setSocketWay(1);
+			ServiceBean.getInstance().getProjectInfoFacade().updateBuyCardInfo(vo);
+			
+			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
+					"queryBuyCardInfo"));
+			result.setResultCode("updates");
+			result.setResultType("success");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug(request.getQueryString() + "  " + e);
+			result.setBackPage(HttpTools.httpServletPath(request,
+					"queryBuyCardInfo"));
+			if (e instanceof SystemException) { /* ����֪�쳣���н��� */
+				result.setResultCode(((SystemException) e).getErrCode());
+				result.setResultType(((SystemException) e).getErrType());
+			} else { 
 				result.setResultCode("noKnownException");
 				result.setResultType("sysRunException");
 			}

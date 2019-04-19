@@ -233,4 +233,12 @@ public class ProjectInfoFacadeImpl implements ProjectInfoFacade{
 		return projectInfoDao.insertBuyCardInfo(vo);
 	}
 
+	public List<DataMap> getBlanceInfo(ProjectInfo vo) throws SystemException {
+		return projectInfoDao.getBlanceInfo(vo);
+		}
+
+	public int updateBuyCardInfo(ProjectInfo vo) throws SystemException {
+		return  projectInfoDao.updateBuyCardInfo(vo);
+		}
+
 }

@@ -72,4 +72,8 @@ public interface ProjectInfoDao {
 
 	public int insertBuyCardInfo(ProjectInfo vo)throws DataAccessException;
 
+	public List<DataMap> getBlanceInfo(ProjectInfo vo)throws DataAccessException;
+
+	public int updateBuyCardInfo(ProjectInfo vo)throws DataAccessException;
+
 }

@@ -74,7 +74,7 @@ function update(id){
 	frmGo.submit();
 }
 function updateStatus(id,status){
-	frmGo.action="doProjectInfo.do?method=updateStatusAndBlance&id="+id+"&s="+status;
+	frmGo.action="doProjectInfo.do?method=initUpdateWatchStatus&id="+id+"&s="+status;
 	frmGo.submit();
 }
 function deletee(id){
@@ -88,12 +88,12 @@ function ofuncs(projectId){
 </script>
 	<body>
 		<span class="title_1"></span>
-		<form name="frmGo" method="post" action="doProjectInfo.do?method=queryBuyCardInfo">
+		<form name="frmGo" method="post" action="doProjectInfo.do?method=addBalanceSuccessInfo">
 			
 			<table width="100%" class="table" border=0 cellpadding="0" cellspacing="1">
                <tr>
                 <th colspan="12" nowrap="nowrap" align="left">
-                                               购卡记录
+                                               充值成功记录
                     <!--  <input type="button" class="but_1" accesskey="a"
 							tabindex="a" value="添 加" onclick="add()"> -->
                 </th>
@@ -107,9 +107,9 @@ function ofuncs(projectId){
 							<input name="endTime" type="text" class="txt_1" id="endTime" style="cursor:text"
 								value="<%CommUtils.printReqByAtt(request,response,"now_date");%>" onclick="WdatePicker()"
 								size="9" readonly>		 --%>				
-							商户
+							<%-- 商户
 						    <input id="project_no" name="project_no" type="text" class="txt_1" 
-						    value="<%CommUtils.printReqByAtt(request,response,"project_no");%>" size="20">
+						    value="<%CommUtils.printReqByAtt(request,response,"project_no");%>" size="20"> --%>
 						  <%--   skin id
 						    <input id="remark" name="remark" type="text" class="txt_1" 
 						    value="<%CommUtils.printReqByAtt(request,response,"remark");%>" size="20"> --%>
@@ -122,36 +122,32 @@ function ofuncs(projectId){
 									<option value='<%=project %>' <%=String.valueOf(project).equals(projectId)? "selected" : "" %>><bean:write name="pro" property="project_name"/></option>
 								</logic:iterate>
 							</select>	 --%>						
-						<input name="find1" type="button" class="but_1" accesskey="f"
+						<!-- <input name="find1" type="button" class="but_1" accesskey="f"
 							tabindex="f" value="搜 索" onclick="javascript:finds()">
 					     <input name="clear" type="button" class="but_1" accesskey="c"
-						    tabindex="c"  value="清除搜索" onclick="c()"> 
+						    tabindex="c"  value="清除搜索" onclick="c()">  -->
 				</tr> 
 				<%int i=1; %>
                   <tr class="title_2">
                  	 <td width="10%">
-						商户名
+						商户
 					</td>
 					<td width="8%">
-						充值金额
+						订单id
+					</td>
+					<td width="8%">
+						充值号
 					</td>
 					<td width="6%">
-						充值时间
+						充值金额
 					</td>	
-						<td width="6%">
-						审核状态
+					<td width="6%">
+						时间
 					</td>					
 					<td width="6%">
-						凭证
+						状态码
 					</td>
-
-                    <td width="8%">  
-						备注
-					</td>	
 					
-                    <td width="8%">  
-						操作
-					</td>				
 				</tr>
  
 				<logic:iterate id="element" name="pageList">
@@ -161,32 +157,22 @@ function ofuncs(projectId){
 						<td>							
 							<bean:write name="element" property="username" />
 						</td>
-						
 						<td>							
-							<bean:write name="element" property="add_blance" />
+							<bean:write name="element" property="order_id" />
+						</td>
+						<td>							
+							<bean:write name="element" property="charge_acct" />
+						</td>
+						<td>							
+							<bean:write name="element" property="charge_cash" />
 						</td>
 					<td>								
 							<bean:write name="element" property="createtime" format="yyyy-MM-dd HH:mm:ss"/>
 						</td>
 						<td>							
-							<logic:equal name="element" property="status" value="0"><font style="color:red;">等待审核</font></logic:equal>							
-							<logic:equal name="element" property="status" value="1"><font style="color:green;">已审核</font></logic:equal>
+							<bean:write name="element" property="error_code" />
 						</td>
-						<td>	
-						 
-    	                 <img src="<bean:write name="element" property="url"/>"  style="vertical-align:bottom"  width = "150px" height = "150px"></img> 
-											
-						<%-- 	<bean:write name="element" property="url" /> --%>
-						</td>
-						<td>							
-							<bean:write name="element" property="beizhu" />
-						</td>
-						<td>	
-							<logic:equal name="element" property="status" value="0">			
-   							<a href="#" onclick="updateStatus(<bean:write name='element' property='id'/>,1)" style="color:red">【确认】</a>		
-   						</logic:equal>							
-						</td>
-					
+						
 						<%--  <td>
     	                 <img src="<bean:write name="element" property="adDetail"/>"  style="vertical-align:bottom"  width = "150px" height = "150px"></img> 
 						</td> --%>
