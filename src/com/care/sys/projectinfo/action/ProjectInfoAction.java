@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -2346,6 +2347,51 @@ public class ProjectInfoAction extends BaseAction {
 		}
 		return mapping.findForward("result");
 	}
+	
+	
+	public ActionForward resetScretById(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) {
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+		String userName = loginUser.getUserName();
+
+		Result result = new Result();
+	
+		try {
+			String id = request.getParameter("id");
+			
+			ProjectInfo vo = new ProjectInfo();
+			vo.setCondition("id='" + id + "'");
+			vo.setAdDetail(UUID.randomUUID().toString());
+			ServiceBean.getInstance().getProjectInfoFacade()
+					.updatePorjectInfo(vo);
+			
+			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
+					"queryProjectInfoXml"));
+			result.setResultCode("updates");
+			result.setResultType("success");
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug(request.getQueryString() + "  " + e);
+			result.setBackPage(HttpTools.httpServletPath(request,
+					"queryProjectInfoXml"));
+			if (e instanceof SystemException) { /* ����֪�쳣���н��� */
+				result.setResultCode(((SystemException) e).getErrCode());
+				result.setResultType(((SystemException) e).getErrType());
+			} else { 
+				result.setResultCode("noKnownException");
+				result.setResultType("sysRunException");
+			}
+		} finally {
+			request.setAttribute("result", result);
+		}
+		return mapping.findForward("result");
+	}
+
 
 }
 

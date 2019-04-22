@@ -80,6 +80,11 @@ function addBlanceByid(id){
 	frmGo.action="doProjectInfo.do?method=initAddBalanceById&id="+id;
 	frmGo.submit();
 }
+
+function resetScretById(id){
+	frmGo.action="doProjectInfo.do?method=resetScretById&id="+id;
+	frmGo.submit();
+}
 function ofuncs(projectId){
 	window.open("projectRoleFuncFrame.jsp?projectId=" + i);
 	//window.showModalDialog("roleFuncFrame.jsp?roleCode=" + rcode,		"","help:0;resizable:0;status=0;scrollbars=0;dialogWidth=25;dialogHeight=35;center=true");;
@@ -133,10 +138,13 @@ function ofuncs(projectId){
                   <tr class="title_2">
                  	 
 					<td width="8%">
-						商户名
+						商户名(登录账号)
+					</td>
+					<td width="10%">
+						秘钥
 					</td>
 						<td width="6%">
-						昵称
+						公司名称
 					</td>
 							
 					<td width="6%">
@@ -170,6 +178,9 @@ function ofuncs(projectId){
 						
 						<td>							
 							<bean:write name="element" property="username" />
+						</td>
+						<td>							
+							<bean:write name="element" property="scret" />
 						</td>
 						<td>
 							<bean:write name="element" property="nickname" />											
@@ -219,6 +230,7 @@ function ofuncs(projectId){
 						<td>
 							<a href=# onclick="update('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【修改】</a>
 							<a href=# onclick="addBlanceByid('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【充值】</a> 
+							<a href=# onclick="resetScretById('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【重置秘钥】</a> 
 							<%-- <a href="#"
 								onclick="ofuncs('<bean:write name="element" property="id" />')"  class="tbl_A" >【权限设置】</a> --%>
 						</td>

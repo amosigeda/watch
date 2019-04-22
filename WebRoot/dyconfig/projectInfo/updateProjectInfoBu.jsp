@@ -60,7 +60,7 @@ function onUpdate(){
      </th>
    </tr>
   <tr class="tr_11">
-    <td width="7%" align="left">&nbsp;&nbsp;商户名</td>
+    <td width="7%" align="left">&nbsp;&nbsp;商户名(登录号)</td>
     <td align="left" >
       <input type="text" size="50"  name="username" id="username" value=<%=projectInfo.getAt("username")%>
        >
@@ -72,7 +72,7 @@ function onUpdate(){
     <td></td>
   </tr>
   <tr class="tr_11">
-    <td width="7%" align="left">&nbsp;&nbsp;昵称</td>
+    <td width="7%" align="left">&nbsp;&nbsp;公司名称</td>
     <td align="left" >
       <input type="text" size="50" name="nickname" id="nickname" value=<%=projectInfo.getAt("nickname")%>>
     </td>

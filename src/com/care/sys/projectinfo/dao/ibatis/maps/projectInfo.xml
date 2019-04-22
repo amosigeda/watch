@@ -210,7 +210,7 @@
 				adTitle=#adTitle#
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="adDetail">
-				adDetail=#adDetail#
+				scret=#adDetail#
 			</isNotEmpty>
 			<!-- 	,remark=#remark# -->
 		</dynamic>
