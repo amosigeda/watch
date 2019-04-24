@@ -45,6 +45,7 @@ import com.godoing.rose.http.common.PagePys;
 import com.godoing.rose.http.common.Result;
 import com.godoing.rose.lang.DataList;
 import com.godoing.rose.lang.DataMap;
+import com.godoing.rose.lang.MD5;
 import com.godoing.rose.lang.SystemException;
 import com.godoing.rose.log.LogFactory;
 
@@ -214,6 +215,7 @@ public class ProjectInfoAction extends BaseAction {
 			return null;
 		}
 		 CompanyInfo ci = new CompanyInfo();
+		 ci.setCondition("status='" +1+ "'");
 			List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
 		request.setAttribute("companyList", CommUtils
 				.getPrintSelect(Clist, "user_name", "contain_type",
@@ -402,9 +404,37 @@ public class ProjectInfoAction extends BaseAction {
 			
 		    vo.setShangyou_type(Integer.valueOf(user_name));
 		    vo.setShangyou_content(content);
+			vo.setAdDetail(UUID.randomUUID().toString());
 		    
 			facade.insertProjectInfo(vo);
 
+			
+			//同时需要添加 登录账号
+			UserInfo userInfo = new UserInfo();
+			userInfo.setCompanyId("0");
+			userInfo.setCreateDate(new Date());  
+			userInfo.setUpdateDate(new Date());
+			userInfo.setUserName(form.getUsername());
+			userInfo.setGroupCode("2");
+			userInfo.setTag(1);
+			userInfo.setCodes("manager");
+			userInfo.setPassWrd1("123456");
+			userInfo.setPassWrd("e10adc3949ba59abbe56e057f20f883e");
+			userInfo.setUserCode(form.getUsername());
+			userInfo.setRemark("客户");
+			userInfo.setAddUser("admin");
+			userInfo.setProjectId("0");
+
+			/*roleInfo.setCondition("id ="+form.getGroupCode());
+			List<DataMap> list= ServiceBean.getInstance().getRoleInfoFacade().getRoleInfo(roleInfo);
+			if(!list.isEmpty()){
+				roleDesc = list.get(0).getAt("roleDesc").toString();
+			}*/
+				
+			//vo.setCode(roleDesc);		
+			ServiceBean.getInstance().getUserInfoFacade()
+					.insertUserInfo(userInfo); 
+			
 			
 
 			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
@@ -616,11 +646,14 @@ public class ProjectInfoAction extends BaseAction {
 			return mapping.findForward("result");
 		}
 		 CompanyInfo ci = new CompanyInfo();
+		 ci.setCondition("status='" + 1 + "'");
 			List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
 		request.setAttribute("companyList", CommUtils
 				.getPrintSelect(Clist, "user_name", "contain_type",
 						"id", "测试", 1));
 		request.setAttribute("projectInfo", list.get(0));
+		
+		
 		if ("admin".equals(userName)) {
 			return mapping.findForward("updateProjectInfoBu");
 		} else {
@@ -791,8 +824,18 @@ public class ProjectInfoAction extends BaseAction {
 	public ActionForward updateProjectInfoBu(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
+		LoginUser loginUser = (LoginUser) request.getSession()
+				.getAttribute(Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
 
+		String loginUserName = loginUser.getUserName();
 		Result result = new Result();
+		PagePys pys = new PagePys();// ҳ������
+		DataList list = null; // ����ҳ��List ��logic itrate��ȡ��
+		ProjectInfoFacade info = ServiceBean.getInstance()
+				.getProjectInfoFacade();
 		try {
 			String id = request.getParameter("id");
 			String userName = request.getParameter("username");
@@ -824,10 +867,22 @@ public class ProjectInfoAction extends BaseAction {
 					.updatePorjectInfo(vo);
 			
 
-			result.setBackPage(HttpTools.httpServletPath(request,
+			/*result.setBackPage(HttpTools.httpServletPath(request,
 					"queryProjectInfoXml"));
 			result.setResultCode("updates");
-			result.setResultType("success");
+			result.setResultType("success");*/
+			ProjectInfo voc = new ProjectInfo();
+			ProjectInfoForm form = (ProjectInfoForm) actionForm;
+			form.setOrderBy("id");
+			form.setSort("1");
+			voc.setFrom(0);
+			voc.setPageSize(20);
+		
+			list = info.getProjectInfoListByVo(voc);
+			BeanUtils.copyProperties(pys, form);
+			pys.setCounts(list.getTotalSize());
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.debug(request.getQueryString() + "  " + e);
@@ -841,9 +896,17 @@ public class ProjectInfoAction extends BaseAction {
 				result.setResultType("sysRunException");
 			}
 		} finally {
+			//request.setAttribute("result", result);
 			request.setAttribute("result", result);
+			request.setAttribute("pageList", list);
+			request.setAttribute("PagePys", pys);
 		}
-		return mapping.findForward("result");
+		if (!"admin".equals(loginUserName)) {
+			return mapping.findForward("queryProjectInfoxmlshangHu");
+		}
+		return mapping.findForward("queryProjectInfoxml");
+		
+	
 	}
 
 	public ActionForward updateProjectInfoxmlOther(ActionMapping mapping,
@@ -974,55 +1037,43 @@ public class ProjectInfoAction extends BaseAction {
 	public ActionForward deletexml(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
-
+		PagePys pys = new PagePys();// ҳ������
+		DataList list = null; // ����ҳ��List ��logic itrate��ȡ��
+		ProjectInfoFacade info = ServiceBean.getInstance()
+				.getProjectInfoFacade();
 		Result result = new Result();
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
+		if (loginUser == null) {
+			return null;
+		}
+		String userName = loginUser.getUserName();
 		try {
 			ProjectInfoForm form = (ProjectInfoForm) actionForm;
 
 			ProjectInfo vo = new ProjectInfo();
 			vo.setCondition("id='" + form.getId() + "'");
-			BeanUtils.copyProperties(vo, form);
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.deletePorjectInfoxml(vo);
-			ProjectInfo voo = new ProjectInfo();
-			StringBuffer sb = new StringBuffer();
-			List<DataMap> getProjectInfo = ServiceBean.getInstance()
-					.getProjectInfoFacade().getProjectInfo(voo);
-			if (getProjectInfo.size() > 0) {
-				sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-				sb.append("<ads>");
-				for (int i = 0; i < getProjectInfo.size(); i++) {
-					sb.append("<advertising>");
-					sb.append("<customerName>");
-					sb.append(getProjectInfo.get(i).get("project_no") + "");
-					sb.append("</customerName>");
-					sb.append("<advertisingUrl>");
-					sb.append(getProjectInfo.get(i).get("project_name") + "");
-					sb.append("</advertisingUrl>");
-					sb.append("<iconUrl>");
-					sb.append(getProjectInfo.get(i).get("channel_id") + "");
-					sb.append("</iconUrl>");
-					sb.append("<lanugage>");
-					sb.append(getProjectInfo.get(i).get("company_id") + "");
-					sb.append("</lanugage>");
-					sb.append("<adTitle>");
-					sb.append(getProjectInfo.get(i).get("adTitle") + "");
-					sb.append("</adTitle>");
-					sb.append("<adDetail>");
-					sb.append(getProjectInfo.get(i).get("adDetail") + "");
-					sb.append("</adDetail>");
-					sb.append("</advertising>");
-				}
-				sb.append("</ads>");
-			}
-			Constant.deleteFile(xmlpath + xmlfileName);
-			Constant.createFileContent(xmlpath, xmlfileName, sb.toString()
-					.getBytes("UTF-8"));
+		
+		
+	
 
-			result.setBackPage(HttpTools.httpServletPath(request,
+/*			result.setBackPage(HttpTools.httpServletPath(request,
 					"queryProjectInfoXml"));
 			result.setResultCode("deletes");
-			result.setResultType("success");
+			result.setResultType("success");*/
+			
+			ProjectInfo voc = new ProjectInfo();
+			ProjectInfoForm formm = (ProjectInfoForm) actionForm;
+			form.setOrderBy("id");
+			form.setSort("1");
+			voc.setFrom(0);
+			voc.setPageSize(20);
+		
+			list = info.getProjectInfoListByVo(voc);
+			BeanUtils.copyProperties(pys, formm);
+			pys.setCounts(list.getTotalSize());
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.debug(request.getQueryString() + "  " + e);
@@ -1037,8 +1088,13 @@ public class ProjectInfoAction extends BaseAction {
 			}
 		} finally {
 			request.setAttribute("result", result);
+			request.setAttribute("pageList", list);
+			request.setAttribute("PagePys", pys);
 		}
-		return mapping.findForward("result");
+		if (!"admin".equals(userName)) {
+			return mapping.findForward("queryProjectInfoxmlshangHu");
+		}
+		return mapping.findForward("queryProjectInfoxml");
 	}
 
 	/*-----------------------表盘---------------------------------------------------------------------------------*/
@@ -2358,7 +2414,10 @@ public class ProjectInfoAction extends BaseAction {
 			return null;
 		}
 		String userName = loginUser.getUserName();
-
+		PagePys pys = new PagePys();// ҳ������
+		DataList list = null; // ����ҳ��List ��logic itrate��ȡ��
+		ProjectInfoFacade info = ServiceBean.getInstance()
+				.getProjectInfoFacade();
 		Result result = new Result();
 	
 		try {
@@ -2370,10 +2429,20 @@ public class ProjectInfoAction extends BaseAction {
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.updatePorjectInfo(vo);
 			
-			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
+			/*esult.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
 					"queryProjectInfoXml"));
 			result.setResultCode("updates");
-			result.setResultType("success");
+			result.setResultType("success");*/
+			ProjectInfo voc = new ProjectInfo();
+			ProjectInfoForm form = (ProjectInfoForm) actionForm;
+			form.setOrderBy("id");
+			form.setSort("1");
+			voc.setFrom(0);
+			voc.setPageSize(20);
+		
+			list = info.getProjectInfoListByVo(voc);
+			BeanUtils.copyProperties(pys, form);
+			pys.setCounts(list.getTotalSize());
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.debug(request.getQueryString() + "  " + e);
@@ -2387,9 +2456,15 @@ public class ProjectInfoAction extends BaseAction {
 				result.setResultType("sysRunException");
 			}
 		} finally {
+			//request.setAttribute("result", result);
 			request.setAttribute("result", result);
+			request.setAttribute("pageList", list);
+			request.setAttribute("PagePys", pys);
 		}
-		return mapping.findForward("result");
+		if (!"admin".equals(userName)) {
+			return mapping.findForward("queryProjectInfoxmlshangHu");
+		}
+		return mapping.findForward("queryProjectInfoxml");
 	}
 
 

@@ -69,12 +69,18 @@ function changeCompany(obj){
 	});
 }
 function update(id){
+	if(confirm("确定修改吗?"))
+	{
 	frmGo.action="doProjectInfo.do?method=initUpdateBu&id="+id;
 	frmGo.submit();
+	}
 }
 function deletee(id){
+	if(confirm("确定删除吗?"))
+	{
 	frmGo.action="doProjectInfo.do?method=deletexml&id="+id;
 	frmGo.submit();
+	}
 }
 function addBlanceByid(id){
 	frmGo.action="doProjectInfo.do?method=initAddBalanceById&id="+id;
@@ -82,8 +88,11 @@ function addBlanceByid(id){
 }
 
 function resetScretById(id){
-	frmGo.action="doProjectInfo.do?method=resetScretById&id="+id;
-	frmGo.submit();
+	if(confirm("确定重置秘钥吗?"))
+	{
+		frmGo.action="doProjectInfo.do?method=resetScretById&id="+id;
+		frmGo.submit();
+	}
 }
 function ofuncs(projectId){
 	window.open("projectRoleFuncFrame.jsp?projectId=" + i);
@@ -136,7 +145,9 @@ function ofuncs(projectId){
 				</tr> 
 				<%int i=1; %>
                   <tr class="title_2">
-                 	 
+                 	 <td width="3%">
+						ID
+					</td>
 					<td width="8%">
 						商户名(登录账号)
 					</td>
@@ -175,6 +186,10 @@ function ofuncs(projectId){
 				<logic:iterate id="element" name="pageList">
 					<tr class="tr_5" onmouseover='this.className="tr_4"'
 						onmouseout='this.className="tr_5"'>
+						
+						<td>							
+							<bean:write name="element" property="id" />
+						</td>
 						
 						<td>							
 							<bean:write name="element" property="username" />
@@ -231,6 +246,7 @@ function ofuncs(projectId){
 							<a href=# onclick="update('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【修改】</a>
 							<a href=# onclick="addBlanceByid('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【充值】</a> 
 							<a href=# onclick="resetScretById('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【重置秘钥】</a> 
+							<a href=# onclick="deletee('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【删除】</a> 
 							<%-- <a href="#"
 								onclick="ofuncs('<bean:write name="element" property="id" />')"  class="tbl_A" >【权限设置】</a> --%>
 						</td>

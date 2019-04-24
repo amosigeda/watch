@@ -62,7 +62,7 @@ function onUpdate(){
   <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;ÉÌ»§Ãû(µÇÂ¼ºÅ)</td>
     <td align="left" >
-      <input type="text" size="50"  name="username" id="username" value=<%=projectInfo.getAt("username")%>
+      <input type="text" size="50"  name="username" readonly= "true" id="username" value=<%=projectInfo.getAt("username")%>
        >
  <!--      onchange="selectProject(this.value)"> -->
        <%-- <td align="left" >

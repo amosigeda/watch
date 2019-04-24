@@ -85,8 +85,12 @@ function ofuncs(projectId){
 	//window.showModalDialog("roleFuncFrame.jsp?roleCode=" + rcode,		"","help:0;resizable:0;status=0;scrollbars=0;dialogWidth=25;dialogHeight=35;center=true");;
 }
 function resetScretById(id){
-	frmGo.action="doProjectInfo.do?method=resetScretById&id="+id;
-	frmGo.submit();
+	if(confirm("»∑∂®÷ÿ÷√√ÿ‘ø¬?"))
+	{
+		frmGo.action="doProjectInfo.do?method=resetScretById&id="+id;
+		frmGo.submit();
+	}
+	
 }
 </script>
 	<body>

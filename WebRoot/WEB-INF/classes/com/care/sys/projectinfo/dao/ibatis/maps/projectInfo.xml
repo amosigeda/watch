@@ -149,8 +149,8 @@
 		SELECT COUNT(id) FROM projectinfo
 	</select>	
 	<insert id="insertProjectInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		INSERT INTO business_user_info (username,createtime,avatar,nickname,use_status,balance,shangyou_type,shangyou_content) VALUES 
-		(#projectNo#,#createtime#,#channelId#,#companyId#,#projectName#,#dataSourceC#,#shangyou_type#,#shangyou_content#)
+		INSERT INTO business_user_info (username,createtime,avatar,nickname,use_status,balance,shangyou_type,shangyou_content,scret) VALUES 
+		(#projectNo#,#createtime#,#channelId#,#companyId#,#projectName#,#dataSourceC#,#shangyou_type#,#shangyou_content#,#adDetail#)
 	</insert>
 	
 	
@@ -277,7 +277,7 @@
 	</delete>
 	
 	<delete id="deletePorjectInfoxml" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		DELETE FROM projectinfo
+		DELETE FROM business_user_info
 		<dynamic prepend="where">
 		   <!--  <isNotEmpty prepend="and" property="id">
 			  id=#id#

@@ -53,7 +53,7 @@ function onUpdate(){
     <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;√ÿ‘ø</td>
     <td width="20%" align="left">
-    	<input name="secret_key" id="secret_key" type="text" class="txt_1" maxlength="20" value="<%=companyInfo.getAt("secret_key")==null?" ":companyInfo.getAt("secret_key")%>"><font color="red">*</font>
+    	<input name="secret_key" id="secret_key" type="text" class="txt_1" maxlength="128"  size="128" value="<%=companyInfo.getAt("secret_key")==null?" ":companyInfo.getAt("secret_key")%>"><font color="red"></font>
     </td>
     <td align="left"><font></font></td>
   </tr>
