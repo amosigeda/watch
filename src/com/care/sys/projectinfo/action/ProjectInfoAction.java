@@ -396,6 +396,7 @@ public class ProjectInfoAction extends BaseAction {
 		    vo.setDataSourceC(0);
 		    
 		    String user_name = request.getParameter("user_name");
+		    String ret_url = request.getParameter("url");
 			CompanyInfo ci = new CompanyInfo();
 			ci.setCondition("id='" + user_name + "'");
 		
@@ -405,6 +406,7 @@ public class ProjectInfoAction extends BaseAction {
 		    vo.setShangyou_type(Integer.valueOf(user_name));
 		    vo.setShangyou_content(content);
 			vo.setAdDetail(UUID.randomUUID().toString());
+			vo.setRoleCodeP(ret_url);
 		    
 			facade.insertProjectInfo(vo);
 
@@ -842,6 +844,7 @@ public class ProjectInfoAction extends BaseAction {
 			String nickName = request.getParameter("nickname");
 			String useStatus = request.getParameter("use_status");
 			String avatar = request.getParameter("avatar");
+			String ret_url = request.getParameter("url");
 			
 
 			ProjectInfo vo = new ProjectInfo();
@@ -863,6 +866,8 @@ public class ProjectInfoAction extends BaseAction {
 			    vo.setShangyou_type(Integer.valueOf(user_name));
 			    vo.setShangyou_content(content);
 			    
+			    vo.setRoleCodeP(ret_url);
+			    
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.updatePorjectInfo(vo);
 			
@@ -877,6 +882,8 @@ public class ProjectInfoAction extends BaseAction {
 			form.setSort("1");
 			voc.setFrom(0);
 			voc.setPageSize(20);
+			voc.setSort("1");
+			voc.setOrderBy("id");
 		
 			list = info.getProjectInfoListByVo(voc);
 			BeanUtils.copyProperties(pys, form);
@@ -1070,6 +1077,8 @@ public class ProjectInfoAction extends BaseAction {
 			form.setSort("1");
 			voc.setFrom(0);
 			voc.setPageSize(20);
+			voc.setSort("1");
+			voc.setOrderBy("id");
 		
 			list = info.getProjectInfoListByVo(voc);
 			BeanUtils.copyProperties(pys, formm);
@@ -2439,6 +2448,8 @@ public class ProjectInfoAction extends BaseAction {
 			form.setSort("1");
 			voc.setFrom(0);
 			voc.setPageSize(20);
+			voc.setSort("1");
+			voc.setOrderBy("id");
 		
 			list = info.getProjectInfoListByVo(voc);
 			BeanUtils.copyProperties(pys, form);

@@ -171,6 +171,9 @@ function ofuncs(projectId){
 					 <td width="8%">
 						上游配置
 					</td> 
+					 <td width="8%">
+						回调URL
+					</td> 
 				
 					<td width="10%">
 						创建时间
@@ -212,6 +215,9 @@ function ofuncs(projectId){
 						</td>
 						<td>								
 							<bean:write name="element" property="shangyou_content" />					
+						</td>
+						<td>								
+							<bean:write name="element" property="url" />					
 						</td>
 						<td>								
 							<bean:write name="element" property="createtime" format="yyyy-MM-dd HH:mm:ss"/>

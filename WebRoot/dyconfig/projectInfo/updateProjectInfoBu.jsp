@@ -95,6 +95,14 @@ function onUpdate(){
     </td>
   </tr>
   
+    <tr class="tr_11">
+    <td width="7%" align="left">&nbsp;&nbsp;»Øµ÷url</td>
+    <td align="left" >
+      <input type="text" size="150" name="url" id="url" value=<%=projectInfo.getAt("url")%>>
+    </td>
+    <td></td>
+  </tr>
+  
   <tr class="tr_11">
     <td width="7%" align="left">&nbsp;&nbsp;±¸×¢</td>
     <td align="left" >

@@ -74,6 +74,13 @@ $("#province").change();
       <input name="nickname" size="50" id="nickname"  type="text" class="txt_1" maxlength="100"><font color="red">*</font>
     </td>
   </tr>
+  
+      <tr class="tr_11">
+    <td align="left" width="7%">&nbsp;&nbsp;»Øµ÷url</td>
+    <td align="left" width="20%" colspan="2">
+      <input name="url" size="150" id="url"  type="text" class="txt_1" maxlength="100"><font color="red">*</font>
+    </td>
+  </tr>
     <tr class="tr_11">
     <td align="left" width="7%">&nbsp;&nbsp;±¸×¢</td>
     <td align="left" width="20%" colspan="2">

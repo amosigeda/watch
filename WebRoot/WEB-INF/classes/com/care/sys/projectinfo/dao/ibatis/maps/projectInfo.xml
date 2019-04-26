@@ -149,8 +149,8 @@
 		SELECT COUNT(id) FROM projectinfo
 	</select>	
 	<insert id="insertProjectInfo" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		INSERT INTO business_user_info (username,createtime,avatar,nickname,use_status,balance,shangyou_type,shangyou_content,scret) VALUES 
-		(#projectNo#,#createtime#,#channelId#,#companyId#,#projectName#,#dataSourceC#,#shangyou_type#,#shangyou_content#,#adDetail#)
+		INSERT INTO business_user_info (username,createtime,avatar,nickname,use_status,balance,shangyou_type,shangyou_content,scret,url) VALUES 
+		(#projectNo#,#createtime#,#channelId#,#companyId#,#projectName#,#dataSourceC#,#shangyou_type#,#shangyou_content#,#adDetail#,#roleCodeP#)
 	</insert>
 	
 	
@@ -211,6 +211,9 @@
 			</isNotEmpty>
 			<isNotEmpty prepend="," property="adDetail">
 				scret=#adDetail#
+			</isNotEmpty>
+				<isNotEmpty prepend="," property="roleCodeP">
+				url=#roleCodeP#
 			</isNotEmpty>
 			<!-- 	,remark=#remark# -->
 		</dynamic>
