@@ -21,6 +21,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.ecs.xhtml.u;
@@ -33,6 +35,7 @@ import com.care.app.LoginUser;
 import com.care.common.config.Config;
 import com.care.common.config.ServiceBean;
 import com.care.common.http.BaseAction;
+import com.care.common.http.HttpRequest;
 import com.care.common.lang.CommUtils;
 import com.care.common.lang.Constant;
 import com.care.sys.companyinfo.domain.CompanyInfo;
@@ -63,15 +66,17 @@ public class ProjectInfoAction extends BaseAction {
 
 	/*************************************************************************************************************/
 	String clockskinName = "clockskin.xml";
-	//String clockxmlpath = "E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
+	// String clockxmlpath =
+	// "E:/resin/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
 	String clockdownloadUrl = "http://www.wiiteer.com:8999/ads/WIITE/biaopan/";
-  String clockxmlpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
-  
- // String pingzhengpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/pingzheng/";
- // String pingZhengUrl = "http://www.wiiteer.com:8999/ads/photo/";
-  
-     String pingzhengpath="E:/resin/resin-pro-4.0.53/webapps/mobilepay/WIITE/pingzheng/";
-	 String pingZhengUrl="http://localhost:8080/mobilepay/WIITE/pingzheng/";
+	String clockxmlpath = "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/biaopan/";
+
+	// String pingzhengpath =
+	// "/usr/local/resin-pro-4.0.53/webapps/ads/WIITE/pingzheng/";
+	// String pingZhengUrl = "http://www.wiiteer.com:8999/ads/photo/";
+
+	String pingzhengpath = "E:/resin/resin-pro-4.0.53/webapps/mobilepay/WIITE/pingzheng/";
+	String pingZhengUrl = "http://localhost:8080/mobilepay/WIITE/pingzheng/";
 
 	public ActionForward queryProjectInfoXml(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
@@ -85,15 +90,14 @@ public class ProjectInfoAction extends BaseAction {
 		ProjectInfoFacade info = ServiceBean.getInstance()
 				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
 		ProjectInfo pro = new ProjectInfo();
-		LoginUser loginUser = (LoginUser) request.getSession()
-				.getAttribute(Config.SystemConfig.LOGINUSER);
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
 		if (loginUser == null) {
 			return null;
 		}
 
 		String userName = loginUser.getUserName();
 		try {
-		
 
 			String companyInfoId = loginUser.getCompanyId();
 			String projectInfoId = loginUser.getProjectId();
@@ -104,6 +108,7 @@ public class ProjectInfoAction extends BaseAction {
 			String companyId = request.getParameter("companyId");
 			String userId = request.getParameter("userId");
 			String projectId = request.getParameter("projectId");
+			String imei = request.getParameter("imei");
 
 			/* ���û������ֶ� */
 			form.setOrderBy("id");
@@ -135,20 +140,29 @@ public class ProjectInfoAction extends BaseAction {
 				sb.append(" and p.company_id='" + userId + "'");
 				pro.setCondition("company_id = '" + userId + "'");
 			}
-			List<DataMap> pros = ServiceBean.getInstance()
-					.getProjectInfoFacade().getProjectInfo(pro);
-			request.setAttribute("project", pros);
+			if (imei != null && !"".equals(imei)) {
+				sb.append(" and imei='" + imei + "'");
+				pro.setCondition("imei = '" + imei + "'");
+			}
+			/*
+			 * List<DataMap> pros = ServiceBean.getInstance()
+			 * .getProjectInfoFacade().getProjectInfo(pro);
+			 * request.setAttribute("project", pros);
+			 */
 
-			CompanyInfo ci = new CompanyInfo();
-			List<DataMap> coms = ServiceBean.getInstance()
-					.getCompanyInfoFacade().getCompanyInfo(ci);
-			request.setAttribute("company", coms);
+			/*
+			 * CompanyInfo ci = new CompanyInfo(); List<DataMap> coms =
+			 * ServiceBean.getInstance()
+			 * .getCompanyInfoFacade().getCompanyInfo(ci);
+			 * request.setAttribute("company", coms);
+			 */
 
 			request.setAttribute("fNow_date", startTime);
 			request.setAttribute("now_date", endTime);
 			request.setAttribute("companyId", companyId);
 			request.setAttribute("userId", userId);
 			request.setAttribute("projectId", projectId);
+			request.setAttribute("imei", imei);
 			if (!"admin".equals(userName)) {
 				sb.append(" and username='" + userName + "'");
 				pro.setCondition("username = '" + userName + "'");
@@ -203,8 +217,7 @@ public class ProjectInfoAction extends BaseAction {
 			return mapping.findForward("addProjectInfoxmlOther");
 		}
 	}
-	
-	
+
 	public ActionForward initInsertBu(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -214,12 +227,12 @@ public class ProjectInfoAction extends BaseAction {
 		if (loginUser == null) {
 			return null;
 		}
-		 CompanyInfo ci = new CompanyInfo();
-		 ci.setCondition("status='" +1+ "'");
-			List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
-		request.setAttribute("companyList", CommUtils
-				.getPrintSelect(Clist, "user_name", "contain_type",
-						"id", "测试", 1));
+		CompanyInfo ci = new CompanyInfo();
+		ci.setCondition("status='" + 1 + "'");
+		List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade()
+				.getCompanyInfo(ci);
+		request.setAttribute("companyList", CommUtils.getPrintSelect(Clist,
+				"user_name", "contain_type", "id", "测试", 1));
 
 		String userName = loginUser.getUserName();
 		if ("admin".equals(userName)) {
@@ -363,16 +376,14 @@ public class ProjectInfoAction extends BaseAction {
 		}
 		return mapping.findForward("result");
 	}
-	
+
 	public ActionForward insertProjectInfoxmlBu(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
 
-		
-		
 		// String channelId = request.getParameter("channelId");
 		Result result = new Result();
-		
+
 		try {
 			LoginUser loginUser = (LoginUser) request.getSession()
 					.getAttribute(Config.SystemConfig.LOGINUSER);
@@ -380,41 +391,41 @@ public class ProjectInfoAction extends BaseAction {
 				return null;
 			}
 			ProjectInfoForm form = (ProjectInfoForm) actionForm;
-			
-		
+
 			ProjectInfoFacade facade = ServiceBean.getInstance()
 					.getProjectInfoFacade();
 			ProjectInfo vo = new ProjectInfo();
-			
+
 			BeanUtils.copyProperties(vo, form);
-			
+
 			vo.setProjectNo(form.getUsername());
 			vo.setCompanyId(form.getNickname());
 			vo.setChannelId(form.getAvatar());
-			vo.setProjectName(form.getUse_status()+"");
-		    vo.setCreatetime(new Timestamp(System.currentTimeMillis()));
-		    vo.setDataSourceC(0);
-		    
-		    String user_name = request.getParameter("user_name");
-		    String ret_url = request.getParameter("url");
+			vo.setProjectName(form.getUse_status() + "");
+			vo.setCreatetime(new Timestamp(System.currentTimeMillis()));
+			vo.setDataSourceC(0);
+
+			String user_name = request.getParameter("user_name");
+			String ret_url = request.getParameter("url");
 			CompanyInfo ci = new CompanyInfo();
 			ci.setCondition("id='" + user_name + "'");
-		
-				List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
-				String	content=Clist.get(0).get("user_name")+"("+Clist.get(0).get("contain_type")+")";
-			
-		    vo.setShangyou_type(Integer.valueOf(user_name));
-		    vo.setShangyou_content(content);
+
+			List<DataMap> Clist = ServiceBean.getInstance()
+					.getCompanyInfoFacade().getCompanyInfo(ci);
+			String content = Clist.get(0).get("user_name") + "("
+					+ Clist.get(0).get("contain_type") + ")";
+
+			vo.setShangyou_type(Integer.valueOf(user_name));
+			vo.setShangyou_content(content);
 			vo.setAdDetail(UUID.randomUUID().toString());
 			vo.setRoleCodeP(ret_url);
-		    
+
 			facade.insertProjectInfo(vo);
 
-			
-			//同时需要添加 登录账号
+			// 同时需要添加 登录账号
 			UserInfo userInfo = new UserInfo();
 			userInfo.setCompanyId("0");
-			userInfo.setCreateDate(new Date());  
+			userInfo.setCreateDate(new Date());
 			userInfo.setUpdateDate(new Date());
 			userInfo.setUserName(form.getUsername());
 			userInfo.setGroupCode("2");
@@ -427,17 +438,17 @@ public class ProjectInfoAction extends BaseAction {
 			userInfo.setAddUser("admin");
 			userInfo.setProjectId("0");
 
-			/*roleInfo.setCondition("id ="+form.getGroupCode());
-			List<DataMap> list= ServiceBean.getInstance().getRoleInfoFacade().getRoleInfo(roleInfo);
-			if(!list.isEmpty()){
-				roleDesc = list.get(0).getAt("roleDesc").toString();
-			}*/
-				
-			//vo.setCode(roleDesc);		
+			/*
+			 * roleInfo.setCondition("id ="+form.getGroupCode()); List<DataMap>
+			 * list=
+			 * ServiceBean.getInstance().getRoleInfoFacade().getRoleInfo(roleInfo
+			 * ); if(!list.isEmpty()){ roleDesc =
+			 * list.get(0).getAt("roleDesc").toString(); }
+			 */
+
+			// vo.setCode(roleDesc);
 			ServiceBean.getInstance().getUserInfoFacade()
-					.insertUserInfo(userInfo); 
-			
-			
+					.insertUserInfo(userInfo);
 
 			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
 					"queryProjectInfoXml"));
@@ -622,7 +633,7 @@ public class ProjectInfoAction extends BaseAction {
 			return mapping.findForward("updateProjectInfoxmlOther");
 		}
 	}
-	
+
 	public ActionForward initUpdateBu(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -647,23 +658,21 @@ public class ProjectInfoAction extends BaseAction {
 			result.setResultType("success");
 			return mapping.findForward("result");
 		}
-		 CompanyInfo ci = new CompanyInfo();
-		 ci.setCondition("status='" + 1 + "'");
-			List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
-		request.setAttribute("companyList", CommUtils
-				.getPrintSelect(Clist, "user_name", "contain_type",
-						"id", "测试", 1));
+		CompanyInfo ci = new CompanyInfo();
+		ci.setCondition("status='" + 1 + "'");
+		List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade()
+				.getCompanyInfo(ci);
+		request.setAttribute("companyList", CommUtils.getPrintSelect(Clist,
+				"user_name", "contain_type", "id", "测试", 1));
 		request.setAttribute("projectInfo", list.get(0));
-		
-		
+
 		if ("admin".equals(userName)) {
 			return mapping.findForward("updateProjectInfoBu");
 		} else {
 			return mapping.findForward("updateProjectInfoBu");
 		}
 	}
-	
-	
+
 	public ActionForward initAddBalanceById(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -820,14 +829,12 @@ public class ProjectInfoAction extends BaseAction {
 		}
 		return mapping.findForward("result");
 	}
-	
-	
-	
+
 	public ActionForward updateProjectInfoBu(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
-		LoginUser loginUser = (LoginUser) request.getSession()
-				.getAttribute(Config.SystemConfig.LOGINUSER);
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
 		if (loginUser == null) {
 			return null;
 		}
@@ -845,7 +852,6 @@ public class ProjectInfoAction extends BaseAction {
 			String useStatus = request.getParameter("use_status");
 			String avatar = request.getParameter("avatar");
 			String ret_url = request.getParameter("url");
-			
 
 			ProjectInfo vo = new ProjectInfo();
 			vo.setCondition("id='" + id + "'");
@@ -853,29 +859,31 @@ public class ProjectInfoAction extends BaseAction {
 			vo.setProjectNo(nickName);
 			vo.setChannelId(avatar);
 			vo.setStatus(useStatus);
-		
+
 			// BeanUtils.copyProperties(vo, form);
-			
-			  String user_name = request.getParameter("user_name");
-				CompanyInfo ci = new CompanyInfo();
-				ci.setCondition("id='" + user_name + "'");
-			
-					List<DataMap> Clist = ServiceBean.getInstance().getCompanyInfoFacade().getCompanyInfo(ci);
-					String	content=Clist.get(0).get("user_name")+"("+Clist.get(0).get("contain_type")+")";
-				
-			    vo.setShangyou_type(Integer.valueOf(user_name));
-			    vo.setShangyou_content(content);
-			    
-			    vo.setRoleCodeP(ret_url);
-			    
+
+			String user_name = request.getParameter("user_name");
+			CompanyInfo ci = new CompanyInfo();
+			ci.setCondition("id='" + user_name + "'");
+
+			List<DataMap> Clist = ServiceBean.getInstance()
+					.getCompanyInfoFacade().getCompanyInfo(ci);
+			String content = Clist.get(0).get("user_name") + "("
+					+ Clist.get(0).get("contain_type") + ")";
+
+			vo.setShangyou_type(Integer.valueOf(user_name));
+			vo.setShangyou_content(content);
+
+			vo.setRoleCodeP(ret_url);
+
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.updatePorjectInfo(vo);
-			
 
-			/*result.setBackPage(HttpTools.httpServletPath(request,
-					"queryProjectInfoXml"));
-			result.setResultCode("updates");
-			result.setResultType("success");*/
+			/*
+			 * result.setBackPage(HttpTools.httpServletPath(request,
+			 * "queryProjectInfoXml")); result.setResultCode("updates");
+			 * result.setResultType("success");
+			 */
 			ProjectInfo voc = new ProjectInfo();
 			ProjectInfoForm form = (ProjectInfoForm) actionForm;
 			form.setOrderBy("id");
@@ -884,12 +892,11 @@ public class ProjectInfoAction extends BaseAction {
 			voc.setPageSize(20);
 			voc.setSort("1");
 			voc.setOrderBy("id");
-		
+
 			list = info.getProjectInfoListByVo(voc);
 			BeanUtils.copyProperties(pys, form);
 			pys.setCounts(list.getTotalSize());
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.debug(request.getQueryString() + "  " + e);
@@ -903,7 +910,7 @@ public class ProjectInfoAction extends BaseAction {
 				result.setResultType("sysRunException");
 			}
 		} finally {
-			//request.setAttribute("result", result);
+			// request.setAttribute("result", result);
 			request.setAttribute("result", result);
 			request.setAttribute("pageList", list);
 			request.setAttribute("PagePys", pys);
@@ -912,8 +919,7 @@ public class ProjectInfoAction extends BaseAction {
 			return mapping.findForward("queryProjectInfoxmlshangHu");
 		}
 		return mapping.findForward("queryProjectInfoxml");
-		
-	
+
 	}
 
 	public ActionForward updateProjectInfoxmlOther(ActionMapping mapping,
@@ -1062,15 +1068,13 @@ public class ProjectInfoAction extends BaseAction {
 			vo.setCondition("id='" + form.getId() + "'");
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.deletePorjectInfoxml(vo);
-		
-		
-	
 
-/*			result.setBackPage(HttpTools.httpServletPath(request,
-					"queryProjectInfoXml"));
-			result.setResultCode("deletes");
-			result.setResultType("success");*/
-			
+			/*
+			 * result.setBackPage(HttpTools.httpServletPath(request,
+			 * "queryProjectInfoXml")); result.setResultCode("deletes");
+			 * result.setResultType("success");
+			 */
+
 			ProjectInfo voc = new ProjectInfo();
 			ProjectInfoForm formm = (ProjectInfoForm) actionForm;
 			form.setOrderBy("id");
@@ -1079,7 +1083,7 @@ public class ProjectInfoAction extends BaseAction {
 			voc.setPageSize(20);
 			voc.setSort("1");
 			voc.setOrderBy("id");
-		
+
 			list = info.getProjectInfoListByVo(voc);
 			BeanUtils.copyProperties(pys, formm);
 			pys.setCounts(list.getTotalSize());
@@ -1120,8 +1124,8 @@ public class ProjectInfoAction extends BaseAction {
 		ProjectInfoFacade info = ServiceBean.getInstance()
 				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
 		ProjectInfo pro = new ProjectInfo();
-		LoginUser loginUser = (LoginUser) request.getSession()
-				.getAttribute(Config.SystemConfig.LOGINUSER);
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
 		if (loginUser == null) {
 			return null;
 		}
@@ -1129,7 +1133,6 @@ public class ProjectInfoAction extends BaseAction {
 		String userName = loginUser.getUserName();
 
 		try {
-		
 
 			String companyInfoId = loginUser.getCompanyId();
 			String projectInfoId = loginUser.getProjectId();
@@ -1140,73 +1143,68 @@ public class ProjectInfoAction extends BaseAction {
 			String companyId = request.getParameter("companyId");
 			String userId = request.getParameter("userId");
 			String projectId = request.getParameter("projectId");
-			
+
 			String projectNo = request.getParameter("project_no");
 			String remark = request.getParameter("remark");
-		
 
 			/* ���û������ֶ� */
 			form.setOrderBy("p.add_time");
 			form.setSort("1");
-			//sb.append("1=1");
+			// sb.append("1=1");
 			if (!"admin".equals(userName)) {
 				UserInfo voa = new UserInfo();
-				voa.setCondition("userCode ='"+userName+"'");
-				List<DataMap> listt = ServiceBean.getInstance().getUserInfoFacade()
-						.getUserInfo(voa); 
-				if(listt.size()>0){
-					String companys=listt.get(0).getAt("company_id")+"";
-					if(!"0".equals(companys)){
-					 String[] strArray =  companys.split(",");  
-					 if(strArray.length>0){
+				voa.setCondition("userCode ='" + userName + "'");
+				List<DataMap> listt = ServiceBean.getInstance()
+						.getUserInfoFacade().getUserInfo(voa);
+				if (listt.size() > 0) {
+					String companys = listt.get(0).getAt("company_id") + "";
+					if (!"0".equals(companys)) {
+						String[] strArray = companys.split(",");
+						if (strArray.length > 0) {
 							sb.append("(");
-					for(int i=0;i<strArray.length;i++){
-						if(strArray[i] != projectNo){
-							if(strArray[i] != null && !"".equals(strArray[i])){
-								if(sb.length()>1){
-									sb.append(" or ");
+							for (int i = 0; i < strArray.length; i++) {
+								if (strArray[i] != projectNo) {
+									if (strArray[i] != null
+											&& !"".equals(strArray[i])) {
+										if (sb.length() > 1) {
+											sb.append(" or ");
+										}
+										sb.append("   p.project_no='"
+												+ strArray[i] + "'");
+									}
 								}
-								sb.append("   p.project_no='" + strArray[i] + "'");
 							}
+							sb.append(" ) ");
+						} else {
+							if (sb.length() > 0) {
+								sb.append(" or ");
+							}
+							sb.append("   p.project_no='" + userName + "'");
 						}
+					} else {
+						if (sb.length() > 0) {
+							sb.append(" and ");
+						}
+						sb.append("   p.project_no='" + userName + "'");
 					}
-					sb.append(" ) ");
-				}else{
-					if(sb.length()>0){
-						sb.append(" or ");
-					}
-					sb.append("   p.project_no='" + userName + "'");
 				}
-				}else{
-					if(sb.length()>0){
-						sb.append(" and ");
-					}
-					sb.append("   p.project_no='" + userName + "'");
-				}
-				}
-			
+
 			}
-			
-			
+
 			if (projectNo != null && !"".equals(projectNo)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append(" p.project_no='" + projectNo + "'");
-				}else{
+				} else {
 					sb.append(" and p.project_no='" + projectNo + "'");
 				}
 			}
 			if (remark != null && !"".equals(remark)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append("p.remark='" + remark + "'");
-				}else{
+				} else {
 					sb.append(" and p.remark='" + remark + "'");
 				}
 			}
-			
-			
-			
-		
-			
 
 			if (!projectInfoId.equals("0")) {
 				sb.append(" and p.id in(" + projectInfoId + ")");
@@ -1241,7 +1239,7 @@ public class ProjectInfoAction extends BaseAction {
 			List<DataMap> coms = ServiceBean.getInstance()
 					.getCompanyInfoFacade().getCompanyInfo(ci);
 			request.setAttribute("company", coms);
-			
+
 			request.setAttribute("project_no", projectNo);
 			request.setAttribute("remark", remark);
 
@@ -1250,16 +1248,15 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("companyId", companyId);
 			request.setAttribute("userId", userId);
 			request.setAttribute("projectId", projectId);
-			
-			
+
 			if (!"admin".equals(userName)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append("p.status='" + 1 + "'");
-				}else{
+				} else {
 					sb.append(" and p.status='" + 1 + "'");
 				}
 			}
-			
+
 			vo.setCondition(sb.toString());
 
 			BeanUtils.copyProperties(vo, form);
@@ -1284,7 +1281,7 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("PagePys", pys);
 		}
 		CommUtils.getIntervalTime(start, new Date(), href);
-		if("admin".equals(userName)){
+		if ("admin".equals(userName)) {
 			return mapping.findForward("queryWatchInfoAdmin");
 		}
 		return mapping.findForward("queryWatchInfo");
@@ -1317,8 +1314,8 @@ public class ProjectInfoAction extends BaseAction {
 		Result result = new Result();
 		String name = "";
 		String fileFormat = "";
-		String zipName="";
-		String  fileName=Long.toString(new Date().getTime()) ;
+		String zipName = "";
+		String fileName = Long.toString(new Date().getTime());
 		try {
 			LoginUser loginUser = (LoginUser) request.getSession()
 					.getAttribute(Config.SystemConfig.LOGINUSER);
@@ -1329,7 +1326,7 @@ public class ProjectInfoAction extends BaseAction {
 			System.out.println(form.getChannelId());
 			Hashtable<?, ?> files = form.getMultipartRequestHandler()
 					.getFileElements();// 获取所有文件路径的枚举；
-		
+
 			if (files != null & files.size() > 0) {
 				Enumeration<?> enums = files.keys();
 				String fileKey = null;
@@ -1340,10 +1337,10 @@ public class ProjectInfoAction extends BaseAction {
 						fileFormat = file.toString().substring(
 								file.toString().lastIndexOf("."),
 								file.toString().length());
-						name = fileName+ fileFormat;
+						name = fileName + fileFormat;
 						System.out.println(name);
-						if(name.contains(".zip")){
-							zipName=name;
+						if (name.contains(".zip")) {
+							zipName = name;
 						}
 						// CommUtils.createDateFile(dir); //创建当前文件夹，存在则返回文件名；
 						InputStream in = file.getInputStream();
@@ -1423,7 +1420,7 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append("\"/>");
 					sb.append("<customer id=\"");
 					sb.append(getProjectInfo.get(i).get("project_no") + "");
-					if("0".equals(getProjectInfo.get(i).get("status") + "")){
+					if ("0".equals(getProjectInfo.get(i).get("status") + "")) {
 						sb.append("-hide");
 					}
 					sb.append("\"/>");
@@ -1505,18 +1502,18 @@ public class ProjectInfoAction extends BaseAction {
 		String userName = loginUser.getUserName();
 
 		Result result = new Result();
-		String zipName="";
-		String  fileName=Long.toString(new Date().getTime()) ;
+		String zipName = "";
+		String fileName = Long.toString(new Date().getTime());
 		try {
 			String id = request.getParameter("id");
 			String project_no = request.getParameter("project_no");
 			String project_name = request.getParameter("project_name");
 			// String channel_id = request.getParameter("channel_id");
 			String company_id = request.getParameter("company_id");
-		   fileName = request.getParameter("remark");
+			fileName = request.getParameter("remark");
 
 			// ProjectInfoForm form = (ProjectInfoForm) actionForm;
-			
+
 			ProjectInfoForm form = (ProjectInfoForm) actionForm;
 			String name = "";
 			String fileFormat = "";
@@ -1533,8 +1530,8 @@ public class ProjectInfoAction extends BaseAction {
 								file.toString().lastIndexOf("."),
 								file.toString().length());
 						name = fileName + fileFormat;
-						if(name.contains(".zip")){
-							zipName=name;
+						if (name.contains(".zip")) {
+							zipName = name;
 						}
 						// CommUtils.createDateFile(dir); //创建当前文件夹，存在则返回文件名；
 						InputStream in = file.getInputStream();
@@ -1577,8 +1574,7 @@ public class ProjectInfoAction extends BaseAction {
 				vo.setRemark("");
 			}
 			vo.setCompanyId(company_id);
-		
-			
+
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.updatePorjectWatchInfo(vo);
 			StringBuffer sb = new StringBuffer();
@@ -1602,7 +1598,7 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append("\"/>");
 					sb.append("<customer id=\"");
 					sb.append(getProjectInfo.get(i).get("project_no") + "");
-					if("0".equals(getProjectInfo.get(i).get("status") + "")){
+					if ("0".equals(getProjectInfo.get(i).get("status") + "")) {
 						sb.append("-hide");
 					}
 					sb.append("\"/>");
@@ -1640,7 +1636,7 @@ public class ProjectInfoAction extends BaseAction {
 		}
 		return mapping.findForward("result");
 	}
-	
+
 	public ActionForward deletewatch(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -1675,7 +1671,7 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append("\"/>");
 					sb.append("<customer id=\"");
 					sb.append(getProjectInfo.get(i).get("project_no") + "");
-					if("0".equals(getProjectInfo.get(i).get("status") + "")){
+					if ("0".equals(getProjectInfo.get(i).get("status") + "")) {
 						sb.append("-hide");
 					}
 					sb.append("\"/>");
@@ -1691,7 +1687,6 @@ public class ProjectInfoAction extends BaseAction {
 			Constant.deleteFile(clockxmlpath + clockskinName);
 			Constant.createFileContent(clockxmlpath, clockskinName, sb
 					.toString().getBytes("UTF-8"));
-
 
 			result.setBackPage(HttpTools.httpServletPath(request,
 					"queryWatchInfo"));
@@ -1714,8 +1709,7 @@ public class ProjectInfoAction extends BaseAction {
 		}
 		return mapping.findForward("result");
 	}
-	
-	
+
 	public ActionForward initUpdateWatchStatus(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -1727,16 +1721,15 @@ public class ProjectInfoAction extends BaseAction {
 		String userName = loginUser.getUserName();
 
 		Result result = new Result();
-	
+
 		try {
 			String id = request.getParameter("id");
 			String status = request.getParameter("s");
-			
 
 			ProjectInfo vo = new ProjectInfo();
 			vo.setCondition("id='" + id + "'");
 			vo.setStatus(status);
-			
+
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.updatePorjectWatchInfo(vo);
 			StringBuffer sb = new StringBuffer();
@@ -1760,7 +1753,7 @@ public class ProjectInfoAction extends BaseAction {
 					sb.append("\"/>");
 					sb.append("<customer id=\"");
 					sb.append(getProjectInfo.get(i).get("project_no") + "");
-					if("0".equals(getProjectInfo.get(i).get("status") + "")){
+					if ("0".equals(getProjectInfo.get(i).get("status") + "")) {
 						sb.append("-hide");
 					}
 					sb.append("\"/>");
@@ -1798,9 +1791,7 @@ public class ProjectInfoAction extends BaseAction {
 		}
 		return mapping.findForward("result");
 	}
-	
-	
-	
+
 	public ActionForward queryBuyCardInfo(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -1813,8 +1804,8 @@ public class ProjectInfoAction extends BaseAction {
 		ProjectInfoFacade info = ServiceBean.getInstance()
 				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
 		ProjectInfo pro = new ProjectInfo();
-		LoginUser loginUser = (LoginUser) request.getSession()
-				.getAttribute(Config.SystemConfig.LOGINUSER);
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
 		if (loginUser == null) {
 			return null;
 		}
@@ -1822,7 +1813,6 @@ public class ProjectInfoAction extends BaseAction {
 		String userName = loginUser.getUserName();
 
 		try {
-		
 
 			String companyInfoId = loginUser.getCompanyId();
 			String projectInfoId = loginUser.getProjectId();
@@ -1833,37 +1823,29 @@ public class ProjectInfoAction extends BaseAction {
 			String companyId = request.getParameter("companyId");
 			String userId = request.getParameter("userId");
 			String projectId = request.getParameter("projectId");
-			
+
 			String projectNo = request.getParameter("project_no");
 			String remark = request.getParameter("remark");
-		
 
 			/* ���û������ֶ� */
 			form.setOrderBy("id");
 			form.setSort("1");
-			//sb.append("1=1");
-			
-			
-			
+			// sb.append("1=1");
+
 			if (projectNo != null && !"".equals(projectNo)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append(" username='" + projectNo + "'");
-				}else{
+				} else {
 					sb.append(" and username='" + projectNo + "'");
 				}
 			}
 			if (remark != null && !"".equals(remark)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append("p.remark='" + remark + "'");
-				}else{
+				} else {
 					sb.append(" and p.remark='" + remark + "'");
 				}
 			}
-			
-			
-			
-		
-			
 
 			if (!projectInfoId.equals("0")) {
 				sb.append(" and p.id in(" + projectInfoId + ")");
@@ -1898,7 +1880,7 @@ public class ProjectInfoAction extends BaseAction {
 			List<DataMap> coms = ServiceBean.getInstance()
 					.getCompanyInfoFacade().getCompanyInfo(ci);
 			request.setAttribute("company", coms);
-			
+
 			request.setAttribute("project_no", projectNo);
 			request.setAttribute("remark", remark);
 
@@ -1907,16 +1889,15 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("companyId", companyId);
 			request.setAttribute("userId", userId);
 			request.setAttribute("projectId", projectId);
-			
-			
+
 			if (!"admin".equals(userName)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append("username='" + userName + "'");
-				}else{
+				} else {
 					sb.append(" username='" + userName + "'");
 				}
 			}
-			
+
 			vo.setCondition(sb.toString());
 
 			BeanUtils.copyProperties(vo, form);
@@ -1941,13 +1922,12 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("PagePys", pys);
 		}
 		CommUtils.getIntervalTime(start, new Date(), href);
-		if("admin".equals(userName)){
+		if ("admin".equals(userName)) {
 			return mapping.findForward("queryBuyCardInfo");
 		}
 		return mapping.findForward("queryBuyCardInfoShangHu");
 	}
-	
-	
+
 	public ActionForward addBalanceErrorInfo(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -1960,8 +1940,8 @@ public class ProjectInfoAction extends BaseAction {
 		ProjectInfoFacade info = ServiceBean.getInstance()
 				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
 		ProjectInfo pro = new ProjectInfo();
-		LoginUser loginUser = (LoginUser) request.getSession()
-				.getAttribute(Config.SystemConfig.LOGINUSER);
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
 		if (loginUser == null) {
 			return null;
 		}
@@ -1969,7 +1949,6 @@ public class ProjectInfoAction extends BaseAction {
 		String userName = loginUser.getUserName();
 
 		try {
-		
 
 			String companyInfoId = loginUser.getCompanyId();
 			String projectInfoId = loginUser.getProjectId();
@@ -1980,37 +1959,29 @@ public class ProjectInfoAction extends BaseAction {
 			String companyId = request.getParameter("companyId");
 			String userId = request.getParameter("userId");
 			String projectId = request.getParameter("projectId");
-			
+
 			String projectNo = request.getParameter("project_no");
 			String remark = request.getParameter("remark");
-		
 
 			/* ���û������ֶ� */
 			form.setOrderBy("id");
 			form.setSort("1");
-			//sb.append("1=1");
-			
-			
-			
+			// sb.append("1=1");
+
 			if (projectNo != null && !"".equals(projectNo)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append(" username='" + projectNo + "'");
-				}else{
+				} else {
 					sb.append(" and username='" + projectNo + "'");
 				}
 			}
 			if (remark != null && !"".equals(remark)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append("p.remark='" + remark + "'");
-				}else{
+				} else {
 					sb.append(" and p.remark='" + remark + "'");
 				}
 			}
-			
-			
-			
-		
-			
 
 			if (!projectInfoId.equals("0")) {
 				sb.append(" and p.id in(" + projectInfoId + ")");
@@ -2045,7 +2016,7 @@ public class ProjectInfoAction extends BaseAction {
 			List<DataMap> coms = ServiceBean.getInstance()
 					.getCompanyInfoFacade().getCompanyInfo(ci);
 			request.setAttribute("company", coms);
-			
+
 			request.setAttribute("project_no", projectNo);
 			request.setAttribute("remark", remark);
 
@@ -2054,16 +2025,15 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("companyId", companyId);
 			request.setAttribute("userId", userId);
 			request.setAttribute("projectId", projectId);
-			
-			
+
 			if (!"admin".equals(userName)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append("username='" + userName + "'");
-				}else{
+				} else {
 					sb.append(" username='" + userName + "'");
 				}
 			}
-			
+
 			vo.setCondition(sb.toString());
 
 			BeanUtils.copyProperties(vo, form);
@@ -2088,13 +2058,12 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("PagePys", pys);
 		}
 		CommUtils.getIntervalTime(start, new Date(), href);
-		if("admin".equals(userName)){
+		if ("admin".equals(userName)) {
 			return mapping.findForward("queryAddBalanceErrorInfo");
 		}
 		return mapping.findForward("queryAddBalanceErrorInfoShangHu");
 	}
-	
-	
+
 	public ActionForward addBalanceSuccessInfo(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -2107,8 +2076,8 @@ public class ProjectInfoAction extends BaseAction {
 		ProjectInfoFacade info = ServiceBean.getInstance()
 				.getProjectInfoFacade();// ����userApp������ȡ��user�ֵ䣩
 		ProjectInfo pro = new ProjectInfo();
-		LoginUser loginUser = (LoginUser) request.getSession()
-				.getAttribute(Config.SystemConfig.LOGINUSER);
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(
+				Config.SystemConfig.LOGINUSER);
 		if (loginUser == null) {
 			return null;
 		}
@@ -2116,7 +2085,6 @@ public class ProjectInfoAction extends BaseAction {
 		String userName = loginUser.getUserName();
 
 		try {
-		
 
 			String companyInfoId = loginUser.getCompanyId();
 			String projectInfoId = loginUser.getProjectId();
@@ -2127,37 +2095,29 @@ public class ProjectInfoAction extends BaseAction {
 			String companyId = request.getParameter("companyId");
 			String userId = request.getParameter("userId");
 			String projectId = request.getParameter("projectId");
-			
+
 			String projectNo = request.getParameter("project_no");
 			String remark = request.getParameter("remark");
-		
 
 			/* ���û������ֶ� */
 			form.setOrderBy("id");
 			form.setSort("1");
-			//sb.append("1=1");
-			
-			
-			
+			// sb.append("1=1");
+
 			if (projectNo != null && !"".equals(projectNo)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append(" username='" + projectNo + "'");
-				}else{
+				} else {
 					sb.append(" and username='" + projectNo + "'");
 				}
 			}
 			if (remark != null && !"".equals(remark)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append("p.remark='" + remark + "'");
-				}else{
+				} else {
 					sb.append(" and p.remark='" + remark + "'");
 				}
 			}
-			
-			
-			
-		
-			
 
 			if (!projectInfoId.equals("0")) {
 				sb.append(" and p.id in(" + projectInfoId + ")");
@@ -2192,7 +2152,7 @@ public class ProjectInfoAction extends BaseAction {
 			List<DataMap> coms = ServiceBean.getInstance()
 					.getCompanyInfoFacade().getCompanyInfo(ci);
 			request.setAttribute("company", coms);
-			
+
 			request.setAttribute("project_no", projectNo);
 			request.setAttribute("remark", remark);
 
@@ -2201,16 +2161,15 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("companyId", companyId);
 			request.setAttribute("userId", userId);
 			request.setAttribute("projectId", projectId);
-			
-			
+
 			if (!"admin".equals(userName)) {
-				if(sb.length()<=0){
+				if (sb.length() <= 0) {
 					sb.append("username='" + userName + "'");
-				}else{
+				} else {
 					sb.append(" username='" + userName + "'");
 				}
 			}
-			
+
 			vo.setCondition(sb.toString());
 
 			BeanUtils.copyProperties(vo, form);
@@ -2235,18 +2194,16 @@ public class ProjectInfoAction extends BaseAction {
 			request.setAttribute("PagePys", pys);
 		}
 		CommUtils.getIntervalTime(start, new Date(), href);
-		if("admin".equals(userName)){
+		if ("admin".equals(userName)) {
 			return mapping.findForward("queryAddBalanceSuccessInfo");
 		}
 		return mapping.findForward("queryAddBalanceSuccessInfoShangHu");
 	}
-	
-	
+
 	public ActionForward insertBalanceInfo(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
 
-	
 		String id = request.getParameter("id");
 		Integer balance = Integer.valueOf(request.getParameter("balance"));
 		String remark = request.getParameter("remark");
@@ -2254,7 +2211,7 @@ public class ProjectInfoAction extends BaseAction {
 		Result result = new Result();
 		String name = "";
 		String fileFormat = "";
-		String  fileName=Long.toString(new Date().getTime()) ;
+		String fileName = Long.toString(new Date().getTime());
 		try {
 			LoginUser loginUser = (LoginUser) request.getSession()
 					.getAttribute(Config.SystemConfig.LOGINUSER);
@@ -2265,7 +2222,7 @@ public class ProjectInfoAction extends BaseAction {
 			System.out.println(form.getChannelId());
 			Hashtable<?, ?> files = form.getMultipartRequestHandler()
 					.getFileElements();// 获取所有文件路径的枚举；
-		
+
 			if (files != null & files.size() > 0) {
 				Enumeration<?> enums = files.keys();
 				String fileKey = null;
@@ -2276,9 +2233,9 @@ public class ProjectInfoAction extends BaseAction {
 						fileFormat = file.toString().substring(
 								file.toString().lastIndexOf("."),
 								file.toString().length());
-						name = fileName+ fileFormat;
+						name = fileName + fileFormat;
 						System.out.println(name);
-						
+
 						// CommUtils.createDateFile(dir); //创建当前文件夹，存在则返回文件名；
 						InputStream in = file.getInputStream();
 						// photoPath = photoPath + name; //输出文件路径
@@ -2299,38 +2256,34 @@ public class ProjectInfoAction extends BaseAction {
 				}
 			}
 
-		
-			//String userName = loginUser.getUserName();
+			// String userName = loginUser.getUserName();
 			// ProjectInfoForm form = (ProjectInfoForm) actionForm;
 			ProjectInfoFacade facade = ServiceBean.getInstance()
 					.getProjectInfoFacade();
 			ProjectInfo vo = new ProjectInfo();
-			/*int num = ServiceBean.getInstance().getProjectInfoFacade()
-					.getProjectInfoCount(vo) + 1;
-			BeanUtils.copyProperties(vo, form);*/
-		    vo.setUsername(username);
-		    vo.setRemark(remark);
-		    vo.setShiqu(balance);
-		    vo.setCreatetime(new Timestamp(System.currentTimeMillis()));
-		    vo.setAdTitle(pingZhengUrl+name);
+			/*
+			 * int num = ServiceBean.getInstance().getProjectInfoFacade()
+			 * .getProjectInfoCount(vo) + 1; BeanUtils.copyProperties(vo, form);
+			 */
+			vo.setUsername(username);
+			vo.setRemark(remark);
+			vo.setShiqu(balance);
+			vo.setCreatetime(new Timestamp(System.currentTimeMillis()));
+			vo.setAdTitle(pingZhengUrl + name);
 			facade.insertBuyCardInfo(vo);
-			
-			
-		/*	ProjectInfo voo = new ProjectInfo();
-			voo.setCondition("id='" + id + "'");
-			List<DataMap> listt = ServiceBean.getInstance().getProjectInfoFacade()
-					.getProjectInfo(voo);
-			ProjectInfo voBlance = new ProjectInfo();
-			voBlance.setCondition("id='" + id + "'");
-			voBlance.setDataSourceO(Integer.valueOf(listt.get(0).getAt("balance")+"")+balance);
-			ServiceBean.getInstance().getProjectInfoFacade()
-					.updatePorjectInfo(voBlance);
-					
-					*/
-			//先注释掉这里自动增加余额的代码
-			
 
-		
+			/*
+			 * ProjectInfo voo = new ProjectInfo(); voo.setCondition("id='" + id
+			 * + "'"); List<DataMap> listt =
+			 * ServiceBean.getInstance().getProjectInfoFacade()
+			 * .getProjectInfo(voo); ProjectInfo voBlance = new ProjectInfo();
+			 * voBlance.setCondition("id='" + id + "'");
+			 * voBlance.setDataSourceO(
+			 * Integer.valueOf(listt.get(0).getAt("balance")+"")+balance);
+			 * ServiceBean.getInstance().getProjectInfoFacade()
+			 * .updatePorjectInfo(voBlance);
+			 */
+			// 先注释掉这里自动增加余额的代码
 
 			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
 					"queryProjectInfoXml"));
@@ -2353,8 +2306,7 @@ public class ProjectInfoAction extends BaseAction {
 		}
 		return mapping.findForward("result");
 	}
-	
-	
+
 	public ActionForward updateStatusAndBlance(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -2366,31 +2318,36 @@ public class ProjectInfoAction extends BaseAction {
 		String userName = loginUser.getUserName();
 
 		Result result = new Result();
-	
+
 		try {
 			String id = request.getParameter("id");
-			
+
 			ProjectInfo vo = new ProjectInfo();
 			vo.setCondition("id='" + id + "'");
-			List<DataMap> listBalance = ServiceBean.getInstance().getProjectInfoFacade()
-					.getBlanceInfo(vo);
-			
+			List<DataMap> listBalance = ServiceBean.getInstance()
+					.getProjectInfoFacade().getBlanceInfo(vo);
+
 			ProjectInfo voo = new ProjectInfo();
-			voo.setCondition("username='" + listBalance.get(0).get("username") + "'");
-			List<DataMap> listt = ServiceBean.getInstance().getProjectInfoFacade()
-					.getProjectInfo(voo);
-			
+			voo.setCondition("username='" + listBalance.get(0).get("username")
+					+ "'");
+			List<DataMap> listt = ServiceBean.getInstance()
+					.getProjectInfoFacade().getProjectInfo(voo);
+
 			ProjectInfo voBlance = new ProjectInfo();
 			voBlance.setCondition("id='" + listt.get(0).get("id") + "'");
-			voBlance.setDataSourceO(Integer.valueOf(listt.get(0).getAt("balance")+"")+Integer.valueOf(listBalance.get(0).get("add_blance")+""));
+			voBlance.setDataSourceO(Integer.valueOf(listt.get(0).getAt(
+					"balance")
+					+ "")
+					+ Integer
+							.valueOf(listBalance.get(0).get("add_blance") + ""));
 			ServiceBean.getInstance().getProjectInfoFacade()
 					.updatePorjectInfo(voBlance);
-			
-			
+
 			vo.setCondition("id='" + id + "'");
 			vo.setSocketWay(1);
-			ServiceBean.getInstance().getProjectInfoFacade().updateBuyCardInfo(vo);
-			
+			ServiceBean.getInstance().getProjectInfoFacade()
+					.updateBuyCardInfo(vo);
+
 			result.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
 					"queryBuyCardInfo"));
 			result.setResultCode("updates");
@@ -2403,7 +2360,7 @@ public class ProjectInfoAction extends BaseAction {
 			if (e instanceof SystemException) { /* ����֪�쳣���н��� */
 				result.setResultCode(((SystemException) e).getErrCode());
 				result.setResultType(((SystemException) e).getErrType());
-			} else { 
+			} else {
 				result.setResultCode("noKnownException");
 				result.setResultType("sysRunException");
 			}
@@ -2412,8 +2369,7 @@ public class ProjectInfoAction extends BaseAction {
 		}
 		return mapping.findForward("result");
 	}
-	
-	
+
 	public ActionForward resetScretById(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -2428,20 +2384,42 @@ public class ProjectInfoAction extends BaseAction {
 		ProjectInfoFacade info = ServiceBean.getInstance()
 				.getProjectInfoFacade();
 		Result result = new Result();
-	
+
 		try {
-			String id = request.getParameter("id");
+			String imei = request.getParameter("imei");
+			System.out.println(imei);
+			String jsonToString = HttpRequest
+					.urlReturnParams("http://47.92.183.190/shoubiao/watchAppUser/deleteDeviceByImei/123456/"
+							+ imei);
+		
+			if (!"-1".equals(jsonToString)) {
+				JSONObject jsons = JSONObject.fromObject(jsonToString);
+				Integer code = jsons.getInt("Code");
 			
-			ProjectInfo vo = new ProjectInfo();
-			vo.setCondition("id='" + id + "'");
-			vo.setAdDetail(UUID.randomUUID().toString());
-			ServiceBean.getInstance().getProjectInfoFacade()
-					.updatePorjectInfo(vo);
-			
-			/*esult.setBackPage(HttpTools.httpServletPath(request, // ����ɹ�����ת��ԭ��ҳ��
-					"queryProjectInfoXml"));
-			result.setResultCode("updates");
-			result.setResultType("success");*/
+				if (code != 1) {
+					 HttpRequest
+							.urlReturnParams("http://47.92.183.190/shoubiao/watchAppUser/shoudongUnbindByImei/"+ imei);
+				}
+			}
+
+			/*
+			 * http://47.92.183.190/shoubiao/watchAppUser/shoudongUnbindByImei/
+			 * 992019040382681
+			 * http://47.92.183.190/shoubiao/watchAppUser/deleteDeviceByImei
+			 * /123456/992019040382681
+			 */
+			/*
+			 * ProjectInfo vo = new ProjectInfo(); vo.setCondition("id='" + id +
+			 * "'"); vo.setAdDetail(UUID.randomUUID().toString());
+			 * ServiceBean.getInstance().getProjectInfoFacade()
+			 * .updatePorjectInfo(vo);
+			 */
+
+			/*
+			 * esult.setBackPage(HttpTools.httpServletPath(request, //
+			 * ����ɹ�����ת��ԭ��ҳ�� "queryProjectInfoXml"));
+			 * result.setResultCode("updates"); result.setResultType("success");
+			 */
 			ProjectInfo voc = new ProjectInfo();
 			ProjectInfoForm form = (ProjectInfoForm) actionForm;
 			form.setOrderBy("id");
@@ -2450,7 +2428,7 @@ public class ProjectInfoAction extends BaseAction {
 			voc.setPageSize(20);
 			voc.setSort("1");
 			voc.setOrderBy("id");
-		
+
 			list = info.getProjectInfoListByVo(voc);
 			BeanUtils.copyProperties(pys, form);
 			pys.setCounts(list.getTotalSize());
@@ -2462,12 +2440,12 @@ public class ProjectInfoAction extends BaseAction {
 			if (e instanceof SystemException) { /* ����֪�쳣���н��� */
 				result.setResultCode(((SystemException) e).getErrCode());
 				result.setResultType(((SystemException) e).getErrType());
-			} else { 
+			} else {
 				result.setResultCode("noKnownException");
 				result.setResultType("sysRunException");
 			}
 		} finally {
-			//request.setAttribute("result", result);
+			// request.setAttribute("result", result);
 			request.setAttribute("result", result);
 			request.setAttribute("pageList", list);
 			request.setAttribute("PagePys", pys);
@@ -2478,6 +2456,4 @@ public class ProjectInfoAction extends BaseAction {
 		return mapping.findForward("queryProjectInfoxml");
 	}
 
-
 }
-

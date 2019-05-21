@@ -30,7 +30,7 @@
     <!-- pageSize是跳转获取的页码显示行数 -->
 	<select id="getRoleInfoListByVo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.roleinfo.domain.RoleInfo">
 		SELECT 
-		id,roleDesc,roleName,roleCode,roleType FROM roleinfo  
+		id,d_id,imei,createtime FROM device_watch_bak_info  
 		
 		<dynamic prepend="order by">
 			<isNotEmpty prepend="order by" property="orderBy">
@@ -80,7 +80,7 @@
 	</select>
 
 	<select id="getRoleInfoCount" resultClass="java.lang.Integer" parameterClass="com.care.sys.roleinfo.domain.RoleInfo">
-		SELECT COUNT(*) FROM roleinfo
+		SELECT COUNT(*) FROM device_watch_bak_info
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="roleCode">
 			  roleCode=#roleCode#

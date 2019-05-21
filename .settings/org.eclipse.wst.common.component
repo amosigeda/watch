@@ -4,6 +4,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <property name="java-output-path" value="/mobilepay/WebRoot/WEB-INF/classes"/>
         <property name="me-merge-utility-modules" value="true"/>
-        <property name="context-root" value="/mobilepay"/>
+        <property name="context-root" value="/watch"/>
     </wb-module>
 </project-modules>

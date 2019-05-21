@@ -101,7 +101,7 @@
 	</select>
 	
 	<select id="getProjectInfoListByVo" resultClass="com.godoing.rose.lang.DataMap" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		SELECT * FROM business_user_info
+		SELECT * FROM device_watch_bak_info
 		
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="condition">
@@ -124,7 +124,7 @@
 	</select>
 	
 	<select id="getProjectInfoListCountByVo" resultClass="java.lang.Integer" parameterClass="com.care.sys.projectinfo.domain.ProjectInfo">
-		SELECT COUNT(*) FROM business_user_info 
+		SELECT COUNT(*) FROM device_watch_bak_info 
 		<dynamic prepend="where">
 			<isNotEmpty prepend="and" property="condition">
 				$condition$

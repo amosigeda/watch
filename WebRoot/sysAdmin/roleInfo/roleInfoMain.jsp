@@ -50,20 +50,23 @@ function ofuncs(rcode){
 			action="doRoleInfo.do?method=queryRoleInfo">
 			<table width="100%" class="table" >
                <tr>
-                   <th colspan="13" nowrap="nowrap" align="left">角色 
+                   <th colspan="13" nowrap="nowrap" align="left">设备列表 
                   <!--  <input name="inset" type="button" class="but_1" accesskey="a"
 							tabindex="a" value="添加角色" onclick="insert()"> --></th>
                 </tr>         
                   <tr class="title_2">
 								
 					<td width="10%">
-						角色名称
+						ID
 						<%
 						//pys.printOrderBy(response, "roleName", "frmGo");
 					%>
 					</td>
 					<td width="10%">
-						角色类型
+						IMEI
+					</td>
+					<td width="10%">
+						激活时间
 					</td>
 					<!-- <td width="30%" >
 						角色描述
@@ -78,11 +81,14 @@ function ofuncs(rcode){
 							type="java.lang.String" />
 					
 						<td>
-							<bean:write name="element" property="roleName" />
+							<bean:write name="element" property="id" />
 						</td>
 
 						<td>
-							<bean:write name="element" property="roleType" />
+							<bean:write name="element" property="imei" />
+						</td>
+							<td>
+							<bean:write name="element" property="createtime" />
 						</td>
 						<%-- <td align="left">
 							<bean:write name="element" property="roleDesc" />

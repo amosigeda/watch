@@ -26,12 +26,12 @@
 	</head>
 	<script language="javascript">
 function finds(){
-    var st = new Date(frmGo.startTime.value.replace(/-/g,'/'));
+ /*    var st = new Date(frmGo.startTime.value.replace(/-/g,'/'));
 	var et = new Date(frmGo.endTime.value.replace(/-/g,'/'));
 	if(Date.parse(st) - Date.parse(et)>0){
 		alert("开始时间不能大于结束时间!");
 		return false;
-	}
+	} */
 	   frmGo.submit();
 }
 function add(){
@@ -39,10 +39,10 @@ function add(){
 	frmGo.submit();
 }
 function c(){
-    document.all.startTime.value="";
-    document.all.endTime.value="";
+    document.all.imei.value="";
+   /*  document.all.endTime.value="";
     document.all.userId.options[0].selected=true;
-    document.all.projectId.options[0].selected=true;
+    document.all.projectId.options[0].selected=true; */
 } 
 
 function changeCompany(obj){
@@ -87,10 +87,10 @@ function addBlanceByid(id){
 	frmGo.submit();
 }
 
-function resetScretById(id){
-	if(confirm("确定重置秘钥吗?"))
+function resetScretById(imei){
+	if(confirm("确定解绑吗?"))
 	{
-		frmGo.action="doProjectInfo.do?method=resetScretById&id="+id;
+		frmGo.action="doProjectInfo.do?method=resetScretById&imei="+imei;
 		frmGo.submit();
 	}
 }
@@ -106,14 +106,16 @@ function ofuncs(projectId){
 			<table width="100%" class="table" border=0 cellpadding="0" cellspacing="1">
                <tr>
                 <th colspan="12" nowrap="nowrap" align="left">
-                                               商户信息
-                     <input type="button" class="but_1" accesskey="a"
-							tabindex="a" value="添 加" onclick="add()">
+                                               设备信息
+                    <!--  <input type="button" class="but_1" accesskey="a"
+							tabindex="a" value="添 加" onclick="add()"> -->
                 </th>
                 </tr>
-                 <tr class="title_3">
-                  <%--      <td colspan="13">
-					  创建时间
+                <tr class="title_3">
+                        <td colspan="13">
+                        IMEI <input id="imei" name="imei" type="text" class="txt_1" 
+						    value="<%CommUtils.printReqByAtt(request,response,"imei");%>" size="20">
+					<%--   创建时间
                      <input name="startTime" type="text" class="txt_1"  id="startTime" style="cursor:text"
 								value="<%CommUtils.printReqByAtt(request,response,"fNow_date");%>" onclick="WdatePicker()"
 								size="9" readonly> -
@@ -128,8 +130,8 @@ function ofuncs(projectId){
 									<bean:define id="company" name="com" property="id" type="java.lang.Integer" />																	
 									<option value='<%=company %>' <%=String.valueOf(company).equals(userId)? "selected" : "" %>><bean:write name="com" property="company_name"/></option>
 								</logic:iterate>
-							</select>
-						项目名		
+							</select> 
+						IMEI	
 						<%String projectId = (String)request.getAttribute("projectId"); %>			
 							<select id="projectId" name="projectId" >
 								<option value="">全部</option>
@@ -137,21 +139,22 @@ function ofuncs(projectId){
 									<bean:define id="project" name="pro" property="id" type="java.lang.Integer" />																	
 									<option value='<%=project %>' <%=String.valueOf(project).equals(projectId)? "selected" : "" %>><bean:write name="pro" property="project_name"/></option>
 								</logic:iterate>
-							</select>							
+							</select>		
+							--%>					
 						<input name="find1" type="button" class="but_1" accesskey="f"
 							tabindex="f" value="搜 索" onclick="javascript:finds()">
 					     <input name="clear" type="button" class="but_1" accesskey="c"
-						    tabindex="c"  value="清除搜索" onclick="c()"> --%>
-				</tr> 
+						    tabindex="c"  value="清除搜索" onclick="c()"> 
+				</tr>  
 				<%int i=1; %>
                   <tr class="title_2">
                  	 <td width="3%">
 						ID
 					</td>
 					<td width="8%">
-						商户名(登录账号)
+						IMEI
 					</td>
-					<td width="10%">
+					<!-- <td width="10%">
 						秘钥
 					</td>
 						<td width="6%">
@@ -173,14 +176,12 @@ function ofuncs(projectId){
 					</td> 
 					 <td width="8%">
 						回调URL
-					</td> 
+					</td>  -->
 				
 					<td width="10%">
-						创建时间
+						激活时间
 					</td>
-					<!-- <td width="10%">
-						备注
-					</td> -->
+					
 					<td width="10%">
 						操作
 					</td>
@@ -195,9 +196,9 @@ function ofuncs(projectId){
 						</td>
 						
 						<td>							
-							<bean:write name="element" property="username" />
+							<bean:write name="element" property="imei" />
 						</td>
-						<td>							
+				<%-- 		<td>							
 							<bean:write name="element" property="scret" />
 						</td>
 						<td>
@@ -218,7 +219,7 @@ function ofuncs(projectId){
 						</td>
 						<td>								
 							<bean:write name="element" property="url" />					
-						</td>
+						</td> --%>
 						<td>								
 							<bean:write name="element" property="createtime" format="yyyy-MM-dd HH:mm:ss"/>
 						</td>
@@ -249,10 +250,10 @@ function ofuncs(projectId){
 							</logic:notEmpty>
 						</td>	 --%>									 						
 						<td>
-							<a href=# onclick="update('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【修改】</a>
-							<a href=# onclick="addBlanceByid('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【充值】</a> 
-							<a href=# onclick="resetScretById('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【重置秘钥】</a> 
-							<a href=# onclick="deletee('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【删除】</a> 
+							<%-- <a href=# onclick="update('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【修改】</a>
+							<a href=# onclick="addBlanceByid('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【充值】</a>  --%>
+							<a href=# onclick="resetScretById('<bean:write name="element" property="imei" />')" style="color:#0000FF" > 【解绑】</a> 
+							<%-- <a href=# onclick="deletee('<bean:write name="element" property="id" />')" style="color:#0000FF" > 【删除】</a>  --%>
 							<%-- <a href="#"
 								onclick="ofuncs('<bean:write name="element" property="id" />')"  class="tbl_A" >【权限设置】</a> --%>
 						</td>

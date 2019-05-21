@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <script language="JavaScript" src="public/g_js.js"></script>
-<title> 新创海虚拟产品商城</title>
+<title>亿多宝后台管理系统</title>
 <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 <script language="javascript">
@@ -69,7 +69,7 @@ function clears(){
         <td height="245"><table width="861" border="0" cellspacing="0">
             <tr>
               <td width="236" height="244">&nbsp;</td>
-              <td width="373"><table width="378" height="240" border="0" cellspacing="0" background="images/bg/desktop2.jpg">
+              <td width="373"><table width="378" height="240" border="0" cellspacing="0" background="images/bg/desktop3.jpg">
                 <tr>
                   <td width="90" height="56">&nbsp;</td>
                   <td width="192">&nbsp;</td>

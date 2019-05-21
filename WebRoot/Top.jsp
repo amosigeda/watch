@@ -103,7 +103,7 @@ function exit(){
           </span>     
   </div>
 	<div class="manage_title">
-	   新创海虚拟产品商城
+	 亿多宝后台管理系统
     </div>
 <ul class="view_menu">
 		   <%

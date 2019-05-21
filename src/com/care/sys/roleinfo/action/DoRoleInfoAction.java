@@ -51,7 +51,7 @@ public class DoRoleInfoAction extends BaseAction{
 
 			RoleInfo vo = new RoleInfo();
 			BeanUtils.copyProperties(vo,form);
-            vo.setOrderSort("roleCode");
+            vo.setOrderSort("id");
             list = info.getDataRoleInfoListByVo(vo);
 
 			BeanUtils.copyProperties(pys,form);
